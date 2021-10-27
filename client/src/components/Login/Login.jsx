@@ -8,22 +8,32 @@ import {
   Checkbox,
   FormControlLabel,
   Typography,
-  Button
+  Button,
+  AppBar,
+  Toolbar
 } from "@mui/material";
 import { Email, Lock, AccountCircle } from "@mui/icons-material";
 import useStyles from "./styles.js";
+import LogoMediConnect from '../../img/mediconnect-logo.png'
+import theme from '../../themes/index.js'
 const Login = () => {
+
   const classes = useStyles();
 
   return (
-    <div>
+    <div style={{backgroundImage:"linear-gradient(to bottom, #b2dfdb, #93d7d0, #72d0c3, #4cc8b5, #00bfa5)"}}>
+      <AppBar sx={{bgcolor:"transparent"}} elevation={0} > 
+          <Toolbar>
+            <img src={LogoMediConnect} alt="logo" width="200"/>
+          </Toolbar>
+        </AppBar> 
       <Grid
         container
         spacing={0}
         direction="column"
         alignItems="center"
         justifyContent="center"
-        style={{ minHeight: "100vh",backgroundImage:"linear-gradient(to bottom, #b2dfdb, #93d7d0, #72d0c3, #4cc8b5, #00bfa5)"}}
+        style={{ minHeight: "100vh"}}
       > 
     
         <FormControl>
@@ -60,8 +70,11 @@ const Login = () => {
             />
           </Box>
           <Box sx={{display:"flex", justifyContent:"space-between",alignItems:"center"}}> 
-          <FormControlLabel  control={<Checkbox defaultChecked />} label="Recordame" />
-          <Typography variant="p">
+          <FormControlLabel  control={<Checkbox defaultChecked />} label={
+          <Typography variant="p" color={theme.palette.primary.dark}> 
+              Recordame
+          </Typography>}/>
+          <Typography variant="p" color={theme.palette.primary.dark}>
               Olvide mi contraseña
           </Typography>
           </Box>
