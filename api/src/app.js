@@ -2,7 +2,9 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const routes = require("./routes/index.js");
+const loginRouter = require("./routes/login");
 const patientRouter = require("./routes/patients");
+
 
 require("./db.js");
 
@@ -10,7 +12,9 @@ const server = express();
 
 server.name = "API";
 
+
 // middlewares
+
 server.use(express.json());
 server.use(cookieParser());
 server.use(morgan("dev"));
@@ -25,9 +29,14 @@ server.use((req, res, next) => {
   next();
 });
 
+
+server.use("/", routes);
+server.use("/login", loginRouter);
+
 // Routes
 server.use("/", routes);
 server.use("/patient", patientRouter);
+
 
 
 // Error catching endware.
