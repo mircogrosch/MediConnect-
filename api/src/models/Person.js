@@ -1,12 +1,11 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-
-  sequelize.define('person', {
-    dni:{
+  sequelize.define("person", {
+    dni: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey:true
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -31,6 +30,10 @@ module.exports = (sequelize) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
+    rol: {
+      type: DataTypes.ENUM,
+      values: ["Doctor", "Patient"],
+    },
   });
 };
