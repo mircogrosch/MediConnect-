@@ -2,7 +2,6 @@ import { Route } from "react-router";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./components/Login/Login";
 import FormPacientCreate from "./components/FormPacientCreate/FormPacientCreate";
-
 function App() {
   return (
     <div>
