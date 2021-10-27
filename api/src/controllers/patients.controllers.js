@@ -22,6 +22,7 @@ const createPatient = async (req, res) => {
         imageProfile,
         email,
         password,
+        rol,
       },
       {
         fields: [
@@ -32,6 +33,7 @@ const createPatient = async (req, res) => {
           "imageProfile",
           "email",
           "password",
+          "rol",
         ],
       }
     );
@@ -54,8 +56,30 @@ const createPatient = async (req, res) => {
   }
 };
 
-const getPatients = (req, res) => {
-    res.json({ data: null, msg: "Ruta get Pacientes" });
+const getPatients = async (req, res) => {
+  try {
+    let patients = await Patient.findAll({
+      include: [
+        {
+          model: Person,
+          attributes: [
+            "dni",
+            "name",
+            "lastname",
+            "address",
+            "imageProfile",
+            "email",
+            "password",
+            "rol",
+          ],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
+    res.json({ data: patients, msg: "Pacientes de la BD" });
+  } catch (error) {}
 };
 
 const getPatient = () => {};
