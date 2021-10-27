@@ -22,7 +22,6 @@ module.exports = (sequelize) => {
     },
     imageProfile: {
       type: DataTypes.BLOB,
-      allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
@@ -31,6 +30,10 @@ module.exports = (sequelize) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
+    rol: {
+      type: DataTypes.ENUM,
+      values: ["Doctor", "Patient"],
+    },
   });
 };
