@@ -1,6 +1,6 @@
-const { Person, Patient } = require("../db");
+const { Person, Doctor } = require("../db");
 
-const createPatient = async (req, res) => {
+const createDoctor = async (req, res) => {
   const {
     dni,
     name,
@@ -9,9 +9,10 @@ const createPatient = async (req, res) => {
     imageProfile,
     email,
     password,
-    num_member,
+    enrollment,
+    location,
   } = req.body;
-  const rol = "Patient";
+  const rol = "Doctor";
   try {
     let newPerson = await Person.create(
       {
@@ -37,16 +38,17 @@ const createPatient = async (req, res) => {
         ],
       }
     );
-    let newPatient = await Patient.create(
+    let newDoctor = await Doctor.create(
       {
-        num_member,
+        enrollment,
+        location,
       },
       {
-        fields: ["num_member"],
+        fields: ["enrollment", "location"],
       }
     );
-    newPatient.setPerson(dni);
-    res.json({ data: [newPerson, newPatient], message: "Patient created" });
+    newDoctor.setPerson(dni);
+    res.json({ data: [newPerson, newDoctor], message: "Doctor created" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -56,29 +58,29 @@ const createPatient = async (req, res) => {
   }
 };
 
-const getPatients = async (req, res) => {
+const getDoctors = async (req, res) => {
   try {
-    let patientsDB = await Patient.findAll({
+    let doctorsDB = await Doctor.findAll({
       include: {
         model: Person,
       },
     });
 
-    let patients = [];
-    patientsDB.forEach((patient) => {
+    let doctors = [];
+    doctorsDB.forEach((doctor) => {
       let aux = {};
-      for (let key in patient.dataValues) {
+      for (let key in doctor.dataValues) {
         if (key != "person") {
-          aux[key] = patient.dataValues[key];
+          aux[key] = doctor.dataValues[key];
         } else {
-          for (let key in patient.dataValues.person.dataValues) {
-            aux[key] = patient.dataValues.person.dataValues[key];
+          for (let key in doctor.dataValues.person.dataValues) {
+            aux[key] = doctor.dataValues.person.dataValues[key];
           }
         }
       }
-      patients.push(aux);
+      doctors.push(aux);
     });
-    res.json({ data: patients, message: "Pacientes de la BD" });
+    res.json({ data: doctors, message: "Doctores de la BD" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -88,6 +90,7 @@ const getPatients = async (req, res) => {
   }
 };
 
-const getPatient = () => {};
-
-module.exports = { getPatient, getPatients, createPatient };
+module.exports = {
+  createDoctor,
+  getDoctors,
+};
