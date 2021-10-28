@@ -1,41 +1,9 @@
 const { Person, Patient, Doctor } = require("../db");
-const express = require("express");
-const passport = require("passport");
-const session = require("express-session");
-const PassportLocal = require("passport-local").Strategy;
-const app = express();
+const bcrypt = require("bcrypt-nodejs");
 
-app.use(
-  session({
-    secret: "mi  secreto",
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(
-  new PassportLocal(function (email, password, done) {
-    if (email === "elmacro11@gmail.com" && password === "1234") {
-      console.log(email);
-      return done(null, { id: 1, name: "Marco" });
-    } else {
-      done(null, false);
-    }
-  })
-);
-
-// Serialización
-passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
-
-// Deserialización
-passport.deserializeUser(function (id, done) {
-  done(null, { id: 1, name: "Marco" });
-});
-
+function comparePassword(password, passwordDB) {
+  return bcrypt.compareSync(password);
+}
 async function getLogin(req, res) {
   let { email, password, remember } = req.body;
   try {
@@ -47,35 +15,44 @@ async function getLogin(req, res) {
 
     if (person !== null) {
       //Si existe persona con ese email
+      console.log("COMPAAAAREEEE", comparePassword(password, person.password));
       if (person.password === password) {
         //Si coincide password ingresada con la registrada del usuario
         //Para traer el perfil de DOCTOR
         if (person.rol === "Doctor") {
-          let doctor = await Doctor.findOne({
-            where: {
-              personDni: person.dni,
-            },
-          });
+          try {
+            let doctor = await Doctor.findOne({
+              where: {
+                personDni: person.dni,
+              },
+            });
 
-          person = { ...person, doctor };
-          person = {
-            //limpio info
-            person: person.dataValues,
-            doctor: person.doctor,
-          };
+            person = { ...person, doctor };
+            person = {
+              //limpio info
+              person: person.dataValues,
+              doctor: person.doctor,
+            };
+          } catch (e) {
+            console.log("Error en traer al doctor desde base de datos: ", e);
+          }
           //Para traer el perfil de PACIENTE
         } else if (person.rol === "Patient") {
-          let patient = await Patient.findOne({
-            where: {
-              personDni: person.dni,
-            },
-          });
-          person = { ...person, patient };
-          person = {
-            //limpio info
-            person: person.dataValues,
-            patient: person.patient,
-          };
+          try {
+            let patient = await Patient.findOne({
+              where: {
+                personDni: person.dni,
+              },
+            });
+            person = { ...person, patient };
+            person = {
+              //limpio info
+              person: person.dataValues,
+              patient: person.patient,
+            };
+          } catch (e) {
+            console.log("Error en traer al paciente desde base de datos: ", e);
+          }
         }
         res.status(200).send({
           data: person,
@@ -90,7 +67,9 @@ async function getLogin(req, res) {
       res.status(200).send({ message: "There is no such registered email" });
     }
   } catch (e) {
-    res.status(400).send("Error desde base de datos: ", e);
+    res
+      .status(400)
+      .send("Error en traer a la persona desde base de datos: ", e);
   }
 }
 
