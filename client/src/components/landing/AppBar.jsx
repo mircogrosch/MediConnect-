@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Box, Button } from "@mui/material";
 import logo from "../../img/mediconnect-logo.png";
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles({
   logoContainer: {
@@ -27,7 +28,7 @@ function Appbar() {
           <img src={logo} alt="MediConnect+" className={classes.logo} />
         </Box>
         <div>
-          <Button
+        <Link to="/login">  <Button
             variant="contained"
             style={{
               background: "#b2dfdb",
@@ -37,7 +38,7 @@ function Appbar() {
             }}
           >
             INICIAR SESIÓN
-          </Button>
+          </Button> </Link>
           <Button
             variant="contained"
             style={{
