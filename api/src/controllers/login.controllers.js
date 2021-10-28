@@ -4,7 +4,6 @@ async function getLogin(req, res) {
   let { email, password, remember } = req.body;
   try {
     let person = await Person.findOne({
-      //asdadjnrnorgn
       where: {
         email: email,
       },
