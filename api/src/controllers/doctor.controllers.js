@@ -58,6 +58,39 @@ const createDoctor = async (req, res) => {
   }
 };
 
+const getDoctors = async (req, res) => {
+  try {
+    let doctorsDB = await Doctor.findAll({
+      include: {
+        model: Person,
+      },
+    });
+
+    let doctors = [];
+    doctorsDB.forEach((doctor) => {
+      let aux = {};
+      for (let key in doctor.dataValues) {
+        if (key != "person") {
+          aux[key] = doctor.dataValues[key];
+        } else {
+          for (let key in doctor.dataValues.person.dataValues) {
+            aux[key] = doctor.dataValues.person.dataValues[key];
+          }
+        }
+      }
+      doctors.push(aux);
+    });
+    res.json({ data: doctors, message: "Doctores de la BD" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
 module.exports = {
   createDoctor,
+  getDoctors,
 };

@@ -79,7 +79,13 @@ const getPatients = async (req, res) => {
       patients.push(aux);
     });
     res.json({ data: patients, message: "Pacientes de la BD" });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
 };
 
 const getPatient = () => {};
