@@ -5,7 +5,10 @@ import logo from "../../img/mediconnect-logo.png";
 function SimpleAppBar(props) {
   return (
     <>
-      <AppBar elevation={0} style={{ background: "transparent" }}>
+      <AppBar
+        elevation={0}
+        style={{ background: props.background || "transparent" }}
+      >
         <Toolbar>
           <Box style={{ flexGrow: "1" }}>
             <img src={logo} alt="MediConnect+" style={{ width: "200px" }} />
