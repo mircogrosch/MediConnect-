@@ -1,8 +1,8 @@
 const { Person, Patient, Doctor } = require("../db");
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcrypt");
 
 function comparePassword(password, passwordDB) {
-  return bcrypt.compareSync(password);
+  return bcrypt.compareSync(password, passwordDB);
 }
 async function getLogin(req, res) {
   let { email, password, remember } = req.body;
@@ -15,8 +15,7 @@ async function getLogin(req, res) {
 
     if (person !== null) {
       //Si existe persona con ese email
-      console.log("COMPAAAAREEEE", comparePassword(password, person.password));
-      if (person.password === password) {
+      if (comparePassword(password, person.password)) {
         //Si coincide password ingresada con la registrada del usuario
         //Para traer el perfil de DOCTOR
         if (person.rol === "Doctor") {

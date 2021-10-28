@@ -1,5 +1,5 @@
 const { Person, Patient } = require("../db");
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcrypt");
 function encryptPassword(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 }
