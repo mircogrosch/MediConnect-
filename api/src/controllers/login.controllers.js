@@ -2,6 +2,7 @@ const { Person, Patient, Doctor } = require("../db");
 const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
+const PassportLocal = require("passport-local").Strategy;
 const app = express();
 
 app.use(
@@ -14,6 +15,26 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+passport.use(
+  new PassportLocal(function (email, password, done) {
+    if (email === "elmacro11@gmail.com" && password === "1234") {
+      console.log(email);
+      return done(null, { id: 1, name: "Marco" });
+    } else {
+      done(null, false);
+    }
+  })
+);
+
+// Serialización
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+// Deserialización
+passport.deserializeUser(function (id, done) {
+  done(null, { id: 1, name: "Marco" });
+});
 
 async function getLogin(req, res) {
   let { email, password, remember } = req.body;

@@ -4,18 +4,28 @@ const morgan = require("morgan");
 const routes = require("./routes/index.js");
 const loginRouter = require("./routes/login");
 const patientRouter = require("./routes/patients");
-
+const passport = require("passport");
+const session = require("express-session");
 require("./db.js");
+require("./passport/local-auth");
 
 const server = express();
 
 server.name = "API";
 
 // middlewares
-
 server.use(express.json());
 server.use(cookieParser());
 server.use(morgan("dev"));
+server.use(
+  session({
+    secret: "mysecretsession",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+server.use(passport.initialize());
+server.use(passport.session());
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Credentials", "true");

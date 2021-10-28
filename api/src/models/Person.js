@@ -1,5 +1,9 @@
 const { DataTypes } = require("sequelize");
+const bcrypt = require("bcrypt-nodejs");
 
+function comparePassword(password) {
+  return bcrypt.compareSync(password, this.password);
+}
 module.exports = (sequelize) => {
   sequelize.define(
     "person",
@@ -27,6 +31,10 @@ module.exports = (sequelize) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: true,
+        },
       },
       password: {
         type: DataTypes.STRING,
