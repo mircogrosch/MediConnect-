@@ -12,7 +12,6 @@ async function getLogin(req, res) {
     if (person !== null) {
       //Si existe persona con ese email
       if (person.password === password) {
-        //asdasdadasdadad
         //Si coincide password ingresada con la registrada del usuario
         //Para traer el perfil de DOCTOR
         if (person.rol === "Doctor") {
