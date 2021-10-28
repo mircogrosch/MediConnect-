@@ -23,6 +23,7 @@ async function getLogin(req, res) {
 
           person = { ...person, doctor };
           person = {
+            //limpio info
             person: person.dataValues,
             doctor: person.doctor,
           };
@@ -35,6 +36,7 @@ async function getLogin(req, res) {
           });
           person = { ...person, patient };
           person = {
+            //limpio info
             person: person.dataValues,
             patient: person.patient,
           };
