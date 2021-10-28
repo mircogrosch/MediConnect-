@@ -10,6 +10,6 @@ router.route("/").get(getPatients);
 
 router.route("/").post(createPatient);
 
-router.route("/:email").get(getPatient);
+// router.route("/:email").get(getPatient);
 
 module.exports = router;

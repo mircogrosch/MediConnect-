@@ -59,24 +59,9 @@ const createPatient = async (req, res) => {
 const getPatients = async (req, res) => {
   try {
     let patients = await Patient.findAll({
-      include: [
-        {
-          model: Person,
-          attributes: [
-            "dni",
-            "name",
-            "lastname",
-            "address",
-            "imageProfile",
-            "email",
-            "password",
-            "rol",
-          ],
-          through: {
-            attributes: [],
-          },
-        },
-      ],
+      include: {
+        model: Person,
+      },
     });
     res.json({ data: patients, msg: "Pacientes de la BD" });
   } catch (error) {}
