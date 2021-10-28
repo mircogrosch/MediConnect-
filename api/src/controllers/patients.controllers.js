@@ -46,7 +46,7 @@ const createPatient = async (req, res) => {
       }
     );
     newPatient.setPerson(dni);
-    res.json({ data: [newPerson, newPatient], msg: "Patient created" });
+    res.json({ data: [newPerson, newPatient], message: "Patient created" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -58,27 +58,27 @@ const createPatient = async (req, res) => {
 
 const getPatients = async (req, res) => {
   try {
-    let patients = await Patient.findAll({
-      include: [
-        {
-          model: Person,
-          attributes: [
-            "dni",
-            "name",
-            "lastname",
-            "address",
-            "imageProfile",
-            "email",
-            "password",
-            "rol",
-          ],
-          through: {
-            attributes: [],
-          },
-        },
-      ],
+    let patientsDB = await Patient.findAll({
+      include: {
+        model: Person,
+      },
     });
-    res.json({ data: patients, msg: "Pacientes de la BD" });
+
+    let patients = [];
+    patientsDB.forEach((patient) => {
+      let aux = {};
+      for (let key in patient.dataValues) {
+        if (key != "person") {
+          aux[key] = patient.dataValues[key];
+        } else {
+          for (let key in patient.dataValues.person.dataValues) {
+            aux[key] = patient.dataValues.person.dataValues[key];
+          }
+        }
+      }
+      patients.push(aux);
+    });
+    res.json({ data: patients, message: "Pacientes de la BD" });
   } catch (error) {}
 };
 
