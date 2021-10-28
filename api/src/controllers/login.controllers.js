@@ -22,6 +22,10 @@ async function getLogin(req, res) {
           });
 
           person = { ...person, doctor };
+          person = {
+            person: person.dataValues,
+            doctor: person.doctor,
+          };
           //Para traer el perfil de PACIENTE
         } else if (person.rol === "Patient") {
           let patient = await Patient.findOne({
@@ -30,6 +34,10 @@ async function getLogin(req, res) {
             },
           });
           person = { ...person, patient };
+          person = {
+            person: person.dataValues,
+            patient: person.patient,
+          };
         }
         res.status(200).send({
           data: person,
