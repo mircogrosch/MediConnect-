@@ -5,13 +5,11 @@ const routes = require("./routes/index.js");
 const loginRouter = require("./routes/login");
 const patientRouter = require("./routes/patients");
 
-
 require("./db.js");
 
 const server = express();
 
 server.name = "API";
-
 
 // middlewares
 
@@ -29,15 +27,10 @@ server.use((req, res, next) => {
   next();
 });
 
-
-server.use("/", routes);
-server.use("/login", loginRouter);
-
 // Routes
 server.use("/", routes);
 server.use("/patient", patientRouter);
-
-
+server.use("/login", loginRouter);
 
 // Error catching endware.
 server.use((err, req, res, next) => {
