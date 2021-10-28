@@ -51,7 +51,7 @@ const createPatient = async (req, res) => {
     console.log(error);
     res.status(500).json({
       data: error,
-      msg: "something goes wrong",
+      message: "something goes wrong",
     });
   }
 };
