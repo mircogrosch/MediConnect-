@@ -1,7 +1,6 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-
   sequelize.define(
     "person",
     {
@@ -42,5 +41,4 @@ module.exports = (sequelize) => {
       timestamps: false,
     }
   );
-
 };
