@@ -47,7 +47,7 @@ let capsEntries = entries.map((entry) => [
 sequelize.models = Object.fromEntries(capsEntries);
 // Aca vendrian las relaciones
 
-const { Person, Doctor, Patient, Speciality, SocialWork } = sequelize.models;
+const { Person, Doctor, Patient, Speciality, HealthInsurance } = sequelize.models;
 
 // Uno a muchos
 Patient.belongsTo(Person); // crea tabla Person_id dentro de la tabla Patient
@@ -58,16 +58,16 @@ Doctor.belongsTo(Person);
 Person.hasMany(Doctor);
 
 // Uno a muchos
-Patient.belongsTo(SocialWork);
-SocialWork.hasMany(Patient);
+Patient.belongsTo(HealthInsurance);
+HealthInsurance.hasMany(Patient);
 
 // Muchos a Muchos
 Doctor.belongsToMany(Speciality, { through: "Doctor_Speciality" });
 Speciality.belongsToMany(Doctor, { through: "Doctor_Speciality" });
 
 // Muchos a Muchos
-Doctor.belongsToMany(SocialWork, { through: "Doctor_SocialWork" });
-SocialWork.belongsToMany(Doctor, { through: "Doctor_SocialWork" });
+Doctor.belongsToMany(HealthInsurance, { through: "Doctor_HealthInsurance" });
+HealthInsurance.belongsToMany(Doctor, { through: "Doctor_HealthInsurance" });
 
 // Muchos a Muchos
 Doctor.belongsToMany(Patient, { through: "Doctor_Patient" });
