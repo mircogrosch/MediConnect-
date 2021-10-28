@@ -1,4 +1,19 @@
 const { Person, Patient, Doctor } = require("../db");
+const express = require("express");
+const passport = require("passport");
+const session = require("express-session");
+const app = express();
+
+app.use(
+  session({
+    secret: "mi  secreto",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 async function getLogin(req, res) {
   let { email, password, remember } = req.body;
