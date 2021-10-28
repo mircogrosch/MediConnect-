@@ -7,7 +7,7 @@ function App() {
     <div>
       <Route path="/register/pacient" component={FormPacientCreate} />
       <Route path="/login" component={LoginPage} />
-      <Route path="/" component={LandingPage} />
+      <Route exact path="/" component={LandingPage} />
     </div>
   );
 }
