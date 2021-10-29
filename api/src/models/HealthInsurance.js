@@ -2,21 +2,25 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    "socialWork",
+    "healthInsurance",
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
+        type: DataTypes.INTEGER,
         primaryKey: true,
+        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      postal_code: {
+        type: DataTypes.INTEGER,
+      },
+      province: {
+        type: DataTypes.STRING,
+      },
       plan: {
         type: DataTypes.ARRAY(DataTypes.STRING),
-        allowNull: false,
       },
     },
     {

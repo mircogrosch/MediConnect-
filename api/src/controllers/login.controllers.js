@@ -28,7 +28,6 @@ async function getLogin(req, res) {
                 personDni: person.dni,
               },
             });
-
             person = { ...person, doctor };
             person = {
               person: person.dataValues,
