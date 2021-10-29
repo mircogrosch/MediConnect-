@@ -1,5 +1,5 @@
 const { Person, Patient, Doctor } = require("../db");
-
+const bcrypt = require("bcrypt");
 async function getLogin(req, res) {
   let { email, password, remember } = req.body;
   try {

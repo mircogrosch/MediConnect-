@@ -1,5 +1,6 @@
 const { Person, Patient } = require("../db");
 
+const bcrypt = require("bcrypt");
 const createPatient = async (req, res) => {
   const {
     dni,
