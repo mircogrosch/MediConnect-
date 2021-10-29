@@ -1,7 +1,7 @@
 const { Person, Patient, Doctor } = require("../db");
 const bcrypt = require("bcrypt");
 
-//Para poder comparar con la password encrypt adasd
+//Para poder comparar con la password encrypt
 function comparePassword(password, passwordDB) {
   return bcrypt.compareSync(password, passwordDB);
 }
