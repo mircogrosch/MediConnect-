@@ -10,7 +10,7 @@ function Perfil() {
   const classes = useStyles();
 
   return (
-    <Grid container md={4} sm={5} xs={12} className={classes.root}>
+    <Grid container item className={classes.root}>
       <IconButton
         style={{
           position: "absolute",
