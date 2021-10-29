@@ -1,5 +1,6 @@
 const { Person, Patient, Doctor } = require("../db");
 const bcrypt = require("bcrypt");
+const passport = require("passport");
 
 //Para poder comparar con la password encrypt
 function comparePassword(password, passwordDB) {

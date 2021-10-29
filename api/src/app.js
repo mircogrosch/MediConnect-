@@ -6,6 +6,10 @@ const loginRouter = require("./routes/login");
 const patientRouter = require("./routes/patients");
 const doctorRouter = require("./routes/doctor");
 
+const session = require("express-session");
+const passport = require("passport");
+const PassportLocal = require("passport-local");
+
 require("./db.js");
 
 const server = express();
@@ -29,6 +33,24 @@ server.use((req, res, next) => {
 });
 
 // Routes
+server.use(
+  session({
+    secret: "mi secreto",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+server.use(passport.initialize());
+server.use(passport.session());
+passport.use(
+  new PassportLocal(function (email, password, done) {
+    if (email === "elmacro11@gmail.com" && password === "password") {
+      return done(null, { id: 1, name: "Marco" });
+    } else {
+      return done(null, false);
+    }
+  })
+);
 server.use("/", routes);
 server.use("/login", loginRouter);
 server.use("/patient", patientRouter);
