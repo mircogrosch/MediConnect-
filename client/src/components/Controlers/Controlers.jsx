@@ -17,7 +17,12 @@ export const handleSubmitProfesional = (event, set) => {
 };
 
 export const handleChange = (prop, state, set) => (event) => {
-  set({ ...state, [prop]: event.target.value });
+    set({ ...state, [prop]: event.target.value})
+    console.log(state);
+}
+export const handleChangeSpecial = (e, state, set) => {
+    set(e.target.value);
+    console.log(state);
 };
 
 export const handleClickShowPassword = (state, set) => {
@@ -35,5 +40,25 @@ export const handleClickShowConf = (state, set) => {
 };
 
 export const handleMouseDownPassword = (event) => {
-  event.preventDefault();
-};
+    event.preventDefault();
+}
+
+export const handleSubmit = (e, state, set) => {
+  e.preventDefault();
+    console.log('este es el estado', state)
+    set({
+        name: "",
+        lastname: "",
+        email: "",
+        password: "",
+        confirmPass: "",
+        showPassword: false,
+        showConf: false,
+        dni: "",
+        address: "",
+        os: "",
+        plan: "",
+        numSoc: "",
+      });
+}
+
