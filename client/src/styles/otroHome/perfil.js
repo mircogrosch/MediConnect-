@@ -3,7 +3,7 @@ import { teal } from "@mui/material/colors";
 
 export const useStyles = makeStyles({
   root: {
-    width: "30vw",
+    width: "15vw",
     height: "75vh",
     padding: "2em 1em",
     textAlign: "center",
