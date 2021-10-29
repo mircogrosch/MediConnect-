@@ -2,27 +2,25 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    "doctor",
+    "healthInsurance",
     {
       id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false,
-        primaryKey: true,
-      },
-      enrollment: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
         allowNull: false,
       },
-      /*
-    signature: {
-      type: DataTypes.,
-      allowNull: false,
-    },
-    */
-      location: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      postal_code: {
+        type: DataTypes.INTEGER,
+      },
+      province: {
+        type: DataTypes.STRING,
+      },
+      plan: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
       },
     },
     {
