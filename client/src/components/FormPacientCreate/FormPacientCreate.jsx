@@ -1,10 +1,22 @@
 import React, {useState} from "react";
-import { FormControl, Input, InputLabel, FormHelperText, TextField, Typography, Button, Grid,IconButton,InputAdornment } from '@mui/material';
+import { FormControl, 
+    Input, 
+    InputLabel, 
+    TextField, 
+    Typography, 
+    Button, 
+    Grid,
+    IconButton,
+    InputAdornment } from '@mui/material';
 import { styled } from "@mui/material/styles";
-import { ThemeProvider } from "@mui/system";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import {handleChange, handleClickShowPassword, handleClickShowConf, handleMouseDownPassword} from '../Controlers/Controlers'
+import {handleChange, 
+    handleClickShowPassword, 
+    handleClickShowConf, 
+    handleMouseDownPassword,
+    handleSubmit} from '../Controlers/Controlers'
+import SimpleAppBar from "../AppBar/SimpleAppBar";
 
 const MyButton = styled(Button)({
     width: '500px',
@@ -26,10 +38,18 @@ const FormPacientCreate = () =>{
     let errors = {}
     
     const [values, setValues] = useState({
-        password: '',
-        confirmPass:'',
+        name: "",
+        lastname: "",
+        email: "",
+        password: "",
+        confirmPass: "",
         showPassword: false,
         showConf: false,
+        dni: "",
+        address: "",
+        os: "",
+        plan: "",
+        numSoc: "",
     });
     if(values.password === values.confirmPass){
         errors.idemPass = 'Contraseña distinta'
@@ -37,7 +57,7 @@ const FormPacientCreate = () =>{
 
     return(
         <>
-        <Typography variant='h4' align='left' color='secondary'>Medi<b>Connect+</b></Typography>
+        <SimpleAppBar/>
         <Grid
         container
         spacing={0}
@@ -49,9 +69,24 @@ const FormPacientCreate = () =>{
             <Grid item xs={3}>
             <MyTitle variant='h4' align='center'>Ingresa tus datos</MyTitle>
                 <FormControl>
-                        <MyInput id="standard-basic" label="Nombre:" variant="standard"/>
-                        <MyInput id="standard-basic" label="Apellido:" variant="standard" />
-                        <MyInput id="standard-basic" label="Email:" variant="standard" />
+                        <MyInput 
+                        id="standard-basic" 
+                        label="Nombre:" 
+                        variant="standard" 
+                        value={values.name}
+                        onChange={handleChange('name', values, setValues)}/>
+                        <MyInput 
+                        id="standard-basic" 
+                        label="Apellido:" 
+                        variant="standard"
+                        value={values.lastname}
+                        onChange={handleChange('lastname', values, setValues)}/>
+                        <MyInput 
+                        id="standard-basic" 
+                        label="Email:" 
+                        variant="standard"
+                        value={values.email}
+                        onChange={handleChange("email", values, setValues)}/> 
                         <FormControl variant='standard'>
                             <InputLabel htmlFor='standar-adornment-password'>Contraseña</InputLabel>
                             <Input 
@@ -89,14 +124,42 @@ const FormPacientCreate = () =>{
                                 </InputAdornment>
                             }/>
                         </FormControl>
-                        <MyInput id="standard-basic" label="DNI:" variant="standard" />
-                        <MyInput id="standard-basic" label="Ubicacion:" variant="standard" />
-                        <MyInput id="standard-basic" label="Obra social:" variant="standard" />
-                        <MyInput id="standard-basic" label="Plan:" variant="standard" />
-                        <MyInput id="standard-basic" label="N° socio:" variant="standard" />
+                        <MyInput 
+                        id="standard-basic" 
+                        label="DNI:" 
+                        variant="standard" 
+                        value={values.dni}
+                        onChange={handleChange("dni", values, setValues)}/>
+                        <MyInput 
+                        id="standard-basic" 
+                        label="Ubicacion:" 
+                        variant="standard"
+                        value={values.address}
+                        onChange={handleChange('address', values, setValues)}/>
+                        <MyInput 
+                        id="standard-basic" 
+                        label="Obra social:" 
+                        variant="standard"
+                        value={values.os}
+                        onChange={handleChange('os', values, setValues)}/> 
+                        <MyInput 
+                        id="standard-basic" 
+                        label="Plan:"
+                        variant="standard"
+                        value={values.plan}
+                        onChange={handleChange('plan', values, setValues)}/> 
+                        <MyInput 
+                        id="standard-basic" 
+                        label="N° socio:" 
+                        variant="standard"
+                        value={values.numSoc}
+                        onChange={handleChange('numSoc', values, setValues)}/> 
                 </FormControl>   
             </Grid>
-                <MyButton variant='contained' >Registrar</MyButton>
+                <MyButton 
+                variant='contained' 
+                onClick={(e) => handleSubmit(e, values, setValues)}
+                >Registrar</MyButton>
         </Grid> 
         </>
     )
