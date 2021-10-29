@@ -1,4 +1,11 @@
-const { Person, Patient } = require("../db");
+
+const { Person, Patient, Doctor } = require("../db");
+const bcrypt = require("bcrypt");
+
+//Encriptar password
+function encryptPassword(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+}
 
 const createPatient = async (req, res) => {
   const {
@@ -21,7 +28,7 @@ const createPatient = async (req, res) => {
         address,
         imageProfile,
         email,
-        password,
+        password: encryptPassword(password),
         rol,
       },
       {
@@ -46,42 +53,95 @@ const createPatient = async (req, res) => {
       }
     );
     newPatient.setPerson(dni);
-    res.json({ data: [newPerson, newPatient], msg: "Patient created" });
+    res.json({ data: [newPerson, newPatient], message: "Patient created" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       data: error,
-      msg: "something goes wrong",
+      message: "something goes wrong",
     });
   }
 };
 
 const getPatients = async (req, res) => {
   try {
-    let patients = await Patient.findAll({
-      include: [
-        {
-          model: Person,
-          attributes: [
-            "dni",
-            "name",
-            "lastname",
-            "address",
-            "imageProfile",
-            "email",
-            "password",
-            "rol",
-          ],
-          through: {
-            attributes: [],
-          },
-        },
-      ],
+    let patientsDB = await Patient.findAll({
+      include: {
+        model: Person,
+      },
     });
-    res.json({ data: patients, msg: "Pacientes de la BD" });
-  } catch (error) {}
+
+    let patients = [];
+    patientsDB.forEach((patient) => {
+      let aux = {};
+      for (let key in patient.dataValues) {
+        if (key != "person") {
+          aux[key] = patient.dataValues[key];
+        } else {
+          for (let key in patient.dataValues.person.dataValues) {
+            aux[key] = patient.dataValues.person.dataValues[key];
+          }
+        }
+      }
+      patients.push(aux);
+    });
+    res.json({ data: patients, message: "Pacientes de la BD" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
 };
 
-const getPatient = () => {};
+const getDoctors = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const patient = await Patient.findOne({
+      where: {
+        id: id,
+      },
+    });
+    let doctors = await patient.getDoctors();
+    let doctors_persons = [];
+    for (let i = 0; i < doctors.length; i++) {
+      let person = await Person.findOne({
+        where: {
+          dni: doctors[i].dataValues.personDni,
+        },
+      });
+      for (let key in person.dataValues) {
+        doctors[i].dataValues[key] = person.dataValues[key];
+      }
+      doctors_persons.push(doctors[i].dataValues);
+    }
+    res.json({
+      data: doctors_persons,
+      message: "Doctores de Paciente",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
 
-module.exports = { getPatient, getPatients, createPatient };
+const addDoctor = async (req, res) => {
+  const { id } = req.params;      // id de Paciente
+  const { id_Doctor } = req.body; // id de Doctor
+  let patient = await Patient.findOne({
+    where: {
+      id: id,
+    },
+  });
+  await patient.addDoctor([id_Doctor]);
+  res.json({
+    data: patient,
+    message: "Doctor añadido a lista de doctores de paciente",
+  });
+};
+
+module.exports = { getDoctors, getPatients, createPatient, addDoctor };
