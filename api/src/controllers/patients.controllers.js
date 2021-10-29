@@ -1,4 +1,11 @@
+
 const { Person, Patient, Doctor } = require("../db");
+const bcrypt = require("bcrypt");
+
+//Encriptar password
+function encryptPassword(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+}
 
 const createPatient = async (req, res) => {
   const {
@@ -21,7 +28,7 @@ const createPatient = async (req, res) => {
         address,
         imageProfile,
         email,
-        password,
+        password: encryptPassword(password),
         rol,
       },
       {
