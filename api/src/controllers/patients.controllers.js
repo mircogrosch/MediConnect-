@@ -46,11 +46,6 @@ const createPatient = async (req, res) => {
       }
     );
     newPatient.setPerson(dni);
-    // Hard codeo para Relacionar Doctores a Paciente
-    let ids_Doctor = await Doctor.findAll({
-      attributes: ["id"],
-    });
-    newPatient.addDoctor(ids_Doctor);
     res.json({ data: [newPerson, newPatient], message: "Patient created" });
   } catch (error) {
     console.log(error);
@@ -127,4 +122,19 @@ const getDoctors = async (req, res) => {
   }
 };
 
-module.exports = { getDoctors, getPatients, createPatient };
+const addDoctor = async (req, res) => {
+  const { id } = req.params;      // id de Paciente
+  const { id_Doctor } = req.body; // id de Doctor
+  let patient = await Patient.findOne({
+    where: {
+      id: id,
+    },
+  });
+  await patient.addDoctor([id_Doctor]);
+  res.json({
+    data: patient,
+    message: "Doctor añadido a lista de doctores de paciente",
+  });
+};
+
+module.exports = { getDoctors, getPatients, createPatient, addDoctor };
