@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button } from "@mui/material";
 import image from "../../img/Ellipse 3.png";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -45,6 +46,8 @@ function Header() {
           habla con tus pacientes por chat, o videoconsulta y mucho más.
         </p>
         <Button
+          component={Link}
+          to="/register/form"
           variant="contained"
           size="large"
           style={{
