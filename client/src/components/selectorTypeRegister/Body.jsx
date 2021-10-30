@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button } from "@mui/material";
 import { grey, teal } from "@material-ui/core/colors";
 import { useStyles } from "../../styles/selectTypeRegister/selector.js";
+import { Link } from "react-router-dom";
 
 function Body() {
   const classes = useStyles();
@@ -16,6 +17,8 @@ function Body() {
         }}
       >
         <Button
+          component={Link}
+          to="/register/pacient"
           variant="contained"
           size="large"
           style={{
@@ -28,6 +31,8 @@ function Body() {
           PACIENTE
         </Button>
         <Button
+          component={Link}
+          to="/register/doctor"
           variant="contained"
           size="large"
           style={{
