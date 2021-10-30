@@ -22,3 +22,19 @@ export const postDoctor = (payload) => {
     }
   };
 };
+
+export const postPatient = (payload) => {
+  return async function (dispatch) {
+    try {
+      await axios.post(`${URL}/patient`, payload);
+      console.log(payload)
+      alert('Se creo el paciente exitosamente')
+      return dispatch({
+        type: type.POST_PATIENT,
+        payload,
+      });
+    } catch (error) {
+      alert(error);
+    }
+  };
+};
