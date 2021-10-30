@@ -1,8 +1,8 @@
 import React from "react";
 import { teal } from "@mui/material/colors";
 import { ModeEditOutlined } from "@mui/icons-material";
-import { Grid, IconButton } from "@mui/material";
-import { useStyles } from "../../styles/otroHome/perfil";
+import { Grid, Box, IconButton } from "@mui/material";
+import { useStyles } from "../../styles/home/perfil";
 import circleUser from "../../img/user.png";
 import BodyData from "./perfil/BodyData";
 
@@ -10,7 +10,12 @@ function Perfil() {
   const classes = useStyles();
 
   return (
-    <Grid container item className={classes.root}>
+    <Grid
+      container
+      item
+      className={classes.root}
+      sx={{ height: { md: "75vh" } }}
+    >
       <IconButton
         style={{
           position: "absolute",
@@ -21,7 +26,9 @@ function Perfil() {
         <ModeEditOutlined fontSize="medium" style={{ color: teal[800] }} />
       </IconButton>
       <img src={circleUser} alt="user profile" className={classes.circleUser} />
-      <BodyData classes={classes} />
+      <Box>
+        <BodyData classes={classes} />
+      </Box>
     </Grid>
   );
 }
