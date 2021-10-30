@@ -3,7 +3,7 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./components/Login/Login";
 import FormPacientCreate from "./components/FormPacientCreate/FormPacientCreate";
 import SelectorRegisterForm from "./pages/SelectorRegisterForm";
-import HomePacientPage from "./pages/HomePacientPage";
+import HomePatientPage from "./pages/HomePatientPage";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <Route path="/register/pacient" component={FormPacientCreate} />
       <Route path="/register/form" component={SelectorRegisterForm} />
       <Route path="/login" component={LoginPage} />
-      <Route path="/account" component={HomePacientPage} />
+      <Route path="/account" component={HomePatientPage} />
       <Route exact path="/" component={LandingPage} />
     </div>
   );
