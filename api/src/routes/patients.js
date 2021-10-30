@@ -8,8 +8,11 @@ const {
   addDoctor
 } = require("../controllers/patients.controllers");
 
+router.route("/:id").get(getPatient);
+
 router.route("/").get(getPatients);
 
+router.route("/").post(createPatient);
 
 /*
 Para traer todos los Doctores de la lista de Doctores de un Paciente
@@ -25,7 +28,6 @@ Y se envia por body el id del Doctor
 router.route("/doctors/:id").post(addDoctor);
 
 
-router.route("/").post(createPatient);
 
 
 module.exports = router;
