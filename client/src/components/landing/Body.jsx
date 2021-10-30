@@ -38,10 +38,10 @@ function Body() {
     <div className={classes.root}>
       <Box className={classes.textContainer}>
         <h2 className={classes.subtitle} style={{ lineHeight: "1.2em" }}>
-          ¡Descubre al profesional mas cernano!
+          ¡Descubre al profesional mas cercano!
         </h2>
         <p className={classes.paragraph} style={{ lineHeight: "1.2em" }}>
-          Descubre al médico mas cercado y con la cita libre mas próxima de
+          Descubre al médico mas cercano y con la cita libre mas próxima de
           manera fácil, segura y rápida.
         </p>
       </Box>
