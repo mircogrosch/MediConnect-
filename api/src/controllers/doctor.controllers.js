@@ -90,7 +90,42 @@ const getDoctors = async (req, res) => {
   }
 };
 
+const getPatients = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const doctor = await Doctor.findOne({
+      where: {
+        id: id,
+      },
+    });
+    let patients = await doctor.getPatients();
+    let patients_persons = [];
+    for (let i = 0; i < patients.length; i++) {
+      let person = await Person.findOne({
+        where: {
+          dni: patients[i].dataValues.personDni,
+        },
+      });
+      for (let key in person.dataValues) {
+        patients[i].dataValues[key] = person.dataValues[key];
+      }
+      patients_persons.push(patients[i].dataValues);
+    }
+    res.json({
+      data: patients_persons,
+      message: "Pacientes de Doctor",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
 module.exports = {
   createDoctor,
   getDoctors,
+  getPatients,
 };
