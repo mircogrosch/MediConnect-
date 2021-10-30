@@ -1,4 +1,3 @@
-
 const { Person, Patient, Doctor } = require("../db");
 const bcrypt = require("bcrypt");
 
@@ -54,6 +53,37 @@ const createPatient = async (req, res) => {
     );
     newPatient.setPerson(dni);
     res.json({ data: [newPerson, newPatient], message: "Patient created" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
+const getPatient = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const patient = await Patient.findOne({
+      where: {
+        id: id,
+      },
+      include: {
+        model: Person
+      }
+    });
+    let patient_person = {};
+    for (let key in patient.dataValues) {
+      if (key != "person") {
+        patient_person[key] = patient.dataValues[key];
+      } else {
+        for (let key in patient.dataValues.person.dataValues) {
+          patient_person[key] = patient.dataValues.person.dataValues[key];
+        }
+      }
+    }
+    res.json({ data: patient_person, message: "Paciente de la BD" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -130,7 +160,7 @@ const getDoctors = async (req, res) => {
 };
 
 const addDoctor = async (req, res) => {
-  const { id } = req.params;      // id de Paciente
+  const { id } = req.params; // id de Paciente
   const { id_Doctor } = req.body; // id de Doctor
   let patient = await Patient.findOne({
     where: {
@@ -144,4 +174,10 @@ const addDoctor = async (req, res) => {
   });
 };
 
-module.exports = { getDoctors, getPatients, createPatient, addDoctor };
+module.exports = {
+  getDoctors,
+  getPatient,
+  getPatients,
+  createPatient,
+  addDoctor,
+};

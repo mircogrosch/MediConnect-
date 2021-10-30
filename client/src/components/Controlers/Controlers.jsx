@@ -1,6 +1,12 @@
-import { postPatient } from "../../actions";
+import { postPatient, postDoctor } from "../../actions";
 
-export const handleSubmitProfesional = (event, set) => {
+export const handleSubmitProfesional = (
+  event,
+  state,
+  set,
+  dispatch,
+  history
+) => {
   event.preventDefault();
   set({
     name: "",
@@ -14,8 +20,11 @@ export const handleSubmitProfesional = (event, set) => {
     address: "",
     speciality: "",
     signature: "",
-    medicalRegistration: "",
+    enrollment: "",
   });
+  dispatch(postDoctor(state));
+  alert("Usuario registrado exitosamente");
+  history.push("/login");
 };
 
 export const handleChange = (prop, state, set) => (event) => {
