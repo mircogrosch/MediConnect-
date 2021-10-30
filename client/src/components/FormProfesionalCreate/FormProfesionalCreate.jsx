@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
   FormControl,
   Input,
   InputLabel,
-  FormHelperText,
   TextField,
   Typography,
   Button,
@@ -12,7 +13,6 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { ThemeProvider } from "@mui/system";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
@@ -23,6 +23,7 @@ import {
 } from "../Controlers/Controlers";
 import Signature from "./Signature/Signature";
 import useStyles from "./styles";
+import SimpleAppBar from "../AppBar/SimpleAppBar";
 
 const MyButton = styled(Button)({
   width: "500px",
@@ -55,11 +56,11 @@ const FormProfesionalCreate = () => {
     address: "",
     speciality: "",
     signature: "",
-    medicalRegistration: "",
+    enrollment: "",
   });
 
   // ACA VAN LAS VALIDACIONES
-  if (input.password === input.confirmPass) {
+  if (input.password !== input.confirmPass) {
     errors.idemPass = "Contraseña distinta";
   }
   // ----------------------------------------
@@ -91,6 +92,11 @@ const FormProfesionalCreate = () => {
   ];
 
   const classes = useStyles();
+
+  const dispatch = useDispatch();
+
+  const history = useHistory();
+
   return (
     <div className={classes.root}>
       <Grid
@@ -105,7 +111,7 @@ const FormProfesionalCreate = () => {
           <MyTitle variant="h4" align="center">
             Ingresa tus datos
           </MyTitle>
-
+          <SimpleAppBar></SimpleAppBar>
           <FormControl>
             <MyInput
               id="standard-basic"
@@ -162,7 +168,7 @@ const FormProfesionalCreate = () => {
                 Confirme contraseña
               </InputLabel>
               <Input
-                error={errors.idemPass ? false : true}
+                error={errors.idemPass ? true : false}
                 id="standar-adornment-password"
                 type={input.showConf ? "text" : "password"}
                 value={input.confirmPass}
@@ -183,6 +189,7 @@ const FormProfesionalCreate = () => {
             </FormControl>
             <MyInput
               id="standard-basic"
+              type="number"
               label="DNI"
               value={input.dni}
               name="dni"
@@ -191,7 +198,7 @@ const FormProfesionalCreate = () => {
             />
             <MyInput
               id="standard-basic"
-              label="Ubicación"
+              label="Dirección"
               value={input.address}
               name="address"
               onChange={(e) => handleChange(e, input, setInput)}
@@ -220,14 +227,23 @@ const FormProfesionalCreate = () => {
             <MyInput
               id="standard-basic"
               label="N° matrícula"
-              value={input.medicalRegistration}
-              name="medicalRegistration"
+              type="number"
+              value={input.enrollment}
+              name="enrollment"
               onChange={(e) => handleChange(e, input, setInput)}
               variant="standard"
             />
             <Signature state={input} setState={setInput} />
             <MyButton
-              onClick={(e) => handleSubmitProfesional(e, setInput)}
+              onClick={(event) =>
+                handleSubmitProfesional(
+                  event,
+                  input,
+                  setInput,
+                  dispatch,
+                  history
+                )
+              }
               variant="contained"
             >
               Registrar
