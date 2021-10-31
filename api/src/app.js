@@ -6,6 +6,7 @@ const loginRouter = require("./routes/login");
 const patientRouter = require("./routes/patients");
 const doctorRouter = require("./routes/doctor");
 const specialitiesRouter = require("./routes/specialities");
+const healthinsuranceRouter = require("./routes/healthinsurance");
 
 require("./db.js");
 
@@ -35,6 +36,7 @@ server.use("/login", loginRouter);
 server.use("/patient", patientRouter);
 server.use("/doctor", doctorRouter);
 server.use("/specialities", specialitiesRouter);
+server.use("/healthinsurance", healthinsuranceRouter);
 
 // Error catching endware.
 server.use((err, req, res, next) => {

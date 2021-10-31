@@ -1,4 +1,4 @@
-const { Person, Doctor } = require("../db");
+const { Person, Doctor, Patient } = require("../db");
 
 const createDoctor = async (req, res) => {
   const {
@@ -98,8 +98,8 @@ const getDoctor = async (req, res) => {
         id: id,
       },
       include: {
-        model: Person
-      }
+        model: Person,
+      },
     });
     let doctor_person = {};
     for (let key in doctor.dataValues) {
@@ -121,6 +121,29 @@ const getDoctor = async (req, res) => {
   }
 };
 
+const getPatient = async (req, res) => {
+  const { name, id } = req.query;
+  try {
+    const doctor = await Doctor.findOne({
+      where: {
+        id: id,
+      },
+    });
+    let patients = await doctor.getPatients({
+      where: {
+        name: name,
+      },
+    });
+    console.log(doctor.dataValues);
+    res.json({ data: doctor, message: "Doctor por query de la BD" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
 
 const getPatients = async (req, res) => {
   try {
@@ -160,5 +183,6 @@ module.exports = {
   createDoctor,
   getDoctor,
   getDoctors,
+  getPatient,
   getPatients,
 };
