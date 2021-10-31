@@ -1,4 +1,3 @@
-
 const { Person, Patient, Doctor } = require("../db");
 const bcrypt = require("bcrypt");
 
@@ -7,7 +6,6 @@ function encryptPassword(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 }
 
-const bcrypt = require("bcrypt");
 const createPatient = async (req, res) => {
   const {
     dni,
@@ -131,7 +129,7 @@ const getDoctors = async (req, res) => {
 };
 
 const addDoctor = async (req, res) => {
-  const { id } = req.params;      // id de Paciente
+  const { id } = req.params; // id de Paciente
   const { id_Doctor } = req.body; // id de Doctor
   let patient = await Patient.findOne({
     where: {
