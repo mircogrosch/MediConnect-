@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const router = Router();
-const { createDoctor, getDoctors, getPatients} = require("../controllers/doctor.controllers");
+const { createDoctor, getDoctor, getDoctors, getPatients} = require("../controllers/doctor.controllers");
+
+router.route("/:id").get(getDoctor);
 
 router.route("/").get(getDoctors);
 
