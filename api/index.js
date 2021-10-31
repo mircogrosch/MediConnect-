@@ -32,7 +32,7 @@ async function addSpeciality(datos) {
 }
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
+conn.sync({ force: false }).then(() => {
   const obras_sociales = excel_to_json(`${__dirname}/src/obras_sociales.xlsx`);
   const especialidades = excel_to_json(`${__dirname}/src/especialidades.xlsx`);
   addHealthInsurance(obras_sociales);
