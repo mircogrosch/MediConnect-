@@ -62,6 +62,37 @@ const createPatient = async (req, res) => {
   }
 };
 
+const getPatient = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const patient = await Patient.findOne({
+      where: {
+        id: id,
+      },
+      include: {
+        model: Person
+      }
+    });
+    let patient_person = {};
+    for (let key in patient.dataValues) {
+      if (key != "person") {
+        patient_person[key] = patient.dataValues[key];
+      } else {
+        for (let key in patient.dataValues.person.dataValues) {
+          patient_person[key] = patient.dataValues.person.dataValues[key];
+        }
+      }
+    }
+    res.json({ data: patient_person, message: "Paciente de la BD" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
 const getPatients = async (req, res) => {
   try {
     let patientsDB = await Patient.findAll({
@@ -143,4 +174,10 @@ const addDoctor = async (req, res) => {
   });
 };
 
-module.exports = { getDoctors, getPatients, createPatient, addDoctor };
+module.exports = {
+  getDoctors,
+  getPatient,
+  getPatients,
+  createPatient,
+  addDoctor,
+};

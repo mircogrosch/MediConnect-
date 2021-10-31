@@ -1,5 +1,6 @@
-const types = { 
-    GET_USER_LOGIN: "GET_USER_LOGIN"
-}
+const types = {
+  GET_USER_LOGIN: "GET_USER_LOGIN",
+  POST_DOCTOR: "POST_DOCTOR",
+};
 
 export default types;

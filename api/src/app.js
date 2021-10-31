@@ -9,6 +9,8 @@ let { Person, Patient, Doctor } = require("./db");
 let passport = require("passport");
 let Strategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
+const specialitiesRouter = require("./routes/specialities");
+
 require("./db.js");
 
 //Para poder comparar con la password encrypt
@@ -189,6 +191,7 @@ server.use("/", routes);
 server.use("/login", loginRouter);
 server.use("/patient", patientRouter);
 server.use("/doctor", doctorRouter);
+server.use("/specialities", specialitiesRouter);
 
 // Error catching endware.
 server.use((err, req, res, next) => {
