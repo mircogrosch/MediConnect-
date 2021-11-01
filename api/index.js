@@ -34,12 +34,12 @@ async function addSpeciality(datos) {
   });
 }
 
-// Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
-  const obras_sociales = excel_to_json(`${__dirname}/src/obras_sociales.xlsx`);
-  const especialidades = excel_to_json(`${__dirname}/src/especialidades.xlsx`);
-  addHealthInsurance(obras_sociales);
-  addSpeciality(especialidades);
+const no_existen_Especialidades = async () => {
+  const especialidades = await Speciality.findAll();
+  return especialidades.length === 0 ? true : false;
+};
+
+
 
 server.use(cors())
 
@@ -53,11 +53,22 @@ const io = socketIO(server_pp, {
   }
 })
 require('./src/controllers/notification')(io)
+ 
+  // Syncing all the models at once.
+conn.sync({ force: false }).then(async () => {
+  if (await no_existen_Especialidades()) {
+    const obras_sociales = excel_to_json(
+      `${__dirname}/src/obras_sociales.xlsx`
+    );
+    const especialidades = excel_to_json(
+      `${__dirname}/src/especialidades.xlsx`
+    );
+    addHealthInsurance(obras_sociales);
+    addSpeciality(especialidades);
+  }
   //start server 
-
-const port =3001
-
-  server_pp.listen(port, () => {
+  const port =3001
+ server_pp.listen(port, () => {
     console.log(`Server is executed on port ${port}` ); // view on console
   });
 });

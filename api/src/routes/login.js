@@ -1,7 +1,21 @@
-const { Router } = require("express");
-const router = Router();
-const { getLogin } = require("../controllers/login.controllers");
+const express = require("express");
+let app = express();
+const passport = require("passport");
 
-router.route("/").post(getLogin);
+app.post("/", (req, res) => {
+  res.send(req.user);
+});
 
-module.exports = router;
+app.post("/login", (req, res) => {
+  res.send("Soy lo");
+});
+
+app.post(
+  "/register",
+  passport.authenticate("local", {
+    successRedirect: "/login",
+    failureRedirect: "/login/login",
+  })
+);
+
+module.exports = app;
