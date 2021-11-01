@@ -1,14 +1,12 @@
-import { MenuItem, TextField } from "@mui/material";
-import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { styled } from "@mui/material/styles";
-import { FormControl, IconButton, Input, InputAdornment, InputBase,  } from "@material-ui/core";
+import { IconButton, InputBase,  } from "@material-ui/core";
 import { Search } from "@mui/icons-material";
 import { handleChangeSpecial } from "../Controlers/Controlers";
 
 const MySearchbar = styled(InputBase)({
     backgroundColor: '#80cbc4',
-    width: '400px',
+    width: '500px',
     borderRadius: '3px',
     margin:'30px',
     padding:'0px 0px 0px 10px'
@@ -23,7 +21,7 @@ const SearchBar = () =>{
         console.log(input)
     }
     return(
-        <Box sx={{backgroundColor: '#b2dfdb'}}>
+        // <Box sx={{backgroundColor: '#b2dfdb'}}>
             <MySearchbar 
             variant='outlined' 
             placeholder='Buscar'
@@ -35,7 +33,7 @@ const SearchBar = () =>{
                 </IconButton>
             }>
             </MySearchbar>
-        </Box>
+        // </Box> 
     )
 }
 
