@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, {useState,useEffect} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -56,9 +57,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar({numberNoti}) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+export default function PrimarySearchAppBar() {
+  //state global
+  const notifications = useSelector(state=> state.notification.notifications)
+  const [numberNotification, setNotification] = useState(0)
+  
+  useEffect(()=>{
+    setNotification(notifications.length/2)
+  },[notifications])
+
+  
+  console.log(notifications);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -133,7 +145,7 @@ export default function PrimarySearchAppBar({numberNoti}) {
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={numberNoti} color="error">
+          <Badge badgeContent={numberNotification} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -196,7 +208,7 @@ export default function PrimarySearchAppBar({numberNoti}) {
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={numberNoti} color="error">
+              <Badge badgeContent={numberNotification} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>

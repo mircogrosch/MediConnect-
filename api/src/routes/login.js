@@ -1,21 +1,22 @@
-const express = require("express");
-let app = express();
+const { Router } = require("express");
+const router = Router();
 const passport = require("passport");
 
-app.post("/", (req, res) => {
-  res.send(req.user);
+router.get("/register", (req, res) => {
+  console.log('llegooo----',res)
+  res.send(res.user);
 });
 
-app.post("/login", (req, res) => {
-  res.send("Soy lo");
+router.get("/fail", (req, res) => {
+  res.redirect("/login");
 });
 
-app.post(
-  "/register",
+router.post(
+  "/",
   passport.authenticate("local", {
-    successRedirect: "/login",
-    failureRedirect: "/login/login",
+    successRedirect: "/login/register",
+    failureRedirect: "/login/fail",
   })
 );
 
-module.exports = app;
+module.exports = router;

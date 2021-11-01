@@ -181,7 +181,6 @@ server.use(passport.session());
 
 // Middleware para mostrar la sesión actual en cada request
 server.use((req, res, next) => {
-  console.log(req.session);
   console.log(req.user);
   next();
 });
