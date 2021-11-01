@@ -106,7 +106,7 @@ const [handlePassword,setPassword] = useState({showPassword:false})
           </Typography>
           </Box>
           <Box sx={{display:"flex",justifyContent:"center",mt:5}}>   
-          <Button variant="contained" sx={{width:350,bgcolor:"#00695C"}} onClick={dispatch(getUser(input))}>
+          <Button variant="contained" sx={{width:350,bgcolor:"#00695C"}} onClick={()=>dispatch(getUser(input))}>
               INICIAR SESIÓN
           </Button>
           </Box>

@@ -8,8 +8,6 @@ const socket = io(URL,{
     path: '/notification'
 });
 function Container() { 
-    const [numberNotification, setNotification] = useState(0)
-    const notifications = useSelector(state=> state.notification.notifications)
     const dispatch = useDispatch()
 
     //coneccion socket 
@@ -17,7 +15,7 @@ function Container() {
         console.log(socket.connected)
         sessionStorage.setItem('user_id',socket.id)
     }) 
-        const sender= sessionStorage.getItem('user_id')
+        const sender= sessionStorage.getItem('user_id')  //sender = emisor
      //emito evento para capturarlo desde back
     socket.emit('joinNotifications',sender);
 
@@ -25,22 +23,19 @@ function Container() {
     // recibo notificacion
     socket.on('reciveNotifications', request => {
         dispatch({type:'SAVE_NOTIFICATION',payload:request})
-        let number = notifications.length
-        setNotification(number)
     }) 
     //envia notificación 
-    const actionOnRequest= (button) => 
+    const actionOnRequest= (userName) => 
             socket.emit('sendNotifications',{ 
-                message: `Esta es la notificacion del boton: ${button}`,
+                message: `${userName} te envio una solicitud de amistad`,
                 sender:sessionStorage.getItem('user_id'),
                 reciver:sessionStorage.getItem('user_id')
             })
-   
-    console.log(numberNotification)
+
     return (
 
         <div>
-            <PrimarySearchAppBar numberNoti={numberNotification} />
+            <PrimarySearchAppBar />
             
             <Button onClick={()=>actionOnRequest('button 1')}> 
                 Enviar Notificacion
