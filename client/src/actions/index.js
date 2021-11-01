@@ -73,3 +73,17 @@ export const getHealthInsurances = () => {
     }
   };
 };
+
+export const getMyDoctors = (payload) => {
+  return async function(dispatch) {
+    try {
+      let myDocs = await axios.get(`${URL}/patient/doctors/${payload}`);
+      return dispatch({
+        type: types.GET_MY_DOCTORS,
+        payload: myDocs.data
+      })
+    } catch (error) {
+      alert(error);
+    }
+  }
+}
