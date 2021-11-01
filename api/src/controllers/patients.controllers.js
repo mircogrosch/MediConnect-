@@ -17,6 +17,7 @@ const createPatient = async (req, res) => {
     email,
     password,
     num_member,
+    healthInsuranceId
   } = req.body;
   const rol = "Patient";
   try {
@@ -53,6 +54,7 @@ const createPatient = async (req, res) => {
       }
     );
     newPatient.setPerson(dni);
+    newPatient.setHealthInsurance(healthInsuranceId);
     res.json({ data: [newPerson, newPatient], message: "Patient created" });
   } catch (error) {
     console.log(error);
@@ -215,6 +217,21 @@ const addDoctor = async (req, res) => {
   });
 };
 
+const deleteDoctor = async (req, res) => {
+  const { id } = req.params; // id de Paciente
+  const { id_Doctor } = req.body; // id de Doctor
+  let patient = await Patient.findOne({
+    where: {
+      id: id,
+    },
+  });
+  await patient.removeDoctor([id_Doctor]);
+  res.json({
+    data: patient,
+    message: "Doctor borrado de la lista de doctores de paciente",
+  });
+};
+
 module.exports = {
   getDoctor,
   getDoctors,
@@ -222,4 +239,5 @@ module.exports = {
   getPatients,
   createPatient,
   addDoctor,
+  deleteDoctor,
 };

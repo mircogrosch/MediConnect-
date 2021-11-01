@@ -1,5 +1,12 @@
 import { postPatient, postDoctor } from "../../actions";
 
+export const handleSelectProfesional = (event, input, setInput) => {
+  setInput({
+    ...input,
+    specialities: [event.target.value],
+  });
+};
+
 export const handleSubmitProfesional = (
   event,
   state,
@@ -18,22 +25,23 @@ export const handleSubmitProfesional = (
     showConf: false,
     dni: "",
     address: "",
-    speciality: "",
+    specialities: [],
     signature: "",
     enrollment: "",
   });
   dispatch(postDoctor(state));
+  console.log(state);
   alert("Usuario registrado exitosamente");
   history.push("/login");
 };
 
 export const handleChange = (prop, state, set) => (event) => {
-    set({ ...state, [prop]: event.target.value})
-    console.log(state);
-}
+  set({ ...state, [prop]: event.target.value });
+  console.log(state);
+};
 export const handleChangeSpecial = (e, state, set) => {
-    set(e.target.value);
-    console.log(state);
+  set(e.target.value);
+  console.log(state);
 };
 
 export const handleClickShowPassword = (state, set) => {
@@ -51,12 +59,11 @@ export const handleClickShowConf = (state, set) => {
 };
 
 export const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-}
+  event.preventDefault();
+};
 
-export const handleSubmit = (e, errors, state, set, dispatch) => {
+export const handleSubmit = (e, errors, state, set, dispatch, history) => {
   e.preventDefault();
-  console.log('este es el estado', state)
   if(errors.name||errors.lastname||errors.email||errors.password||errors.idemPass||errors.dni||errors.address){
     alert('Hay campos sin completar')
   } else {
@@ -71,10 +78,10 @@ export const handleSubmit = (e, errors, state, set, dispatch) => {
         showConf: false,
         dni: "",
         address: "",
-        // os: "",
+        healthInsuranceId: "",
         // plan: "",
         num_member: "",
       });
+      history.push('/login')
   }
 }
-
