@@ -1,16 +1,19 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { getSpecialities } from "../../actions/index";
 import {
   FormControl,
   Input,
   InputLabel,
   TextField,
+  MenuItem,
   Typography,
   Button,
   Grid,
   IconButton,
   InputAdornment,
+  NativeSelect,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Visibility from "@mui/icons-material/Visibility";
@@ -20,6 +23,7 @@ import {
   handleClickShowConf,
   handleMouseDownPassword,
   handleSubmitProfesional,
+  handleSelectProfesional,
 } from "../Controlers/Controlers";
 import Signature from "./Signature/Signature";
 import useStyles from "./styles";
@@ -54,7 +58,7 @@ const FormProfesionalCreate = () => {
     showConf: false,
     dni: "",
     address: "",
-    speciality: "",
+    specialities: [],
     signature: "",
     enrollment: "",
   });
@@ -72,28 +76,17 @@ const FormProfesionalCreate = () => {
       [event.target.name]: event.target.value,
     });
   };
-  //-----------------------------------------------------------------------------------------------------------------------
-  const specialties = [
-    {
-      value: "",
-    },
-    {
-      value: "Nutrición",
-    },
-    {
-      value: "Pediatría",
-    },
-    {
-      value: "Traumatologia",
-    },
-    {
-      value: "Psicología",
-    },
-  ];
-
-  const classes = useStyles();
 
   const dispatch = useDispatch();
+
+  let allSpecialities = useSelector((state) => state.allSpecialities);
+  allSpecialities = allSpecialities.allSpecialities;
+
+  useEffect(() => {
+    dispatch(getSpecialities());
+  }, [dispatch]);
+
+  const classes = useStyles();
 
   const history = useHistory();
 
@@ -121,7 +114,6 @@ const FormProfesionalCreate = () => {
               onChange={(e) => handleChange(e, input, setInput)}
               variant="standard"
             />
-
             <MyInput
               id="standard-basic"
               label="Apellido"
@@ -209,19 +201,23 @@ const FormProfesionalCreate = () => {
               id="filled-select-currency-native"
               select
               label="Especialidad"
-              value={input.speciality}
-              name="speciality"
-              onChange={(e) => handleChange(e, input, setInput)}
+              // placeholder="Especialidad"
+              // defaultValue={"Especialidad"}
+              value={input.specialities}
+              name="specialities"
+              onChange={(e) => handleSelectProfesional(e, input, setInput)}
               SelectProps={{
                 native: true,
               }}
               variant="standard"
             >
-              {specialties.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.value}
-                </option>
-              ))}
+              {allSpecialities.map((a) => {
+                return (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                );
+              })}
             </TextField>
 
             <MyInput
