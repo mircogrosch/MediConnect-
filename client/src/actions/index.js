@@ -18,12 +18,23 @@ export const postDoctor = (payload) => {
         payload: response.data,
       });
     } catch (error) {
-      alert(error);
+      alert(error); // CORREGIR! ----> EN EL CASO DE QUE HAYA UN ERROR, EL MENSAJE A MOSTRAR TIENE QUE VENIR DEL BACK
     }
 
   };
 };
-
+export function getSpecialities() {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${URL}/specialities`);
+      return dispatch({
+        type: types.GET_SPECIALITIES,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("Actions - getSpecialities---> ", error);
+    }
+  };
 export const postPatient = (payload) => {
   return async function (dispatch) {
     try {
