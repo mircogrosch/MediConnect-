@@ -2,6 +2,7 @@ import React from "react";
 import SearchBar from '../SearchBar/SearchBar'
 import FiltroSelect from '../FiltroSelect/FiltroSelect'
 import Card from "../Card/Card";
+import AddProfesionals from "../Card/AddProfesionals";
 import { Grid } from "@mui/material";
 import SimpleAppBar from "../AppBar/SimpleAppBar";
 import { styled } from "@mui/material/styles";
@@ -23,8 +24,8 @@ const MisProfesionales = () => {
                 <SearchBar/>
             </MyGrid>
             <Box sx={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-                <Box>
-                    <Card/>
+                <Box sx={{display:'flex', alignItems:'center'}}>
+                    <AddProfesionals/>
                     <Card/>
                 </Box>
                 <Box>
