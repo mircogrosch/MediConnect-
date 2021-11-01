@@ -215,6 +215,21 @@ const addDoctor = async (req, res) => {
   });
 };
 
+const deleteDoctor = async (req, res) => {
+  const { id } = req.params; // id de Paciente
+  const { id_Doctor } = req.body; // id de Doctor
+  let patient = await Patient.findOne({
+    where: {
+      id: id,
+    },
+  });
+  await patient.removeDoctor([id_Doctor]);
+  res.json({
+    data: patient,
+    message: "Doctor borrado de la lista de doctores de paciente",
+  });
+};
+
 module.exports = {
   getDoctor,
   getDoctors,
@@ -222,4 +237,5 @@ module.exports = {
   getPatients,
   createPatient,
   addDoctor,
+  deleteDoctor,
 };
