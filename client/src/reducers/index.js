@@ -1,8 +1,7 @@
 import { combineReducers } from 'redux'
+import notification from './notification.js'
 //import reducers here
-const initialState = { 
-       
-} 
-export default combineReducers({ 
-    //add reducers here
+export default combineReducers({
+     //add reducers here
+     notification
 })
