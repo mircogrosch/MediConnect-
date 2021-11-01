@@ -1,4 +1,5 @@
 const { Person, Doctor, Patient } = require("../db");
+const { Op } = require("sequelize");
 
 const createDoctor = async (req, res) => {
   const {
@@ -129,13 +130,28 @@ const getPatient = async (req, res) => {
         id: id,
       },
     });
-    let patients = await doctor.getPatients({
+    let patients = await doctor
+      .getPatients({
+        attributes: ["personDni"],
+      })
+      .then((element) => element.map((item) => item.personDni));
+    let persons = await Person.findAll({
       where: {
-        name: name,
+        [Op.and]: [
+          {
+            name: {
+              [Op.like]: `%${name}%`,
+            },
+          },
+          {
+            dni: {
+              [Op.in]: patients,
+            },
+          },
+        ],
       },
     });
-    console.log(doctor.dataValues);
-    res.json({ data: doctor, message: "Doctor por query de la BD" });
+    res.json({ data: persons, message: "Lista de Pacientes de un Doctor" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
