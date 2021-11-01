@@ -37,7 +37,7 @@ const no_existen_Especialidades = async () => {
 };
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(async () => {
+conn.sync({ force: false }).then(async () => {
   if (await no_existen_Especialidades()) {
     const obras_sociales = excel_to_json(
       `${__dirname}/src/obras_sociales.xlsx`
