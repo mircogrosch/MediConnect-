@@ -17,6 +17,7 @@ const createPatient = async (req, res) => {
     email,
     password,
     num_member,
+    healthInsuranceId
   } = req.body;
   const rol = "Patient";
   try {
@@ -53,6 +54,7 @@ const createPatient = async (req, res) => {
       }
     );
     newPatient.setPerson(dni);
+    newPatient.setHealthInsurance(healthInsuranceId);
     res.json({ data: [newPerson, newPatient], message: "Patient created" });
   } catch (error) {
     console.log(error);

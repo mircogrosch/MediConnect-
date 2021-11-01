@@ -54,9 +54,8 @@ export const handleMouseDownPassword = (event) => {
     event.preventDefault();
 }
 
-export const handleSubmit = (e, errors, state, set, dispatch) => {
+export const handleSubmit = (e, errors, state, set, dispatch, history) => {
   e.preventDefault();
-  console.log('este es el estado', state)
   if(errors.name||errors.lastname||errors.email||errors.password||errors.idemPass||errors.dni||errors.address){
     alert('Hay campos sin completar')
   } else {
@@ -71,10 +70,10 @@ export const handleSubmit = (e, errors, state, set, dispatch) => {
         showConf: false,
         dni: "",
         address: "",
-        // os: "",
+        healthInsuranceId: "",
         // plan: "",
         num_member: "",
       });
+      history.push('/login')
   }
 }
-
