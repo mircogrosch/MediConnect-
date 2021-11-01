@@ -60,9 +60,8 @@ const Card = () => {
             </MyBox2>
             <MyBox3>
                 <Box sx={{marginBottom: '10px'}}>
-                    <Typography variant='body'><b>Fecha:</b> dd/mm/aaaa</Typography>
+                    <Typography variant='body'><b>Especialidad:</b> xxxxxxxxx</Typography>
                 </Box>
-                <Typography variant='body'><b>Tipo:</b> TipoDeConsulta</Typography>
             </MyBox3>
         </MyBox>
     )
