@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const routes = require("./routes/index.js");
@@ -8,7 +9,7 @@ const doctorRouter = require("./routes/doctor");
 let { Person, Patient, Doctor } = require("./db");
 let passport = require("passport");
 let Strategy = require("passport-local").Strategy;
-const bcrypt = require("bcrypt");
+const bcryptjs = require("bcryptjs");
 const specialitiesRouter = require("./routes/specialities");
 const healthinsuranceRouter = require("./routes/healthinsurance");
 
@@ -16,7 +17,7 @@ require("./db.js");
 
 //Para poder comparar con la password encrypt
 function comparePassword(password, passwordDB) {
-  return bcrypt.compareSync(password, passwordDB);
+  return bcryptjs.compareSync(password, passwordDB);
 }
 
 //Configuración de estrategia local
@@ -34,24 +35,24 @@ passport.use(
           },
         });
 
+        console.log("USUARIO", user);
+        user = user.dataValues;
         if (user !== null) {
-          //Si existe usera con ese email
+          //Si existe user con ese email
 
           if (comparePassword(password, user.password)) {
             //Si coincide password ingresada con la registrada del usuario
             //Para traer el perfil de DOCTOR
+            let DNI = user.dni;
             if (user.rol === "Doctor") {
               try {
                 let doctor = await Doctor.findOne({
                   where: {
-                    personDni: user.dni,
+                    personDni: DNI,
                   },
                 });
                 user = { ...user, doctor };
-                user = {
-                  user: user.dataValues,
-                  doctor: user.doctor,
-                };
+                user.doctor = user.doctor.dataValues;
               } catch (e) {
                 console.log("Error al traer al doctor: ", e);
               }
@@ -60,14 +61,11 @@ passport.use(
               try {
                 let patient = await Patient.findOne({
                   where: {
-                    personDni: user.dni,
+                    personDni: DNI,
                   },
                 });
                 user = { ...user, patient };
-                user = {
-                  user: user.dataValues,
-                  patient: user.patient,
-                };
+                user.patient = user.patient.dataValues;
               } catch (e) {
                 console.log("Error al traer al paciente: ", e);
               }
@@ -76,16 +74,18 @@ passport.use(
             //   data: user,
             //   message: "Logged user",
             // });
-            done(null, user);
+            return done(null, user);
           } else {
             //Se encontro usera, pero password es incorrecta
             // res.status(200).send({ message: "Incorrect password" });
-            done(null, false, { message: "Incorrect password" });
+            return done(null, false, { message: "Incorrect password" });
           }
         } else {
           //No se encontro usera con email ingresado
           // res.status(200).send({ message: "There is no such registered email" });
-          done(null, false, { message: "There is no such registered email" });
+          return done(null, false, {
+            message: "There is no such registered email",
+          });
         }
       } catch (error) {
         // res.status(400).send("Error desde base de datos: ", e);
@@ -96,8 +96,7 @@ passport.use(
 );
 
 passport.serializeUser(function (user, done) {
-  console.log("USER:", user.user);
-  return done(null, user.user.dni);
+  return done(null, user.dni);
 });
 
 passport.deserializeUser(async function (dni, done) {
@@ -116,10 +115,7 @@ passport.deserializeUser(async function (dni, done) {
           },
         });
         user = { ...user, doctor };
-        user = {
-          user: user.dataValues,
-          doctor: user.doctor,
-        };
+        user.doctor = user.doctor.dataValues;
       } catch (e) {
         console.log("Error al traer al doctor: ", e);
       }
@@ -132,10 +128,7 @@ passport.deserializeUser(async function (dni, done) {
           },
         });
         user = { ...user, patient };
-        user = {
-          user: user.dataValues,
-          patient: user.patient,
-        };
+        user.patient = user.patient.dataValues;
       } catch (e) {
         console.log("Error al traer al paciente: ", e);
       }
@@ -154,8 +147,26 @@ server.name = "API";
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
-server.use(cookieParser());
+server.use(cookieParser("secret"));
 server.use(morgan("dev"));
+server.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// Inicializa Passport y recupera el estado de autenticación de la sesión.
+server.use(passport.initialize());
+server.use(passport.session());
+// Middleware para mostrar la sesión actual en cada request
+server.use((req, res, next) => {
+  console.log(req.session);
+  console.log(req.user);
+  next();
+});
+
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Credentials", "true");
@@ -166,34 +177,27 @@ server.use((req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
   next();
 });
-server.set("views", __dirname + "/views");
-server.set("view engine", "ejs");
-server.use(
-  require("express-session")({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-// Inicializa Passport y recupera el estado de autenticación de la sesión.
-server.use(passport.initialize());
-server.use(passport.session());
-
-// Middleware para mostrar la sesión actual en cada request
-server.use((req, res, next) => {
-  console.log(req.user);
-  next();
-});
-
 // Routes
 
+// server.get("/login", (req, res) => {
+//   console.log("Soy home!", req.user);
+// });
+// server.get("/login/fail", (req, res) => {
+//   console.log("Soy login!", req.user);
+// });
+// server.post(
+//   "/login",
+//   passport.authenticate("local", {
+//     successRedirect: "/login",
+//     failureRedirect: "/login/fail",
+//   })
+// );
 server.use("/", routes);
 server.use("/login", loginRouter);
 server.use("/patient", patientRouter);
 server.use("/doctor", doctorRouter);
 server.use("/specialities", specialitiesRouter);
 server.use("/healthinsurance", healthinsuranceRouter);
-
 // Error catching endware.
 server.use((err, req, res, next) => {
   // eslint-disable-line no-unused-vars

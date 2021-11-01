@@ -2,19 +2,18 @@ const { Router } = require("express");
 const router = Router();
 const passport = require("passport");
 
-router.get("/register", (req, res) => {
-  console.log('llegooo----',res)
-  res.send(res.user);
+router.post("/", (req, res) => {
+  console.log("soy Home!", req.user);
 });
 
 router.get("/fail", (req, res) => {
-  res.redirect("/login");
+  console.log("Soy login!", req.user);
 });
 
 router.post(
   "/",
   passport.authenticate("local", {
-    successRedirect: "/login/register",
+    successRedirect: "/login",
     failureRedirect: "/login/fail",
   })
 );
