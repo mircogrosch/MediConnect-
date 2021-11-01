@@ -1,4 +1,5 @@
 const { Person, Patient, Doctor } = require("../db");
+const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
 
 //Encriptar password
@@ -72,8 +73,8 @@ const getPatient = async (req, res) => {
         id: id,
       },
       include: {
-        model: Person
-      }
+        model: Person,
+      },
     });
     let patient_person = {};
     for (let key in patient.dataValues) {
@@ -118,6 +119,46 @@ const getPatients = async (req, res) => {
       patients.push(aux);
     });
     res.json({ data: patients, message: "Pacientes de la BD" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
+const getDoctor = async (req, res) => {
+  const { name, id } = req.query;
+  try {
+    const patient = await Patient.findOne({
+      where: {
+        id: id,
+      },
+    });
+    console.log(patient);
+    let doctors = await patient
+      .getDoctors({
+        attributes: ["personDni"],
+      })
+      .then((element) => element.map((item) => item.personDni));
+    let persons = await Person.findAll({
+      where: {
+        [Op.and]: [
+          {
+            name: {
+              [Op.like]: `%${name}%`,
+            },
+          },
+          {
+            dni: {
+              [Op.in]: doctors,
+            },
+          },
+        ],
+      },
+    });
+    res.json({ data: persons, message: "Lista de Doctores de un Paciente" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -177,6 +218,7 @@ const addDoctor = async (req, res) => {
 };
 
 module.exports = {
+  getDoctor,
   getDoctors,
   getPatient,
   getPatients,

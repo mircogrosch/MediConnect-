@@ -1,4 +1,5 @@
-const { Person, Doctor, Patient } = require("../db");
+const { Person, Doctor, Patient, Speciality } = require("../db");
+const { Op } = require("sequelize");
 
 const createDoctor = async (req, res) => {
   const {
@@ -11,6 +12,7 @@ const createDoctor = async (req, res) => {
     password,
     enrollment,
     location,
+    specialities, // tiene que ser un arreglo de id de specialties o un arreglo vacio
   } = req.body;
   const rol = "Doctor";
   try {
@@ -47,7 +49,10 @@ const createDoctor = async (req, res) => {
         fields: ["enrollment", "location"],
       }
     );
-    newDoctor.setPerson(dni);
+    await newDoctor.setPerson(dni);
+    if (specialities.length != 0) {
+      await newDoctor.addSpecialities(specialities);
+    }
     res.json({ data: [newPerson, newDoctor], message: "Doctor created" });
   } catch (error) {
     console.log(error);
@@ -59,12 +64,36 @@ const createDoctor = async (req, res) => {
 };
 
 const getDoctors = async (req, res) => {
+  let { name } = req.query;
   try {
-    let doctorsDB = await Doctor.findAll({
-      include: {
-        model: Person,
-      },
-    });
+    let doctorsDB;
+    if (typeof name != "undefined") {
+      name = name.toUpperCase();
+      doctorsDB = await Doctor.findAll({
+        include: [
+          {
+            model: Person,
+          },
+          {
+            model: Speciality,
+            where: {
+              name: { [Op.like]: `%${name}%` },
+            },
+          },
+        ],
+      });
+    } else {
+      doctorsDB = await Doctor.findAll({
+        include: [
+          {
+            model: Person,
+          },
+          {
+            model: Speciality,
+          },
+        ],
+      });
+    }
 
     let doctors = [];
     doctorsDB.forEach((doctor) => {
@@ -129,13 +158,28 @@ const getPatient = async (req, res) => {
         id: id,
       },
     });
-    let patients = await doctor.getPatients({
+    let patients = await doctor
+      .getPatients({
+        attributes: ["personDni"],
+      })
+      .then((element) => element.map((item) => item.personDni));
+    let persons = await Person.findAll({
       where: {
-        name: name,
+        [Op.and]: [
+          {
+            name: {
+              [Op.like]: `%${name}%`,
+            },
+          },
+          {
+            dni: {
+              [Op.in]: patients,
+            },
+          },
+        ],
       },
     });
-    console.log(doctor.dataValues);
-    res.json({ data: doctor, message: "Doctor por query de la BD" });
+    res.json({ data: persons, message: "Lista de Pacientes de un Doctor" });
   } catch (error) {
     console.log(error);
     res.status(500).json({

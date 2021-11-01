@@ -20,6 +20,7 @@ export const postDoctor = (payload) => {
     } catch (error) {
       alert(error);
     }
+
   };
 };
 
