@@ -1,4 +1,4 @@
-import { postDoctor } from "../../actions/index";
+import { postPatient, postDoctor } from "../../actions";
 
 export const handleSelectProfesional = (event, input, setInput) => {
   setInput({
@@ -62,21 +62,26 @@ export const handleMouseDownPassword = (event) => {
   event.preventDefault();
 };
 
-export const handleSubmit = (e, state, set) => {
+export const handleSubmit = (e, errors, state, set, dispatch, history) => {
   e.preventDefault();
-  console.log("este es el estado", state);
-  set({
-    name: "",
-    lastname: "",
-    email: "",
-    password: "",
-    confirmPass: "",
-    showPassword: false,
-    showConf: false,
-    dni: "",
-    address: "",
-    os: "",
-    plan: "",
-    numSoc: "",
-  });
-};
+  if(errors.name||errors.lastname||errors.email||errors.password||errors.idemPass||errors.dni||errors.address){
+    alert('Hay campos sin completar')
+  } else {
+      dispatch(postPatient(state))
+      set({
+        name: "",
+        lastname: "",
+        email: "",
+        password: "",
+        confirmPass: "",
+        showPassword: false,
+        showConf: false,
+        dni: "",
+        address: "",
+        healthInsuranceId: "",
+        // plan: "",
+        num_member: "",
+      });
+      history.push('/login')
+  }
+}
