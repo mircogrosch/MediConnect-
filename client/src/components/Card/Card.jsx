@@ -9,12 +9,15 @@ const MyIcon = styled(Icon)({
 
 const MyType = styled(Typography)({
     display: 'inline',
+    h4:{
+        fontSize: '10px'
+    }
 })
 
 const MyBox = styled(Box)({
     display: 'inline-flex',
     flexDirection: 'column',
-    width: '500px',
+    width: '450px',
     height: '180px',
     margin: '30px',
     borderRadius: '10px',
