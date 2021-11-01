@@ -31,12 +31,23 @@ async function addSpeciality(datos) {
   });
 }
 
+const no_existen_Especialidades = async () => {
+  const especialidades = await Speciality.findAll();
+  return especialidades.length === 0 ? true : false;
+};
+
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
-  const obras_sociales = excel_to_json(`${__dirname}/src/obras_sociales.xlsx`);
-  const especialidades = excel_to_json(`${__dirname}/src/especialidades.xlsx`);
-  addHealthInsurance(obras_sociales);
-  addSpeciality(especialidades);
+conn.sync({ force: true }).then(async () => {
+  if (await no_existen_Especialidades()) {
+    const obras_sociales = excel_to_json(
+      `${__dirname}/src/obras_sociales.xlsx`
+    );
+    const especialidades = excel_to_json(
+      `${__dirname}/src/especialidades.xlsx`
+    );
+    addHealthInsurance(obras_sociales);
+    addSpeciality(especialidades);
+  }
   server.listen(3001, () => {
     console.log("%s listening at 3001"); // view on console
   });
