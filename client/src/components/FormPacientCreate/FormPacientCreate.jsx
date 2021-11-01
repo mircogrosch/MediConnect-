@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { FormControl, 
     Input, 
     InputLabel, 
@@ -17,7 +17,9 @@ import {handleChange,
     handleMouseDownPassword,
     handleSubmit} from '../Controlers/Controlers'
 import SimpleAppBar from "../AppBar/SimpleAppBar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getHealthInsurances } from "../../actions";
+import {useHistory} from 'react-router-dom'
 
 const MyButton = styled(Button)({
     width: '500px',
@@ -37,7 +39,12 @@ const MyTitle = styled(Typography)({
 
 const FormPacientCreate = () =>{
     let errors = {}
+    const history = useHistory()
     const dispatch = useDispatch()
+    const healthInsurances = useSelector((state => state.healthInsurances))
+    useEffect(() => {
+        dispatch(getHealthInsurances())
+    },[])
     
     const [values, setValues] = useState({
         name: "",
@@ -49,7 +56,7 @@ const FormPacientCreate = () =>{
         showConf: false,
         dni: "",
         address: "",
-        // os: "",
+        healthInsuranceId: "",
         // plan: "",
         num_member: "",
     });
@@ -148,12 +155,25 @@ const FormPacientCreate = () =>{
                         variant="standard"
                         value={values.address}
                         onChange={handleChange('address', values, setValues)}/>
-                        {/* <MyInput 
-                        id="standard-basic" 
-                        label="Obra social:" 
-                        variant="standard"
-                        value={values.os}
-                        onChange={handleChange('os', values, setValues)}/> 
+                        <MyInput
+                            id="filled-select-currency-native"
+                            select
+                            label="Obra social"
+                            value={values.healthInsurancesId}
+                            name="healthInsuranceId"
+                            onChange={handleChange('healthInsuranceId', values, setValues)}
+                            SelectProps={{
+                                native: true,
+                            }}
+                            variant="standard"
+                            >
+                            { healthInsurances.names && healthInsurances.names.map((option) => {return(
+                                <option key={option.id} value={option.id}>
+                                {option.name}
+                                </option>
+                            )})}
+                        </MyInput>
+                        {/*
                         <MyInput 
                         id="standard-basic" 
                         label="Plan:"
@@ -170,7 +190,7 @@ const FormPacientCreate = () =>{
             </Grid>
                 <MyButton 
                 variant='contained' 
-                onClick={(e) => handleSubmit(e, errors, values, setValues, dispatch, )}
+                onClick={(e) => handleSubmit(e, errors, values, setValues, dispatch, history)}
                 >Registrar</MyButton>
         </Grid> 
         </>
