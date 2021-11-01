@@ -8,7 +8,6 @@ export const getUser = (user) => {
     dispatch({ type: types.GET_USER_LOGIN, payload: response.data });
   };
 };
-
 export const postDoctor = (payload) => {
   return async function (dispatch) {
     try {
@@ -20,7 +19,6 @@ export const postDoctor = (payload) => {
     } catch (error) {
       alert(error); // CORREGIR! ----> EN EL CASO DE QUE HAYA UN ERROR, EL MENSAJE A MOSTRAR TIENE QUE VENIR DEL BACK
     }
-
   };
 };
 export function getSpecialities() {
@@ -35,12 +33,13 @@ export function getSpecialities() {
       console.log("Actions - getSpecialities---> ", error);
     }
   };
+}
 export const postPatient = (payload) => {
   return async function (dispatch) {
     try {
       await axios.post(`${URL}/patient`, payload);
-      console.log(payload)
-      alert('Se creo el paciente exitosamente')
+      console.log(payload);
+      alert("Se creo el paciente exitosamente");
       return dispatch({
         type: types.POST_PATIENT,
         payload,
@@ -51,16 +50,16 @@ export const postPatient = (payload) => {
   };
 };
 
-export const getHealthInsurances= () => {
-  return async function(dispatch) {
+export const getHealthInsurances = () => {
+  return async function (dispatch) {
     try {
-      let healthInsurances = await axios.get(`${URL}/healthinsurance`)
+      let healthInsurances = await axios.get(`${URL}/healthinsurance`);
       return dispatch({
         type: types.GET_HEALTHINSURANCES,
-        payload: healthInsurances.data
-      })
-    } catch(error){
-      alert(error)
+        payload: healthInsurances.data,
+      });
+    } catch (error) {
+      alert(error);
     }
-  }
-}
+  };
+};
