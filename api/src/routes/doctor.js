@@ -1,13 +1,19 @@
 const { Router } = require("express");
 const router = Router();
-const { createDoctor, getDoctor, getDoctors, getPatient, getPatients} = require("../controllers/doctor.controllers");
-
+const {
+  createDoctor,
+  getDoctor,
+  getDoctors,
+  getPatient,
+  getPatients,
+} = require("../controllers/doctor.controllers");
 
 router.route("/").get(getDoctors);
 
 router.route("/").post(createDoctor);
 
 /*
+Para traer todos los Pacientes del Doctor, dado el nombre del Paciente
 Se envia el nombre del paciente y el id del Doctor mediante query
 ej: localhost:3001/doctor/patient?name=Robert&id=id_doctor
 */
@@ -16,6 +22,7 @@ router.route("/patient").get(getPatient);
 /*
 Para traer todos los Pacientes de la lista de Pacientes de un Doctor
 Se envia por params el id del Doctor
+ej: localhost:3001/doctor/patients/id_doctor
 */
 router.route("/patients/:id").get(getPatients);
 
