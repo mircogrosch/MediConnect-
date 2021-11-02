@@ -28,6 +28,8 @@ import {
 import { getUser } from "../../actions/index.js";
 import { useHistory } from "react-router-dom";
 import { validateUser } from "../Controlers/Controlers";
+import SimpleAppBar from "../AppBar/SimpleAppBar";
+
 const Login = () => {
   //Local states
   const [input, setInput] = useState({ email: "", password: "" });
@@ -47,11 +49,7 @@ const Login = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar sx={{ bgcolor: "transparent" }} elevation={0}>
-        <Toolbar>
-          <img src={LogoMediConnect} alt="logo" width="200" />
-        </Toolbar>
-      </AppBar>
+      <SimpleAppBar />
       <Grid
         container
         spacing={0}

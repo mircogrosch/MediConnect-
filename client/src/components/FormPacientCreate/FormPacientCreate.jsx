@@ -1,200 +1,229 @@
-import React, {useEffect, useState} from "react";
-import { FormControl, 
-    Input, 
-    InputLabel, 
-    TextField, 
-    Typography, 
-    Button, 
-    Grid,
-    IconButton,
-    InputAdornment } from '@mui/material';
-import { styled } from "@mui/material/styles";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import {handleChange, 
-    handleClickShowPassword, 
-    handleClickShowConf, 
-    handleMouseDownPassword,
-    handleSubmit} from '../Controlers/Controlers'
-import SimpleAppBar from "../AppBar/SimpleAppBar";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getHealthInsurances } from "../../actions";
-import {useHistory} from 'react-router-dom'
+import { useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { getHealthInsurances, postPatient } from "../../actions";
+import { useStyles } from "../../styles/registerForms/patient.js";
+import { teal } from "@mui/material/colors";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  FormControl,
+  Input,
+  InputLabel,
+  TextField,
+  Typography,
+  Button,
+  Grid,
+  IconButton,
+} from "@mui/material";
+import swal from "sweetalert";
+import SimpleAppBar from "../AppBar/SimpleAppBar";
 
-const MyButton = styled(Button)({
-    width: '500px',
-    margin: '20px',
-    fontSize: '20px',
-    fontWeight: '200',
-    padding: '0px'
-})  
-const MyInput = styled(TextField)({
-    borderBottomColor: 'green',
-    width: '500px'
-})
-const MyTitle = styled(Typography)({
-    marginTop: '20px',
-    color: '#878787'
-})
+const FormPacientCreate = () => {
+  const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
 
-const FormPacientCreate = () =>{
-    let errors = {}
-    const history = useHistory()
-    const dispatch = useDispatch()
-    const healthInsurances = useSelector((state => state.healthInsurances))
-    useEffect(() => {
-        dispatch(getHealthInsurances())
-    },[])
-    
-    const [values, setValues] = useState({
-        name: "",
-        lastname: "",
-        email: "",
-        password: "",
-        confirmPass: "",
-        showPassword: false,
-        showConf: false,
-        dni: "",
-        address: "",
-        healthInsuranceId: "",
-        // plan: "",
-        num_member: "",
+  const healthInsurances = useSelector((state) => state.healthInsurances);
+
+  const [equal, setEqual] = useState(true);
+  const [visibled, setVisibled] = useState({
+    password: false,
+    idemPassword: false,
+  });
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
+
+  useEffect(() => {
+    dispatch(getHealthInsurances());
+  }, []);
+
+  const onSubmit = (data) => {
+    setEqual(true);
+    if (data.password !== data.idem_password) return setEqual(false);
+
+    dispatch(postPatient(data));
+
+    swal({
+      title: `El registro fue exitoso`,
+      // dangerMode: false,
+      // icon: "error",
+      button: "Continuar",
     });
-    // if(!values.name) {errors.name = 'Se requiere un Nombre'};
-    // if(!values.lastname) {errors.lastname = 'Se requiere un Apellido'};
-    // if(!values.email) {errors.email = 'Se requiere un Email'};
-    // if(!values.password) {errors.password = 'Se requiere contraseña'};
-    if(values.password !== values.confirmPass) {errors.idemPass = 'Contraseña distinta'};
-    // if(!values.dni) {errors.dni = 'Se requiere un DNI'};
-    // if(!values.address) {errors.address = 'Se requiere una Direccion'};
 
-    return(
-        <>
-        <SimpleAppBar/>
-        <Grid
+    setTimeout(() => {
+      history.push("/login");
+    }, 2000);
+  };
+
+  return (
+    <>
+      <SimpleAppBar background={teal[900]} />
+      <Grid
         container
-        spacing={0}
         direction="column"
         alignItems="center"
-        justify="center"
-        style={{ minHeight: '100vh' }}
-        >
-            <Grid item xs={3}>
-            <MyTitle variant='h4' align='center'>Ingresa tus datos</MyTitle>
-                <FormControl>
-                        <MyInput 
-                        error={errors.name ? true : false}
-                        id="standard-basic" 
-                        label="Nombre:" 
-                        variant="standard" 
-                        value={values.name}
-                        onChange={handleChange('name', values, setValues)}/>
-                        <MyInput 
-                        error={errors.lastname ? true : false}
-                        id="standard-basic" 
-                        label="Apellido:" 
-                        variant="standard"
-                        value={values.lastname}
-                        onChange={handleChange('lastname', values, setValues)}/>
-                        <MyInput 
-                        error={errors.email ? true : false}
-                        id="standard-basic" 
-                        label="Email:" 
-                        variant="standard"
-                        value={values.email}
-                        onChange={handleChange("email", values, setValues)}/> 
-                        <FormControl variant='standard'>
-                            <InputLabel htmlFor='standar-adornment-password'>Contraseña</InputLabel>
-                            <Input 
-                            error={errors.password ? true : false}
-                            id='standar-adornment-password'
-                            type={values.showPassword ? 'text' : 'password'}
-                            value={values.password}
-                            onChange={handleChange('password', values, setValues)}
-                            endAdornment={
-                                <InputAdornment position='end'>
-                                <IconButton
-                                aria-label='toggle password visibility'
-                                onClick={() => handleClickShowPassword(values, setValues)}
-                                onMouseDown={(e) => handleMouseDownPassword(e)}>
-                                    {values.showPassword ? <VisibilityOff/> : <Visibility/>}
-                                </IconButton>
-                            </InputAdornment>
-                            }/>
-                        </FormControl>
-                        <FormControl variant='standard'>
-                            <InputLabel htmlFor='standar-adornment-password'>Confirme contraseña</InputLabel>
-                            <Input
-                            error={errors.idemPass ? true : false}
-                            id='standar-adornment-password'
-                            type={values.showConf ? 'text' : 'password'}
-                            value={values.confirmPass}
-                            onChange={handleChange('confirmPass', values, setValues)}
-                            endAdornment={
-                                <InputAdornment position='end'>
-                                    <IconButton
-                                    aria-label='toggle password visibility'
-                                    onClick={() => handleClickShowConf(values, setValues)}
-                                    onMouseDown={(e) => handleMouseDownPassword(e)}>
-                                        {values.showConf ? <VisibilityOff/> : <Visibility/>}
-                                    </IconButton>
-                                </InputAdornment>
-                            }/>
-                        </FormControl>
-                        <MyInput 
-                        error={errors.dni ? true : false}
-                        id="standard-basic" 
-                        label="DNI:" 
-                        variant="standard" 
-                        value={values.dni}
-                        onChange={handleChange("dni", values, setValues)}/>
-                        <MyInput 
-                        error={errors.address ? true : false}
-                        id="standard-basic" 
-                        label="Ubicacion:" 
-                        variant="standard"
-                        value={values.address}
-                        onChange={handleChange('address', values, setValues)}/>
-                        <MyInput
-                            id="filled-select-currency-native"
-                            select
-                            label="Obra social"
-                            value={values.healthInsurancesId}
-                            name="healthInsuranceId"
-                            onChange={handleChange('healthInsuranceId', values, setValues)}
-                            SelectProps={{
-                                native: true,
-                            }}
-                            variant="standard"
-                            ><option selected disabled>Obra Social</option>
-                            { healthInsurances.names && healthInsurances.names.map((option) => {return(
-                                <option key={option.id} value={option.id}>
-                                {option.name}
-                                </option>
-                            )})}
-                        </MyInput>
-                        {/*
-                        <MyInput 
-                        id="standard-basic" 
-                        label="Plan:"
-                        variant="standard"
-                        value={values.plan}
-                        onChange={handleChange('plan', values, setValues)}/> */}
-                        <MyInput 
-                        id="standard-basic" 
-                        label="N° socio:" 
-                        variant="standard"
-                        value={values.num_member}
-                        onChange={handleChange('num_member', values, setValues)}/>  
-                </FormControl>   
-            </Grid>
-                <MyButton 
-                variant='contained' 
-                onClick={(e) => handleSubmit(e, errors, values, setValues, dispatch, history)}
-                >Registrar</MyButton>
-        </Grid> 
-        </>
-    )
-}
+        justifyContent="center"
+        sx={{ height: "100vh" }}
+      >
+        <Grid item xs={3}>
+          <Typography variant="h4" className={classes.title}>
+            Ingresa tus datos
+          </Typography>
+          <FormControl>
+            <TextField
+              variant="standard"
+              label="Nombre"
+              type="text"
+              error={errors.name ? true : false}
+              {...register("name", { required: true, maxLength: 30 })}
+            />
+            <TextField
+              variant="standard"
+              label="Apellido"
+              type="text"
+              className={classes.input}
+              error={errors.lastname ? true : false}
+              {...register("lastname", { required: true, maxLength: 30 })}
+            />
+            <TextField
+              variant="standard"
+              label="Email"
+              type="email"
+              className={classes.input}
+              error={errors.email ? true : false}
+              {...register("email", { required: true })}
+            />
+            <FormControl variant="standard">
+              <InputLabel>Contraseña</InputLabel>
+              <Input
+                variant="standard"
+                className={classes.input}
+                type={visibled.password ? "text" : "password"}
+                error={errors.password ? true : false}
+                onChange={() => setEqual(true)}
+                {...register("password", { required: true, maxLength: 30 })}
+                endAdornment={
+                  <IconButton
+                    onClick={() =>
+                      setVisibled({
+                        ...visibled,
+                        password: !visibled.password,
+                      })
+                    }
+                  >
+                    {visibled.password ? (
+                      <Visibility sx={{ color: teal[900] }} />
+                    ) : (
+                      <VisibilityOff />
+                    )}
+                  </IconButton>
+                }
+              />
+            </FormControl>
+            <FormControl variant="standard">
+              <InputLabel>Confirmar Contraseña</InputLabel>
+              <Input
+                variant="standard"
+                className={classes.input}
+                type={visibled.idemPassword ? "text" : "password"}
+                error={errors.idem_password ? true : false}
+                onChange={() => setEqual(true)}
+                {...register("idem_password", {
+                  required: true,
+                  maxLength: 30,
+                })}
+                endAdornment={
+                  <IconButton
+                    onClick={() =>
+                      setVisibled({
+                        ...visibled,
+                        idemPassword: !visibled.idemPassword,
+                      })
+                    }
+                  >
+                    {visibled.idemPassword ? (
+                      <Visibility sx={{ color: teal[900] }} />
+                    ) : (
+                      <VisibilityOff />
+                    )}
+                  </IconButton>
+                }
+              />
 
-export default FormPacientCreate
+              {!equal && (
+                <Typography
+                  variant="body1"
+                  align="right"
+                  fontSize={12}
+                  fontWeight="bold"
+                  color="red"
+                >
+                  Las contraseñas no coinciden
+                </Typography>
+              )}
+            </FormControl>
+            <TextField
+              variant="standard"
+              label="DNI"
+              type="number"
+              className={classes.input}
+              error={errors.dni ? true : false}
+              {...register("dni", { required: true })}
+            />
+            <TextField
+              variant="standard"
+              label="Ubicacion"
+              type="text"
+              className={classes.input}
+              error={errors.location ? true : false}
+              {...register("location", { required: true })}
+            />
+            <TextField
+              select
+              label="Obra social"
+              SelectProps={{
+                native: true,
+              }}
+              variant="standard"
+              error={errors.obra_social ? true : false}
+              {...register("obra_social")}
+            >
+              <option disabled>Obra Social</option>
+              {healthInsurances.names &&
+                healthInsurances.names.map((option) => {
+                  return (
+                    <option key={option.id} value={option.id}>
+                      {option.name}
+                    </option>
+                  );
+                })}
+            </TextField>
+            <TextField
+              variant="standard"
+              label="N° socio"
+              type="number"
+              className={classes.input}
+              {...register("n_socio", { required: true })}
+              error={errors.n_socio ? true : false}
+            />
+          </FormControl>
+        </Grid>
+        <Button
+          variant="contained"
+          className={classes.button}
+          sx={{ marginTop: "1em", fontWeight: "normal", background: teal[800] }}
+          onClick={handleSubmit(onSubmit)}
+        >
+          Registrar
+        </Button>
+      </Grid>
+    </>
+  );
+};
+
+export default FormPacientCreate;
