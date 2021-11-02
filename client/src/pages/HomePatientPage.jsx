@@ -1,5 +1,5 @@
 import React from "react";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 import { useStyles } from "../styles/home";
 import { Box, Grid } from "@mui/material";
 import { teal } from "@mui/material/colors";
@@ -35,18 +35,23 @@ const cardInfo = [
 
 function HomePatientPage() {
   const classes = useStyles();
-  const user = useSelector(state=> state.users.users.user);
+  // const user = useSelector(state=> state.users.users.user);
   return (
     <Box className={classes.root} sx={{ background: teal[50] }}>
       <PrimarySearchAppBar />
       <Box className={classes.container}>
         <Grid container columnSpacing={4} justifyContent="center">
           <Grid item lg={3} md={4} xs={10}>
-            <Perfil name={user.name} lastname={user.lastname} dni={user.dni} address={user.address} />
+            <Perfil
+              name="{user.name}"
+              lastname="{user.lastname}"
+              dni="{user.dni}"
+              address="{user.address}"
+            />
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">
             <ShifsNotificator />
-            <ContainerCards cardInfo={cardInfo} />
+            <ContainerCards />
           </Grid>
         </Grid>
       </Box>
