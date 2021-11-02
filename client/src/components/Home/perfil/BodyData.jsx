@@ -11,14 +11,15 @@ function BodyData(props) {
   const classes = props.classes;
 
   return (
+
     <Box className={classes.cardInfo} sx={{ background: props.bgColor }}>
-      <Typography
+      <Typography 
         variant="h6"
         marginBottom={3}
         className={classes.textName}
         color={props.color || grey[600]}
-      >
-        Juan Carlos Villanueva
+       >
+        {`${props.name} ${props.lastname}`}
       </Typography>
       <Grid container alignItems="center">
         <Grid item xs={2} marginY={1}>
@@ -26,8 +27,7 @@ function BodyData(props) {
         </Grid>
         <Grid item xs={10} marginY={1} textAlign="left">
           <Typography variant="p" color={props.color || grey[700]}>
-            35.123.123
-          </Typography>
+            {props.dni}
         </Grid>
         <Grid item xs={2} marginY={1}>
           <ArrowDropDownCircleOutlined
@@ -44,7 +44,7 @@ function BodyData(props) {
         </Grid>
         <Grid item xs={10} marginY={1} textAlign="left">
           <Typography variant="p" color={props.color || grey[700]}>
-            Trevelin, Chubut
+            {props.address}
           </Typography>
         </Grid>
       </Grid>

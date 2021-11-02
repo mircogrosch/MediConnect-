@@ -6,7 +6,8 @@ import { useStyles } from "../../styles/home/perfil";
 import circleUser from "../../img/user.png";
 import BodyData from "./perfil/BodyData";
 
-function Perfil(props) {
+
+function Perfil({name,lastname,address,dni, color, bgDarkColor}) {
   const classes = useStyles();
 
   return (
@@ -32,8 +33,12 @@ function Perfil(props) {
       <Box>
         <BodyData
           classes={classes}
-          color={props.color}
-          bgColor={props.bgDarkColor || teal[200]}
+          name={name} 
+          lastname={lastname} 
+          address={address} 
+          dni={dni}
+          color={color}
+          bgColor={bgDarkColor || teal[200]}
         />
       </Box>
     </Grid>

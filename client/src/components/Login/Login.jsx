@@ -1,5 +1,5 @@
-import React,{useState} from "react";
-import {useDispatch} from "react-redux"
+import React,{useState,useEffect} from "react";
+import {useDispatch,useSelector} from "react-redux"
 import {
   FormControl,
   TextField,
@@ -22,14 +22,32 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {handleChange,handleClickShowPassword,handleMouseDownPassword} from '../Controlers/Controlers'
 import {getUser} from '../../actions/index.js'
+import { useHistory } from "react-router-dom";
+import { validateUser } from "../Controlers/Controlers";
 const Login = () => {
+
+
 //Local states
 const [input,setInput] = useState({email:"",password:""});
 const [handlePassword,setPassword] = useState({showPassword:false})
 
+
+//Global States
+const userLog = useSelector(state=> state.users.users.user);
+
+
+
 //Hooks
   const classes = useStyles();
   const dispatch= useDispatch();
+  const history = useHistory()
+
+
+  useEffect(()=>{
+    userLog && validateUser(userLog,history)
+  },[userLog])
+
+
   return (
     <div className={classes.root}>
       <AppBar sx={{bgcolor:"transparent"}} elevation={0} > 
@@ -96,7 +114,7 @@ const [handlePassword,setPassword] = useState({showPassword:false})
               onChange={handleChange("password",input,setInput)}
             />
           </Box>
-          <Box sx={{display:"flex", justifyContent:"space-between",alignItems:"center"}}> 
+          {/* <Box sx={{display:"flex", justifyContent:"space-between",alignItems:"center"}}> 
           <FormControlLabel  control={<Checkbox defaultChecked />} label={
           <Typography variant="p" color={theme.palette.primary.dark}> 
               Recordame
@@ -104,7 +122,7 @@ const [handlePassword,setPassword] = useState({showPassword:false})
           <Typography variant="p" color={theme.palette.primary.dark}>
               Olvide mi contraseña
           </Typography>
-          </Box>
+          </Box> */}
           <Box sx={{display:"flex",justifyContent:"center",mt:5}}>   
           <Button variant="contained" sx={{width:350,bgcolor:"#00695C"}} onClick={()=>dispatch(getUser(input))}>
               INICIAR SESIÓN

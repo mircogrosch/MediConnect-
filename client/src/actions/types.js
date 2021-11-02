@@ -7,6 +7,5 @@ const types = {
   GET_MY_DOCTORS: "GET_MY_DOCTORS",
   SAVE_NOTIFICATION: "SAVE_NOTIFICATION",
   GET_DOCTORS: "GET_DOCTORS",
-
 };
 export default types;

@@ -2,6 +2,7 @@ import { Box, Icon, Typography } from "@material-ui/core";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { AccountCircle } from "@mui/icons-material";
+import { maxWidth } from "@mui/system";
 
 const MyIcon = styled(Icon)({
     display: 'contents'
@@ -9,9 +10,13 @@ const MyIcon = styled(Icon)({
 
 const MyType = styled(Typography)({
     display: 'inline',
-    h4:{
-        fontSize: '10px'
-    }
+    maxWidth: "290px",
+})
+
+
+const MyType2 = styled(Typography)({
+    display: 'inline',
+    maxWidth: "300px",
 })
 
 const MyBox = styled(Box)({
@@ -51,17 +56,19 @@ const MyProfile = styled(AccountCircle)({
     margin: '10px'
 })
 
-const Card = () => {
+const Card = ({name, lastname, address, }) => {
+    let docName = `Dr ${name} ${lastname}`
     return(
         <MyBox sx={{backgroundColor: '#80cbc4'}}>
             <MyBox2>
                 <MyIcon><MyProfile/></MyIcon>
-                <MyType variant='h4'><b>Dr</b> nombreDelDoctor</MyType>
+                <MyType variant='h4'>{docName}</MyType>
             </MyBox2>
             <MyBox3>
-                <Box sx={{marginBottom: '10px'}}>
-                    <Typography variant='body'><b>Especialidad:</b> xxxxxxxxx</Typography>
+                <Box sx={{marginBottom: '10px', maxWidth: '300px'}}>
+                    {/* <MyType2 variant='body'><b>Especialidad:</b> {specialities}</MyType2> */}
                 </Box>
+                <MyType2 variant='body'><b>Localidad:</b> {address}</MyType2>
             </MyBox3>
         </MyBox>
     )
