@@ -24,7 +24,7 @@ const FiltroSelect = () =>{
 
     useEffect(() => {
         dispatch(getSpecialities())
-    },[])
+    },[dispatch])
       
     return(
         <Box>

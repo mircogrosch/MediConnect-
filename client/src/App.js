@@ -7,6 +7,7 @@ import SelectorRegisterForm from "./pages/SelectorRegisterForm";
 import HomePatientPage from "./pages/HomePatientPage";
 import MisProfesionales from "./components/MisProfesionales/MisProfesionales";
 import AddDoctors from "./pages/AddDoctors";
+import HomePageDoctor from "./pages/HomePageDoctor";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/register/form" component={SelectorRegisterForm} />
       <Route path="/login" component={LoginPage} />
       <Route path="/account/prueba/:id" component={MisProfesionales} />
+      <Route path="/account/doctor" component={HomePageDoctor} />
       <Route path="/account/patient" component={HomePatientPage} />
       <Route path="/account/doctors/:id" component={AddDoctors} />
       <Route exact path="/" component={LandingPage} />

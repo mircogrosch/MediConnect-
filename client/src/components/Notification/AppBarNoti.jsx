@@ -18,7 +18,7 @@ import {
 import { teal } from "@mui/material/colors";
 import logo from "../../img/mediconnect-logo.png";
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar(props) {
   //state global
   const notifications = useSelector(
     (state) => state.notification.notifications
@@ -68,14 +68,6 @@ export default function PrimarySearchAppBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <IconButton size="large" color="inherit">
-          <Badge>
-            <AccountBoxOutlined />
-          </Badge>
-        </IconButton>
-        <Typography variant="inherit">List</Typography>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -92,16 +84,16 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box>
-      <AppBar position="static" elevation={0} sx={{ background: teal[200] }}>
+      <AppBar
+        position="static"
+        elevation={0}
+        sx={{ background: props.bgColor || teal[200] }}
+      >
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <img src={logo} width="200px" alt="MediConnect+" />
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton size="large">
-              <AccountBoxOutlined fontSize="large" sx={{ color: teal[900] }} />
-            </IconButton>
-            <Box width={20}></Box>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
@@ -110,7 +102,7 @@ export default function PrimarySearchAppBar() {
               <Badge badgeContent={numberNotification} color="error">
                 <NotificationsOutlined
                   fontSize="large"
-                  sx={{ color: teal[900] }}
+                  sx={{ color: props.color || teal[900] }}
                 />
               </Badge>
             </IconButton>
@@ -124,7 +116,7 @@ export default function PrimarySearchAppBar() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreVert sx={{ color: teal[900] }} />
+              <MoreVert sx={{ color: props.color || teal[900] }} />
             </IconButton>
           </Box>
         </Toolbar>

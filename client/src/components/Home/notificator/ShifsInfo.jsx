@@ -8,14 +8,22 @@ import {
 } from "@mui/icons-material";
 import { grey, teal } from "@mui/material/colors";
 
-function ContainerShifsInfo({ date, time, location, doctor, styles }) {
+function ContainerShifsInfo({
+  date,
+  time,
+  location,
+  doctor,
+  styles,
+  bgDarkColor,
+  color,
+}) {
   const classes = styles;
 
   return (
     <div>
       <Card
         className={classes.cardInfo}
-        sx={{ bgcolor: teal[200], borderRadius: 5 }}
+        sx={{ bgcolor: bgDarkColor || teal[200], borderRadius: 5 }}
       >
         <Grid
           container
@@ -26,40 +34,65 @@ function ContainerShifsInfo({ date, time, location, doctor, styles }) {
         >
           <Grid item container columnSpacing={-5}>
             <Grid item xs={2}>
-              <EventAvailable sx={{ color: grey[700] }} fontSize="20" />
+              <EventAvailable
+                sx={{ color: color || grey[700] }}
+                fontSize="20"
+              />
             </Grid>
             <Grid item xs={10}>
-              <Typography variant="p" className={classes.letters}>
+              <Typography
+                variant="p"
+                className={classes.letters}
+                color={color || grey[700]}
+              >
                 {date}
               </Typography>
             </Grid>
           </Grid>
           <Grid item container columnSpacing={-5}>
             <Grid item xs={2}>
-              <QueryBuilder sx={{ color: grey[700] }} fontSize="20" />
+              <QueryBuilder sx={{ color: color || grey[700] }} fontSize="20" />
             </Grid>
             <Grid item xs={10}>
-              <Typography variant="p" className={classes.letters}>
+              <Typography
+                variant="p"
+                className={classes.letters}
+                color={color || grey[700]}
+              >
                 {time}
               </Typography>
             </Grid>
           </Grid>
           <Grid item container columnSpacing={-5}>
             <Grid item xs={2}>
-              <LocationOnOutlined sx={{ color: grey[700] }} fontSize="20" />
+              <LocationOnOutlined
+                sx={{ color: color || grey[700] }}
+                fontSize="20"
+              />
             </Grid>
             <Grid item lxs={10}>
-              <Typography variant="p" className={classes.letters}>
+              <Typography
+                variant="p"
+                className={classes.letters}
+                color={color || grey[700]}
+              >
                 {location}
               </Typography>
             </Grid>
           </Grid>
           <Grid item container columnSpacing={-5}>
             <Grid item xs={2}>
-              <PersonOutlined sx={{ color: grey[700] }} fontSize="20" />
+              <PersonOutlined
+                sx={{ color: color || grey[700] }}
+                fontSize="20"
+              />
             </Grid>
             <Grid item xs={10}>
-              <Typography variant="p" className={classes.letters}>
+              <Typography
+                variant="p"
+                className={classes.letters}
+                color={color || grey[700]}
+              >
                 {doctor}
               </Typography>
             </Grid>

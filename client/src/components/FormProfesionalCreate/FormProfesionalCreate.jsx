@@ -210,7 +210,7 @@ const FormProfesionalCreate = () => {
                 native: true,
               }}
               variant="standard"
-            >
+            > <option selected disabled>Especialidad</option>
               {allSpecialities.map((a) => {
                 return (
                   <option key={a.id} value={a.id}>

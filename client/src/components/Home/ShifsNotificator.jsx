@@ -5,13 +5,13 @@ import { teal, grey } from "@mui/material/colors";
 import { Link } from "react-router-dom";
 import { useStyles } from "../../styles/home/shift.js";
 
-function ShifsNotificator() {
+function ShifsNotificator(props) {
   const classes = useStyles();
 
   return (
     <Box
       sx={{
-        bgcolor: teal[100],
+        bgcolor: props.bgColor || teal[100],
         borderRadius: "12px",
         boxShadow: "-1px 4px 3px rgba(171,171,171,1)",
       }}
@@ -49,6 +49,8 @@ function ShifsNotificator() {
               time={"20:00"}
               doctor={"Dr. Fernandez"}
               location={"Trevelin Chubut"}
+              bgDarkColor={props.bgDarkColor}
+              color={props.color}
               styles={classes}
             />
           </Grid>
@@ -57,7 +59,7 @@ function ShifsNotificator() {
               variant="h6"
               textAlign="center"
               fontWeight="normal"
-              color={grey[600]}
+              color={props.color || grey[600]}
             >
               El pago de la consulta esta pendiente
             </Typography>
