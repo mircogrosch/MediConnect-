@@ -166,7 +166,7 @@ const FormPacientCreate = () =>{
                                 native: true,
                             }}
                             variant="standard"
-                            >
+                            ><option selected disabled>Obra Social</option>
                             { healthInsurances.names && healthInsurances.names.map((option) => {return(
                                 <option key={option.id} value={option.id}>
                                 {option.name}
