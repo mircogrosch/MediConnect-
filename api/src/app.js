@@ -11,7 +11,7 @@ let Strategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const specialitiesRouter = require("./routes/specialities");
 const healthinsuranceRouter = require("./routes/healthinsurance");
-
+const cors = require('cors')
 require("./db.js");
 
 //Para poder comparar con la password encrypt
@@ -26,81 +26,81 @@ passport.use(
       usernameField: "email",
       passwordField: "password",
     },
-    async function (username, password, done) {
-      try {
-        let user = await Person.findOne({
-          where: {
-            email: username,
-          },
-        });
+     async function (username, password, done) {
+       try {
+         let user = await Person.findOne({
+           where: {
+             email: username,
+           },
+         });
 
-        if (user !== null) {
+       if (user !== null) {
           //Si existe usera con ese email
 
-          if (comparePassword(password, user.password)) {
-            //Si coincide password ingresada con la registrada del usuario
-            //Para traer el perfil de DOCTOR
-            if (user.rol === "Doctor") {
-              try {
-                let doctor = await Doctor.findOne({
-                  where: {
+           if (comparePassword(password, user.password)) {
+             //Si coincide password ingresada con la registrada del usuario
+             //Para traer el perfil de DOCTOR
+             if (user.rol === "Doctor") {
+               try {
+                 let doctor = await Doctor.findOne({
+                   where: {
                     personDni: user.dni,
                   },
-                });
-                user = { ...user, doctor };
-                user = {
-                  user: user.dataValues,
-                  doctor: user.doctor,
-                };
-              } catch (e) {
+                 });
+                 user = { ...user, doctor };
+                 user = {
+                   user: user.dataValues,
+                   doctor: user.doctor,
+                 };
+               } catch (e) {
                 console.log("Error al traer al doctor: ", e);
-              }
-              //Para traer el perfil de PACIENTE
-            } else if (user.rol === "Patient") {
-              try {
-                let patient = await Patient.findOne({
+            }
+               //Para traer el perfil de PACIENTE
+             } else if (user.rol === "Patient") {
+               try {
+                 let patient = await Patient.findOne({
                   where: {
                     personDni: user.dni,
                   },
-                });
+               });
                 user = { ...user, patient };
-                user = {
+                 user = {
                   user: user.dataValues,
-                  patient: user.patient,
+                   patient: user.patient,
                 };
-              } catch (e) {
+               } catch (e) {
                 console.log("Error al traer al paciente: ", e);
               }
             }
             // res.status(200).send({
             //   data: user,
-            //   message: "Logged user",
-            // });
-            done(null, user);
-          } else {
-            //Se encontro usera, pero password es incorrecta
-            // res.status(200).send({ message: "Incorrect password" });
-            done(null, false, { message: "Incorrect password" });
-          }
-        } else {
-          //No se encontro usera con email ingresado
-          // res.status(200).send({ message: "There is no such registered email" });
-          done(null, false, { message: "There is no such registered email" });
-        }
-      } catch (error) {
-        // res.status(400).send("Error desde base de datos: ", e);
-        done(error);
-      }
-    }
+          //   message: "Logged user",
+          // });
+             done(null, user);  
+           } else {
+             //Se encontro usera, pero password es incorrecta
+             // res.status(200).send({ message: "Incorrect password" });
+             done(null, false, { message: "Incorrect password" });
+           }
+         } else {
+           //No se encontro usera con email ingresado
+         // res.status(200).send({ message: "There is no such registered email" });
+           done(null, false, { message: "There is no such registered email" });
+         }
+       } catch (error) {
+         // res.status(400).send("Error desde base de datos: ", e);
+         done(error);
+       }
+     }
   )
 );
 
 passport.serializeUser(function (user, done) {
-  console.log("USER:", user.user);
   return done(null, user.user.dni);
 });
 
-passport.deserializeUser(async function (dni, done) {
+passport.deserializeUser( async function (dni, done) {
+  console.log("DES:",dni)
   try {
     let user = await Person.findOne({
       where: {
@@ -151,10 +151,10 @@ const server = express();
 server.name = "API";
 
 // middlewares
-
+server.use(cors({credentials: true, origin: 'http://localhost:3000'}))
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
-server.use(cookieParser());
+server.use(cookieParser('secret'));
 server.use(morgan("dev"));
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
@@ -164,15 +164,15 @@ server.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-  next();
+  next(); 
 });
 server.set("views", __dirname + "/views");
 server.set("view engine", "ejs");
 server.use(
   require("express-session")({
-    secret: "secret",
+    secret: 'secret',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: false
   })
 );
 // Inicializa Passport y recupera el estado de autenticación de la sesión.
