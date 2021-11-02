@@ -11,14 +11,13 @@ function BodyData(props) {
   const classes = props.classes;
 
   return (
-
     <Box className={classes.cardInfo} sx={{ background: props.bgColor }}>
-      <Typography 
+      <Typography
         variant="h6"
         marginBottom={3}
         className={classes.textName}
         color={props.color || grey[600]}
-       >
+      >
         {`${props.name} ${props.lastname}`}
       </Typography>
       <Grid container alignItems="center">
@@ -28,6 +27,7 @@ function BodyData(props) {
         <Grid item xs={10} marginY={1} textAlign="left">
           <Typography variant="p" color={props.color || grey[700]}>
             {props.dni}
+          </Typography>
         </Grid>
         <Grid item xs={2} marginY={1}>
           <ArrowDropDownCircleOutlined
