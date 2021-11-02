@@ -56,7 +56,7 @@ const MyProfile = styled(AccountCircle)({
     margin: '10px'
 })
 
-const Card = ({name, lastname, address, specialities}) => {
+const Card = ({name, lastname, address, }) => {
     let docName = `Dr ${name} ${lastname}`
     return(
         <MyBox sx={{backgroundColor: '#80cbc4'}}>
@@ -66,7 +66,7 @@ const Card = ({name, lastname, address, specialities}) => {
             </MyBox2>
             <MyBox3>
                 <Box sx={{marginBottom: '10px', maxWidth: '300px'}}>
-                    <MyType2 variant='body'><b>Especialidad:</b> {specialities}</MyType2>
+                    {/* <MyType2 variant='body'><b>Especialidad:</b> {specialities}</MyType2> */}
                 </Box>
                 <MyType2 variant='body'><b>Localidad:</b> {address}</MyType2>
             </MyBox3>

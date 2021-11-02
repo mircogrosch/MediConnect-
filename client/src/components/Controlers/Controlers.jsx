@@ -40,7 +40,7 @@ export const handleChange = (prop, state, set) => (event) => {
     set({ ...state, [prop]: event.target.value})
 }
 export const handleChangeSpecial = (e, state, set) => {
-  set({ ...state, [prop]: event.target.value });
+  set({ ...state, [e.target.name]: e.target.value });
 };
 
 export const handleClickShowPassword = (state, set) => {
@@ -106,5 +106,4 @@ export const validateUser=(user,history)=>{
     }
 }
 
-}
 
