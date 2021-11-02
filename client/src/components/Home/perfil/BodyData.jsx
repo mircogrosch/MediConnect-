@@ -12,7 +12,7 @@ function BodyData(props) {
   return (
     <Box className={classes.cardInfo}>
       <Typography variant="h6" marginBottom={3} className={classes.textName}>
-        Juan Carlos Villanueva
+        {`${props.name} ${props.lastname}`}
       </Typography>
       <Grid container>
         <Grid item xs={2} marginY={1}>
@@ -20,7 +20,7 @@ function BodyData(props) {
         </Grid>
         <Grid item xs={10} marginY={1} textAlign="left">
           <Typography variant="p" className={classes.text}>
-            35.123.123
+            {props.dni}
           </Typography>
         </Grid>
         <Grid item xs={2} marginY={1}>
@@ -36,7 +36,7 @@ function BodyData(props) {
         </Grid>
         <Grid item xs={10} marginY={1} textAlign="left">
           <Typography variant="p" className={classes.text}>
-            Trevelin, Chubut
+            {props.address}
           </Typography>
         </Grid>
       </Grid>
