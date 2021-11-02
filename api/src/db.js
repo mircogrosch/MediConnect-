@@ -48,11 +48,15 @@ let capsEntries = entries.map((entry) => [
 sequelize.models = Object.fromEntries(capsEntries);
 // Aca vendrian las relaciones
 
-const { Person, Doctor, Patient, Speciality, HealthInsurance } = sequelize.models;
+const { Person, Doctor, Patient, Speciality, HealthInsurance, Notification } = sequelize.models;
 
 // Uno a muchos
-Patient.belongsTo(Person); // crea tabla Person_id dentro de la tabla Patient
+Patient.belongsTo(Person); // crea tabla personDni dentro de la tabla Patient
 Person.hasMany(Patient);
+
+// Uno a muchos
+Notification.belongsTo(Person); // crea tabla personDni dentro de la tabla Notification
+Person.hasMany(Notification);
 
 // Uno a muchos
 Doctor.belongsTo(Person);
