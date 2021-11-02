@@ -6,6 +6,7 @@ import { healthInsurances } from "./healthInsurances";
 import notification from "./notification.js";
 import users from "./users";
 import allDoctors from "./allDoctors";
+import { myDoctors } from "./myDoctors";
 
 //import reducers here
 export default combineReducers({
@@ -17,4 +18,5 @@ export default combineReducers({
   healthInsurances,
   notification,
   allDoctors,
+  myDoctors,
 });
