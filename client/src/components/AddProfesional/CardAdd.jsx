@@ -1,8 +1,8 @@
-import { Box, Icon, Typography } from "@material-ui/core";
+import { Box, Icon, Typography, Button } from "@material-ui/core";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { AccountCircle } from "@mui/icons-material";
-import {teal } from "@mui/material/colors";
+import { teal } from "@mui/material/colors";
 const MyIcon = styled(Icon)({
   display: "contents",
 });
@@ -37,34 +37,45 @@ const MyBox3 = styled(Box)({
   borderRadius: "10px",
 });
 
+const MyTypography = styled(Typography)({
+  maxWidth: "290px",
+});
+
 const MyProfile = styled(AccountCircle)({
   width: "90px",
   height: "90px",
   margin: "10px",
 });
 
-const CardAdd= () => {
+const CardAdd = ({ name, lastname, address, specialities }) => {
+  let docName = "Dr. " + name + " " + lastname;
   return (
     <MyBox sx={{ backgroundColor: teal[600] }}>
       <MyBox2>
         <MyIcon>
           <MyProfile />
         </MyIcon>
-        <Typography variant="h4" style={{fontSize:"1.8em"}}>
-          <b>Dr</b> nombreDelDoctor
-        </Typography>
+        <MyTypography variant="h4" style={{ fontSize: "1.7em" }}>
+          {docName}
+        </MyTypography>
       </MyBox2>
       <MyBox3>
-        <Box sx={{ marginBottom: "10px",display:"flex" }}>
-        <Typography variant="p" style={{fontSize:"0.8em"}}>
-          <b>Especialidad:</b> Ginecologo
-        </Typography>
-        </Box>
-        <Typography variant="p" style={{fontSize:"0.8em"}}>
-            <b>Direccion:</b> Calle Falsa 123
+        <Box sx={{ marginBottom: "10px", display: "flex" }}>
+          <Typography
+            variant="p"
+            style={{ fontSize: "0.8em", maxWidth: "200px" }}
+          >
+            <b>Especialidad:</b> {specialities}
           </Typography>
+        </Box>
+        <Typography
+          variant="p"
+          style={{ fontSize: "0.8em", maxWidth: "200px" }}
+        >
+          <b>Direccion:</b> {address}
+        </Typography>
       </MyBox3>
-
+      <Button>Agregar</Button>
     </MyBox>
   );
 };

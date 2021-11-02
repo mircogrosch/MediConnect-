@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SearchBar from '../SearchBar/SearchBar'
 import FiltroSelect from '../FiltroSelect/FiltroSelect'
 import Card from "../Card/Card";
+import AddProfesionals from "../Card/AddProfesionals";
 import { Grid } from "@mui/material";
 import SimpleAppBar from "../AppBar/SimpleAppBar";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
+import { useDispatch, useSelector } from "react-redux";
+import { getMyDoctors } from "../../actions";
+import { Link } from "react-router-dom";
 
 const MyGrid = styled(Grid)({
     display: 'flex',
@@ -13,7 +17,16 @@ const MyGrid = styled(Grid)({
 })
 
 
-const MisProfesionales = () => {
+const MisProfesionales = (props) => {
+    const dispatch = useDispatch();
+    let MyDoctors = useSelector((state) => state.myDoctors.names);
+;
+    console.log("myDoctors", MyDoctors);
+    console.log("myDoctors typeof", typeof MyDoctors);
+  
+    useEffect(() => {
+      dispatch(getMyDoctors(props.match.params.id));
+    }, []);
     return(
         <Box sx={{backgroundColor: '#b2dfdb', margin:'5px', borderRadius:'10px'}}>
         <Grid>
@@ -23,18 +36,20 @@ const MisProfesionales = () => {
                 <SearchBar/>
             </MyGrid>
             <Box sx={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-                <Box>
-                    <Card/>
-                    <Card/>
-                </Box>
-                <Box>
-                    <Card/>
-                    <Card/>
-                </Box>
-                <Box>
-                    <Card/>
-                    <Card/>
-                </Box>
+                <Grid 
+                container items
+                display='flex'
+                justifyContent='center'
+                >
+                    <Link to='/prueba2'>
+                    <AddProfesionals/>
+                    </Link>
+                    {MyDoctors && MyDoctors.data.map((e) => {
+                        return (
+                        <Card name={e.name} lastname={e.lastname} address={e.address}/>
+                        );
+                    })}
+                </Grid>
             </Box>
         </Grid>
         </Box>

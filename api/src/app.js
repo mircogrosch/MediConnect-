@@ -12,7 +12,7 @@ const Strategy = require("passport-local").Strategy;
 const bcryptjs = require("bcryptjs");
 const specialitiesRouter = require("./routes/specialities");
 const healthinsuranceRouter = require("./routes/healthinsurance");
-
+const cors = require("cors");
 require("./db.js");
 
 //Para poder comparar con la password encrypt
@@ -27,6 +27,7 @@ passport.use(
       usernameField: "email",
       passwordField: "password",
     },
+
     async function (username, password, done) {
       try {
         let user = await Person.findOne({
@@ -34,23 +35,25 @@ passport.use(
             email: username,
           },
         });
-        user = user.dataValues;
+
         if (user !== null) {
-          //Si existe user con ese email
+          //Si existe usera con ese email
 
           if (comparePassword(password, user.password)) {
             //Si coincide password ingresada con la registrada del usuario
             //Para traer el perfil de DOCTOR
-            let DNI = user.dni;
             if (user.rol === "Doctor") {
               try {
                 let doctor = await Doctor.findOne({
                   where: {
-                    personDni: DNI,
+                    personDni: user.dni,
                   },
                 });
                 user = { ...user, doctor };
-                user.doctor = user.doctor.dataValues;
+                user = {
+                  user: user.dataValues,
+                  doctor: user.doctor,
+                };
               } catch (e) {
                 console.log("Error al traer al doctor: ", e);
               }
@@ -63,27 +66,30 @@ passport.use(
                   },
                 });
                 user = { ...user, patient };
-                user.patient = user.patient.dataValues;
+
+                user = {
+                  user: user.dataValues,
+                  patient: user.patient,
+                };
               } catch (e) {
                 console.log("Error al traer al paciente: ", e);
               }
             }
             // res.status(200).send({
             //   data: user,
+
             //   message: "Logged user",
             // });
-            return done(null, user);
+            done(null, user);
           } else {
             //Se encontro usera, pero password es incorrecta
             // res.status(200).send({ message: "Incorrect password" });
-            return done(null, false, { message: "Incorrect password" });
+            done(null, false, { message: "Incorrect password" });
           }
         } else {
           //No se encontro usera con email ingresado
           // res.status(200).send({ message: "There is no such registered email" });
-          return done(null, false, {
-            message: "There is no such registered email",
-          });
+          done(null, false, { message: "There is no such registered email" });
         }
       } catch (error) {
         // res.status(400).send("Error desde base de datos: ", e);
@@ -94,9 +100,11 @@ passport.use(
 );
 
 passport.serializeUser(function (user, done) {
-  return done(null, user.dni);
+  return done(null, user.user.dni);
 });
+
 passport.deserializeUser(async function (dni, done) {
+  console.log("DES:", dni);
   try {
     let user = await Person.findOne({
       where: {
@@ -141,10 +149,12 @@ const server = express();
 server.name = "API";
 
 // middlewares
-
+server.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
+
 server.use(cookieParser("secret"));
+
 server.use(morgan("dev"));
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
@@ -157,7 +167,7 @@ server.use((req, res, next) => {
   next();
 });
 server.use(
-  session({
+  require("express-session")({
     secret: "secret",
     resave: false,
     saveUninitialized: false,

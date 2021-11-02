@@ -2,12 +2,12 @@ const { Router } = require("express");
 const router = Router();
 const passport = require("passport");
 
-router.get("/register", (req, res) => {
-  console.log("soy Home!", req.user);
+router.get("/", (req, res) => {
+  res.send(req.user);
 });
 
 router.get("/fail", (req, res) => {
-  console.log("Soy login!", req.user);
+  res.send({ user: null });
 });
 router.post(
   "/",
@@ -15,7 +15,7 @@ router.post(
     failureRedirect: "/login/fail",
   }),
   function (req, res) {
-    res.redirect("/login/register");
+    res.redirect("/login");
   }
 );
 

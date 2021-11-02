@@ -3,8 +3,8 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { handleChangeSpecial } from "../Controlers/Controlers";
-import { useDispatch } from "react-redux";
-// import { getSpecialities } from "../../actions";
+import { useDispatch, useSelector } from "react-redux";
+import { getSpecialities } from "../../actions";
 
 const MySelect = styled(TextField)({
     backgroundColor: '#80cbc4',
@@ -15,20 +15,16 @@ const MySelect = styled(TextField)({
     marginRight:'270px',
 })
 
-const specialties = [
-    {value: 'Pediatria'},
-    {value: 'Kinesiologia'},
-    {value: 'Clinica medica'},
-    {value: 'Oftalmologo'},
-  ];
-
 const FiltroSelect = () =>{
-    // const dispatch = useDispatch()
-    // useEffect(() => {
-    //     dispatch(getSpecialities)
-    // })
-      
-    const [speciality, setSpeciality] = useState('');
+
+    const specialities = useSelector((state) => state.allSpecialities)
+    console.log(specialities)
+    const dispatch = useDispatch()
+    const [special, setSpecial] = useState('')
+
+    useEffect(() => {
+        dispatch(getSpecialities())
+    },[])
       
     return(
         <Box>
@@ -36,14 +32,17 @@ const FiltroSelect = () =>{
             select
             color = 'transparent'
             label="Especialidades"
-            value={speciality}
-            onChange={(e) => handleChangeSpecial(e, speciality, setSpeciality)}
+            value={special}
+            SelectProps={{
+                native: true,
+            }}
+            onChange={(e) => handleChangeSpecial(e, special, setSpecial)}
             // variant='standard'
             >
-                {specialties.map((p) => (
-                    <MenuItem key={p.value} value={p.value}>
-                        {p.value}
-                    </MenuItem>
+                {specialities.allSpecialities.map((p) => (
+                    <option key={p.id} value={p.id}>
+                        {p.name}
+                    </option>
                 ))}
             </MySelect>
          </Box>

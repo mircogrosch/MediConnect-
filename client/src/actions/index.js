@@ -2,12 +2,20 @@ import axios from "axios";
 import types from "./types.js";
 const URL = "http://localhost:3001";
 
+export const getDoctors = () => {
+  return async function (dispatch) {
+    const response = await axios.get(`${URL}/doctor`);
+    dispatch({ type: types.GET_DOCTORS, payload: response.data });
+  };
+};
+
 export const getUser = (user) => {
   return async function (dispatch) {
-    const response = await axios.post(`${URL}/login`, user);
+    const response = await axios.post(`${URL}/login`, user,{withCredentials:true});
     dispatch({ type: types.GET_USER_LOGIN, payload: response.data });
   };
 };
+
 export const postDoctor = (payload) => {
   return async function (dispatch) {
     try {
@@ -21,6 +29,7 @@ export const postDoctor = (payload) => {
     }
   };
 };
+
 export function getSpecialities() {
   return async function (dispatch) {
     try {
@@ -34,6 +43,7 @@ export function getSpecialities() {
     }
   };
 }
+
 export const postPatient = (payload) => {
   return async function (dispatch) {
     try {
@@ -63,3 +73,17 @@ export const getHealthInsurances = () => {
     }
   };
 };
+
+export const getMyDoctors = (payload) => {
+  return async function(dispatch) {
+    try {
+      let myDocs = await axios.get(`${URL}/patient/doctors/${payload}`);
+      return dispatch({
+        type: types.GET_MY_DOCTORS,
+        payload: myDocs.data
+      })
+    } catch (error) {
+      alert(error);
+    }
+  }
+}

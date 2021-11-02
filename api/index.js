@@ -4,7 +4,7 @@ const { HealthInsurance, Speciality } = conn.models;
 const xlxs = require("xlsx");
 const http = require('http')
 const socketIO = require('socket.io');
-const cors = require('cors')
+
 
 const excel_to_json = (dir) => {
   const excel = xlxs.readFile(dir);
@@ -41,7 +41,7 @@ const no_existen_Especialidades = async () => {
 
 
 
-server.use(cors())
+
 
 //socket.io
 const server_pp = http.createServer(server); 

@@ -13,7 +13,7 @@ function App() {
       <Route path="/register/pacient" component={FormPacientCreate} />
       <Route path="/register/form" component={SelectorRegisterForm} />
       <Route path="/login" component={LoginPage} />
-      <Route path="/account" component={HomePatientPage} />
+      <Route path="/account/patient" component={HomePatientPage} />
       <Route exact path="/" component={LandingPage} />
     </div>
   );
