@@ -1,41 +1,6 @@
 import { postPatient, postDoctor } from "../../actions";
 import swal from "sweetalert";
 
-export const handleSelectProfesional = (event, input, setInput) => {
-  setInput({
-    ...input,
-    specialities: [event.target.value],
-  });
-};
-
-export const handleSubmitProfesional = (
-  event,
-  state,
-  set,
-  dispatch,
-  history
-) => {
-  event.preventDefault();
-  set({
-    name: "",
-    lastname: "",
-    email: "",
-    password: "",
-    confirmPass: "",
-    showPassword: false,
-    showConf: false,
-    dni: "",
-    address: "",
-    specialities: [],
-    signature: "",
-    enrollment: "",
-  });
-  dispatch(postDoctor(state));
-  console.log(state);
-  alert("Usuario registrado exitosamente");
-  history.push("/login");
-};
-
 export const handleChange = (prop, state, set) => (event) => {
   set({ ...state, [prop]: event.target.value });
 };
