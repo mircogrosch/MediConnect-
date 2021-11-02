@@ -1,4 +1,5 @@
 import { postPatient, postDoctor } from "../../actions";
+import swal from 'sweetalert';
 
 export const handleSelectProfesional = (event, input, setInput) => {
   setInput({
@@ -36,12 +37,10 @@ export const handleSubmitProfesional = (
 };
 
 export const handleChange = (prop, state, set) => (event) => {
-  set({ ...state, [prop]: event.target.value });
-  console.log(state);
-};
+    set({ ...state, [prop]: event.target.value})
+}
 export const handleChangeSpecial = (e, state, set) => {
-  set(e.target.value);
-  console.log(state);
+  set({ ...state, [prop]: event.target.value });
 };
 
 export const handleClickShowPassword = (state, set) => {
@@ -84,4 +83,28 @@ export const handleSubmit = (e, errors, state, set, dispatch, history) => {
       });
       history.push('/login')
   }
+} 
+
+
+/** 
+ * Valida que haya un usuario logeado y cual es su rol, si no está logeado lo regresa al login. 
+*/ 
+ 
+export const validateUser=(user,history)=>{   
+    if(!user){ 
+      return swal({
+        title:`El nombre de usuario o la contraseña son incorrectos`,
+        dangerMode:true,
+        icon:"error",
+        button:"Continuar"
+      })
+    }
+    if(user.rol === "Patient"){
+     return  history.push("/account/patient")
+    } else if(user.rol === "Doctor"){
+      return history.push("/account/profesional")
+    }
 }
+
+}
+

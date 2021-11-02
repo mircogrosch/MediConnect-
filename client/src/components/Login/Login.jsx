@@ -1,5 +1,5 @@
-import React,{useState} from "react";
-import {useDispatch} from "react-redux"
+import React,{useState,useEffect} from "react";
+import {useDispatch,useSelector} from "react-redux"
 import {
   FormControl,
   TextField,
@@ -22,14 +22,32 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {handleChange,handleClickShowPassword,handleMouseDownPassword} from '../Controlers/Controlers'
 import {getUser} from '../../actions/index.js'
+import { useHistory } from "react-router-dom";
+import { validateUser } from "../Controlers/Controlers";
 const Login = () => {
+
+
 //Local states
 const [input,setInput] = useState({email:"",password:""});
 const [handlePassword,setPassword] = useState({showPassword:false})
 
+
+//Global States
+const userLog = useSelector(state=> state.users.users.user);
+
+
+
 //Hooks
   const classes = useStyles();
   const dispatch= useDispatch();
+  const history = useHistory()
+
+
+  useEffect(()=>{
+    return validateUser(userLog,history)
+  },[userLog])
+
+
   return (
     <div className={classes.root}>
       <AppBar sx={{bgcolor:"transparent"}} elevation={0} > 

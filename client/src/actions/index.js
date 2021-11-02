@@ -11,7 +11,7 @@ export const getDoctors = () => {
 
 export const getUser = (user) => {
   return async function (dispatch) {
-    const response = await axios.post(`${URL}/login`, user);
+    const response = await axios.post(`${URL}/login`, user,{withCredentials:true});
     dispatch({ type: types.GET_USER_LOGIN, payload: response.data });
   };
 };
