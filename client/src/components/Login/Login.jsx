@@ -44,7 +44,7 @@ const userLog = useSelector(state=> state.users.users.user);
 
 
   useEffect(()=>{
-    return validateUser(userLog,history)
+    userLog && validateUser(userLog,history)
   },[userLog])
 
 
@@ -114,7 +114,7 @@ const userLog = useSelector(state=> state.users.users.user);
               onChange={handleChange("password",input,setInput)}
             />
           </Box>
-          <Box sx={{display:"flex", justifyContent:"space-between",alignItems:"center"}}> 
+          {/* <Box sx={{display:"flex", justifyContent:"space-between",alignItems:"center"}}> 
           <FormControlLabel  control={<Checkbox defaultChecked />} label={
           <Typography variant="p" color={theme.palette.primary.dark}> 
               Recordame
@@ -122,7 +122,7 @@ const userLog = useSelector(state=> state.users.users.user);
           <Typography variant="p" color={theme.palette.primary.dark}>
               Olvide mi contraseña
           </Typography>
-          </Box>
+          </Box> */}
           <Box sx={{display:"flex",justifyContent:"center",mt:5}}>   
           <Button variant="contained" sx={{width:350,bgcolor:"#00695C"}} onClick={()=>dispatch(getUser(input))}>
               INICIAR SESIÓN

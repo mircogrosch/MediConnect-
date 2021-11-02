@@ -6,7 +6,7 @@ import { useStyles } from "../../styles/home/perfil";
 import circleUser from "../../img/user.png";
 import BodyData from "./perfil/BodyData";
 
-function Perfil() {
+function Perfil({name,lastname,address,dni}) {
   const classes = useStyles();
 
   return (
@@ -27,7 +27,7 @@ function Perfil() {
       </IconButton>
       <img src={circleUser} alt="user profile" className={classes.circleUser} />
       <Box>
-        <BodyData classes={classes} />
+        <BodyData classes={classes} name={name} lastname={lastname} address={address} dni={dni} />
       </Box>
     </Grid>
   );
