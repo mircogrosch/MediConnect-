@@ -6,9 +6,9 @@ const routes = require("./routes/index.js");
 const loginRouter = require("./routes/login");
 const patientRouter = require("./routes/patients");
 const doctorRouter = require("./routes/doctor");
-let { Person, Patient, Doctor } = require("./db");
-let passport = require("passport");
-let Strategy = require("passport-local").Strategy;
+const { Person, Patient, Doctor } = require("./db");
+const passport = require("passport");
+const Strategy = require("passport-local").Strategy;
 const bcryptjs = require("bcryptjs");
 const specialitiesRouter = require("./routes/specialities");
 const healthinsuranceRouter = require("./routes/healthinsurance");
@@ -34,8 +34,6 @@ passport.use(
             email: username,
           },
         });
-
-        console.log("USUARIO", user);
         user = user.dataValues;
         if (user !== null) {
           //Si existe user con ese email
@@ -98,7 +96,6 @@ passport.use(
 passport.serializeUser(function (user, done) {
   return done(null, user.dni);
 });
-
 passport.deserializeUser(async function (dni, done) {
   try {
     let user = await Person.findOne({
@@ -133,9 +130,9 @@ passport.deserializeUser(async function (dni, done) {
         console.log("Error al traer al paciente: ", e);
       }
     }
-    done(null, user);
+    return done(null, user);
   } catch (error) {
-    console.log(error);
+    return done(error);
   }
 });
 
@@ -149,6 +146,16 @@ server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(cookieParser("secret"));
 server.use(morgan("dev"));
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+});
 server.use(
   session({
     secret: "secret",
@@ -160,6 +167,7 @@ server.use(
 // Inicializa Passport y recupera el estado de autenticación de la sesión.
 server.use(passport.initialize());
 server.use(passport.session());
+
 // Middleware para mostrar la sesión actual en cada request
 server.use((req, res, next) => {
   console.log(req.session);
@@ -167,16 +175,6 @@ server.use((req, res, next) => {
   next();
 });
 
-server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-  next();
-});
 // Routes
 
 // server.get("/login", (req, res) => {
