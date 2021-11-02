@@ -81,7 +81,7 @@ const FormProfesionalCreate = () => {
 
   let allSpecialities = useSelector((state) => state.allSpecialities);
   allSpecialities = allSpecialities.allSpecialities;
-
+  console.log("allSpecialities", allSpecialities);
   useEffect(() => {
     dispatch(getSpecialities());
   }, [dispatch]);

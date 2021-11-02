@@ -1,4 +1,4 @@
-import { Box, Icon, Typography } from "@material-ui/core";
+import { Box, Icon, Typography, Button } from "@material-ui/core";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { AccountCircle } from "@mui/icons-material";
@@ -47,7 +47,7 @@ const MyProfile = styled(AccountCircle)({
   margin: "10px",
 });
 
-const CardAdd = ({ name, lastname, address }) => {
+const CardAdd = ({ name, lastname, address, specialities }) => {
   let docName = "Dr. " + name + " " + lastname;
   return (
     <MyBox sx={{ backgroundColor: teal[600] }}>
@@ -61,14 +61,21 @@ const CardAdd = ({ name, lastname, address }) => {
       </MyBox2>
       <MyBox3>
         <Box sx={{ marginBottom: "10px", display: "flex" }}>
-          <Typography variant="p" style={{ fontSize: "0.8em" }}>
-            <b>Especialidad:</b> Ginecologo
+          <Typography
+            variant="p"
+            style={{ fontSize: "0.8em", maxWidth: "200px" }}
+          >
+            <b>Especialidad:</b> {specialities}
           </Typography>
         </Box>
-        <Typography variant="p" style={{ fontSize: "0.8em" }}>
+        <Typography
+          variant="p"
+          style={{ fontSize: "0.8em", maxWidth: "200px" }}
+        >
           <b>Direccion:</b> {address}
         </Typography>
       </MyBox3>
+      <Button>Agregar</Button>
     </MyBox>
   );
 };
