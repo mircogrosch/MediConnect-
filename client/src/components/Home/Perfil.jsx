@@ -6,7 +6,7 @@ import { useStyles } from "../../styles/home/perfil";
 import circleUser from "../../img/user.png";
 import BodyData from "./perfil/BodyData";
 
-function Perfil() {
+function Perfil(props) {
   const classes = useStyles();
 
   return (
@@ -14,7 +14,7 @@ function Perfil() {
       container
       item
       className={classes.root}
-      sx={{ height: { md: "75vh" } }}
+      sx={{ height: { md: "75vh" }, background: props.bgColor || teal[100] }}
     >
       <IconButton
         style={{
@@ -23,11 +23,18 @@ function Perfil() {
           right: ".5em",
         }}
       >
-        <ModeEditOutlined fontSize="medium" style={{ color: teal[800] }} />
+        <ModeEditOutlined
+          fontSize="medium"
+          style={{ color: props.color || teal[800] }}
+        />
       </IconButton>
       <img src={circleUser} alt="user profile" className={classes.circleUser} />
       <Box>
-        <BodyData classes={classes} />
+        <BodyData
+          classes={classes}
+          color={props.color}
+          bgColor={props.bgDarkColor || teal[200]}
+        />
       </Box>
     </Grid>
   );

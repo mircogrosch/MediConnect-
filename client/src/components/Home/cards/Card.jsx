@@ -1,8 +1,9 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import { teal } from "@mui/material/colors";
 import useStyles from "../../../styles/home/card";
 
-function Card({ title, icon }) {
+function Card(props) {
   const classes = useStyles();
 
   return (
@@ -12,11 +13,22 @@ function Card({ title, icon }) {
         sx={{
           // height: 120,
           width: { xl: 300, lg: 250, md: 200, sm: 220 },
+          background: props.bgColor || teal[100],
         }}
       >
-        <div className={classes.icon}>{icon}</div>
-        <Typography variant="h5" fontSize={20} className={classes.text}>
-          {title}
+        <div
+          className={classes.icon}
+          style={{ color: props.color || teal[500] }}
+        >
+          {props.icon}
+        </div>
+        <Typography
+          variant="h5"
+          fontSize={20}
+          className={classes.text}
+          color={props.color || teal[500]}
+        >
+          {props.title}
         </Typography>
       </Box>
     </div>
