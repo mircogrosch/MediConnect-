@@ -1,5 +1,13 @@
 import { postPatient, postDoctor } from "../../actions";
 import swal from 'sweetalert';
+
+export const handleSelectProfesional = (event, input, setInput) => {
+  setInput({
+    ...input,
+    specialities: [event.target.value],
+  });
+};
+
 export const handleSubmitProfesional = (
   event,
   state,
@@ -18,11 +26,12 @@ export const handleSubmitProfesional = (
     showConf: false,
     dni: "",
     address: "",
-    speciality: "",
+    specialities: [],
     signature: "",
     enrollment: "",
   });
   dispatch(postDoctor(state));
+  console.log(state);
   alert("Usuario registrado exitosamente");
   history.push("/login");
 };
@@ -31,7 +40,7 @@ export const handleChange = (prop, state, set) => (event) => {
     set({ ...state, [prop]: event.target.value})
 }
 export const handleChangeSpecial = (e, state, set) => {
-    set(e.target.value);
+  set({ ...state, [prop]: event.target.value });
 };
 
 export const handleClickShowPassword = (state, set) => {
@@ -49,8 +58,8 @@ export const handleClickShowConf = (state, set) => {
 };
 
 export const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-}
+  event.preventDefault();
+};
 
 export const handleSubmit = (e, errors, state, set, dispatch, history) => {
   e.preventDefault();
@@ -77,7 +86,6 @@ export const handleSubmit = (e, errors, state, set, dispatch, history) => {
 } 
 
 
-
 /** 
  * Valida que haya un usuario logeado y cual es su rol, si no está logeado lo regresa al login. 
 */ 
@@ -97,3 +105,6 @@ export const validateUser=(user,history)=>{
       return history.push("/account/profesional")
     }
 }
+
+}
+

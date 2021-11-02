@@ -60,13 +60,13 @@ const FormPacientCreate = () =>{
         // plan: "",
         num_member: "",
     });
-    if(!values.name) {errors.name = 'Se requiere un Nombre'};
-    if(!values.lastname) {errors.lastname = 'Se requiere un Apellido'};
-    if(!values.email) {errors.email = 'Se requiere un Email'};
-    if(!values.password) {errors.password = 'Se requiere contraseña'};
+    // if(!values.name) {errors.name = 'Se requiere un Nombre'};
+    // if(!values.lastname) {errors.lastname = 'Se requiere un Apellido'};
+    // if(!values.email) {errors.email = 'Se requiere un Email'};
+    // if(!values.password) {errors.password = 'Se requiere contraseña'};
     if(values.password !== values.confirmPass) {errors.idemPass = 'Contraseña distinta'};
-    if(!values.dni) {errors.dni = 'Se requiere un DNI'};
-    if(!values.address) {errors.address = 'Se requiere una Direccion'};
+    // if(!values.dni) {errors.dni = 'Se requiere un DNI'};
+    // if(!values.address) {errors.address = 'Se requiere una Direccion'};
 
     return(
         <>
