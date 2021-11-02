@@ -1,5 +1,7 @@
 import { Box, Icon, Typography, Button } from "@material-ui/core";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { AccountCircle } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
@@ -47,7 +49,24 @@ const MyProfile = styled(AccountCircle)({
   margin: "10px",
 });
 
-const CardAdd = ({ name, lastname, address, specialities }) => {
+const CardAdd = ({
+  name,
+  lastname,
+  address,
+  specialities,
+  post,
+  idPatient,
+  idDoctor,
+}) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleClick = () => {
+    dispatch(post(idPatient, idDoctor));
+    alert("Medico agregado exitosamente");
+    history.push(`/account/prueba/${idPatient}`);
+  };
+
   let docName = "Dr. " + name + " " + lastname;
   return (
     <MyBox sx={{ backgroundColor: teal[600] }}>
@@ -75,7 +94,7 @@ const CardAdd = ({ name, lastname, address, specialities }) => {
           <b>Direccion:</b> {address}
         </Typography>
       </MyBox3>
-      <Button>Agregar</Button>
+      <Button onClick={handleClick}>Agregar</Button>
     </MyBox>
   );
 };

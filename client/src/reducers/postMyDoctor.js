@@ -1,11 +1,11 @@
 import types from "../actions/types";
 
-export const myDoctors = (state = [], action) => {
+export const postMyDoctor = (state = [], action) => {
   switch (action.type) {
-    case types.GET_MY_DOCTORS:
+    case types.POST_MY_DOCTOR:
+      console.log("POST_MY_DOCTOR REDUCEEEEEEEEEER");
       return {
         ...state,
-        names: action.payload,
       };
     default:
       return state;

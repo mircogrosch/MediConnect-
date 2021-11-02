@@ -11,7 +11,9 @@ export const getDoctors = () => {
 
 export const getUser = (user) => {
   return async function (dispatch) {
-    const response = await axios.post(`${URL}/login`, user,{withCredentials:true});
+    const response = await axios.post(`${URL}/login`, user, {
+      withCredentials: true,
+    });
     dispatch({ type: types.GET_USER_LOGIN, payload: response.data });
   };
 };
@@ -75,15 +77,33 @@ export const getHealthInsurances = () => {
 };
 
 export const getMyDoctors = (payload) => {
-  return async function(dispatch) {
+  return async function (dispatch) {
     try {
       let myDocs = await axios.get(`${URL}/patient/doctors/${payload}`);
       return dispatch({
         type: types.GET_MY_DOCTORS,
-        payload: myDocs.data
-      })
+        payload: myDocs.data,
+      });
     } catch (error) {
       alert(error);
     }
-  }
-}
+  };
+};
+
+export const postMyDoctor = (payload, id_Doctor) => {
+  return async function (dispatch) {
+    try {
+      console.log("POST_MY_DOCTOR ACTIONNNNNNN", id_Doctor);
+      const response = await axios.post(`${URL}/patient/doctors/${payload}`, {
+        id_Doctor: id_Doctor,
+      });
+      console.log("POST_MY_DOCTOR ACTIONNNNNNN response", response);
+      return dispatch({
+        type: types.POST_MY_DOCTOR,
+        id_Doctor,
+      });
+    } catch (error) {
+      alert(error); // CORREGIR! ----> EL MENSAJE A MOSTRAR TIENE QUE VENIR DEL BACK
+    }
+  };
+};
