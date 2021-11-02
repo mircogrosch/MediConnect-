@@ -2,20 +2,10 @@ import React, { useEffect } from "react";
 import { Grid } from "@mui/material";
 import CardAdd from "./CardAdd";
 import { useDispatch, useSelector } from "react-redux";
-import { getDoctors, getMyDoctors } from "../../actions/index";
+import { getDoctors, postMyDoctor } from "../../actions/index";
 
 function ContainerCardAdd({ props }) {
   const dispatch = useDispatch();
-
-  let MyDoctors = useSelector((state) => state.myDoctors);
-  console.log("myDoctors", MyDoctors);
-  console.log("myDoctors typeof", typeof MyDoctors);
-
-  useEffect(() => {
-    dispatch(getMyDoctors(props.match.params.id));
-  }, []);
-
-  //////////////////////////////////////////////////////////////////////////////////
   let allDoctors = useSelector((state) => state.allDoctors);
   allDoctors = allDoctors.allDoctors;
   console.log("allDoctors", allDoctors);
@@ -46,6 +36,9 @@ function ContainerCardAdd({ props }) {
                 name={e.name}
                 lastname={e.lastname}
                 address={e.address}
+                post={postMyDoctor}
+                idPatient={props.match.params.id}
+                idDoctor={e.id}
                 specialities={
                   e.specialities.length ? e.specialities[0].name : "CARDIOLOGIA"
                 }

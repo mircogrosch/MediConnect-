@@ -17,7 +17,7 @@ const createPatient = async (req, res) => {
     email,
     password,
     num_member,
-    healthInsuranceId
+    healthInsuranceId,
   } = req.body;
   const rol = "Patient";
   try {
@@ -210,11 +210,15 @@ const addDoctor = async (req, res) => {
       id: id,
     },
   });
-  await patient.addDoctor([id_Doctor]);
-  res.json({
-    data: patient,
-    message: "Doctor añadido a lista de doctores de paciente",
-  });
+  try {
+    await patient.addDoctor([id_Doctor]);
+    res.json({
+      data: patient,
+      message: "Doctor añadido a lista de doctores de paciente",
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
 const deleteDoctor = async (req, res) => {
@@ -225,11 +229,15 @@ const deleteDoctor = async (req, res) => {
       id: id,
     },
   });
-  await patient.removeDoctor([id_Doctor]);
-  res.json({
-    data: patient,
-    message: "Doctor borrado de la lista de doctores de paciente",
-  });
+  try {
+    await patient.removeDoctor([id_Doctor]);
+    res.json({
+      data: patient,
+      message: "Doctor borrado de la lista de doctores de paciente",
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
 module.exports = {

@@ -7,6 +7,7 @@ import notification from "./notification.js";
 import users from "./users";
 import allDoctors from "./allDoctors";
 import { myDoctors } from "./myDoctors";
+import { postMyDoctor } from "./postMyDoctor";
 
 //import reducers here
 export default combineReducers({
@@ -19,4 +20,5 @@ export default combineReducers({
   notification,
   allDoctors,
   myDoctors,
+  postMyDoctor,
 });

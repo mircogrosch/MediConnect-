@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import SearchBar from '../SearchBar/SearchBar'
-import FiltroSelect from '../FiltroSelect/FiltroSelect'
+import SearchBar from "../SearchBar/SearchBar";
+import FiltroSelect from "../FiltroSelect/FiltroSelect";
 import Card from "../Card/Card";
 import AddProfesionals from "../Card/AddProfesionals";
 import { Grid } from "@mui/material";
@@ -12,48 +12,55 @@ import { getMyDoctors } from "../../actions";
 import { Link } from "react-router-dom";
 
 const MyGrid = styled(Grid)({
-    display: 'flex',
-    marginTop: '70px'
-})
-
+  display: "flex",
+  marginTop: "70px",
+});
 
 const MisProfesionales = (props) => {
-    const dispatch = useDispatch();
-    let MyDoctors = useSelector((state) => state.myDoctors.names);
-;
-    console.log("myDoctors", MyDoctors);
-    console.log("myDoctors typeof", typeof MyDoctors);
-  
-    useEffect(() => {
-      dispatch(getMyDoctors(props.match.params.id));
-    }, []);
-    return(
-        <Box sx={{backgroundColor: '#b2dfdb', margin:'5px', borderRadius:'10px'}}>
-        <Grid>
-            <SimpleAppBar/>
-            <MyGrid>
-                <FiltroSelect/>
-                <SearchBar/>
-            </MyGrid>
-            <Box sx={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-                <Grid 
-                container items
-                display='flex'
-                justifyContent='center'
-                >
-                    <Link to='/prueba2'>
-                    <AddProfesionals/>
-                    </Link>
-                    {MyDoctors && MyDoctors.data.map((e) => {
-                        return (
-                        <Card name={e.name} lastname={e.lastname} address={e.address}/>
-                        );
-                    })}
-                </Grid>
-            </Box>
-        </Grid>
-        </Box>
-    )
-}
+  const dispatch = useDispatch();
+  let MyDoctors = useSelector((state) => state.myDoctors.names);
+  console.log("myDoctors", MyDoctors);
+  console.log("myDoctors typeof", typeof MyDoctors);
 
-export default MisProfesionales
+  useEffect(() => {
+    dispatch(getMyDoctors(props.match.params.id));
+  }, []);
+  return (
+    <Box
+      sx={{ backgroundColor: "#b2dfdb", margin: "5px", borderRadius: "10px" }}
+    >
+      <Grid>
+        <SimpleAppBar />
+        <MyGrid>
+          <FiltroSelect />
+          <SearchBar />
+        </MyGrid>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Grid container items display="flex" justifyContent="center">
+            <Link to={`/account/doctors/${props.match.params.id}`}>
+              <AddProfesionals />
+            </Link>
+            {MyDoctors &&
+              MyDoctors.data.map((e) => {
+                return (
+                  <Card
+                    name={e.name}
+                    lastname={e.lastname}
+                    address={e.address}
+                  />
+                );
+              })}
+          </Grid>
+        </Box>
+      </Grid>
+    </Box>
+  );
+};
+
+export default MisProfesionales;
