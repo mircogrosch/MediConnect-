@@ -6,8 +6,7 @@ import { useStyles } from "../../styles/home/perfil";
 import circleUser from "../../img/user.png";
 import BodyData from "./perfil/BodyData";
 
-
-function Perfil({name,lastname,address,dni, color, bgDarkColor}) {
+function Perfil({ name, lastname, address, dni, color, bgColor, bgDarkColor }) {
   const classes = useStyles();
 
   return (
@@ -15,7 +14,7 @@ function Perfil({name,lastname,address,dni, color, bgDarkColor}) {
       container
       item
       className={classes.root}
-      sx={{ height: { md: "75vh" }, background: props.bgColor || teal[100] }}
+      sx={{ height: { md: "75vh" }, background: bgColor || teal[100] }}
     >
       <IconButton
         style={{
@@ -26,16 +25,16 @@ function Perfil({name,lastname,address,dni, color, bgDarkColor}) {
       >
         <ModeEditOutlined
           fontSize="medium"
-          style={{ color: props.color || teal[800] }}
+          style={{ color: color || teal[800] }}
         />
       </IconButton>
       <img src={circleUser} alt="user profile" className={classes.circleUser} />
       <Box>
         <BodyData
           classes={classes}
-          name={name} 
-          lastname={lastname} 
-          address={address} 
+          name={name}
+          lastname={lastname}
+          address={address}
           dni={dni}
           color={color}
           bgColor={bgDarkColor || teal[200]}
