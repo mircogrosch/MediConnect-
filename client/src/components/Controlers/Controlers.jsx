@@ -40,7 +40,7 @@ export const handleChange = (prop, state, set) => (event) => {
     set({ ...state, [prop]: event.target.value})
 }
 export const handleChangeSpecial = (e, state, set) => {
-  set({ ...state, [e.target.name]: e.target.value });
+  set(e.target.value);
 };
 
 export const handleClickShowPassword = (state, set) => {
