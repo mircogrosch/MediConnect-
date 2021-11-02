@@ -8,7 +8,7 @@ import SimpleAppBar from "../AppBar/SimpleAppBar";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
-import { getDoctors } from "../../actions";
+import { getMyDoctors } from "../../actions";
 import { Link } from "react-router-dom";
 
 const MyGrid = styled(Grid)({
@@ -17,15 +17,15 @@ const MyGrid = styled(Grid)({
 })
 
 
-const MisProfesionales = () => {
+const MisProfesionales = (props) => {
     const dispatch = useDispatch();
-    let allDoctors = useSelector((state) => state.allDoctors);
-    allDoctors = allDoctors.allDoctors;
-    console.log("allDoctors", allDoctors);
-    console.log("allDoctors typeof", typeof allDoctors);
+    let MyDoctors = useSelector((state) => state.myDoctors.names);
+;
+    console.log("myDoctors", MyDoctors);
+    console.log("myDoctors typeof", typeof MyDoctors);
   
     useEffect(() => {
-      dispatch(getDoctors());
+      dispatch(getMyDoctors(props.match.params.id));
     }, []);
     return(
         <Box sx={{backgroundColor: '#b2dfdb', margin:'5px', borderRadius:'10px'}}>
@@ -44,9 +44,9 @@ const MisProfesionales = () => {
                     <Link to='/prueba2'>
                     <AddProfesionals/>
                     </Link>
-                    {allDoctors.map((e) => {
+                    {MyDoctors && MyDoctors.data.map((e) => {
                         return (
-                        <Card name={e.name} lastname={e.lastname} address={e.address} specialities={e.specialities[0].name}/>
+                        <Card name={e.name} lastname={e.lastname} address={e.address}/>
                         );
                     })}
                 </Grid>
