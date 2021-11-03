@@ -57,18 +57,26 @@ export function getSpecialities() {
   };
 }
 
-export const postPatient = (payload) => {
+export const postPatient = (payload, history) => {
   return async function (dispatch) {
     try {
       await axios.post(`${URL}/patient`, payload);
-      console.log(payload);
-      alert("Se creo el paciente exitosamente");
+      swal({
+        title: `El registro fue exitoso`,
+        icon: "success",
+        button: "Continuar",
+      }).then(() => history.push("/login"));
       return dispatch({
         type: types.POST_PATIENT,
         payload,
       });
     } catch (error) {
-      alert(error);
+      swal({
+        title: "No se puedo registrar el usuario",
+        dangerMode: true,
+        icon: "error",
+        button: "Reintentar",
+      }).then(() => history.push("/register/pacient"));
     }
   };
 };
