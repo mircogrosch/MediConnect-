@@ -66,6 +66,8 @@ const createPatient = async (req, res) => {
 };
 
 /****************** getPatient ******************
+http://localhost:3001/patient/dni_paciente
+
 ej: (method: GET) http://localhost:3001/patient/999
 
 res: {
@@ -124,9 +126,10 @@ const getPatient = async (req, res) => {
   }
 };
 
-
 /******************* getPatients ******************
-ej: (method GET) http://localhost:3001/patient
+http://localhost:3001/patient
+
+ej: (method: GET) http://localhost:3001/patient
 
 res: {
     "data": [
@@ -192,50 +195,95 @@ const getPatients = async (req, res) => {
   }
 };
 
+/******************* getDoctor ******************
+http://localhost:3001/patient/doctor?name=Carlos&dni=dni_paciente
+
+ej: (method: GET) http://localhost:3001/patient/doctor?name=Car&dni=999
+
+res: {
+    "data": [
+        {
+            "id": "cea5f0e4-a818-4a53-b842-4f5b5e3301c0",
+            "enrollment": 12,
+            "location": "Belgrano 125",
+            "personDni": 222,
+            "Doctor_Patient": {
+                "createdAt": "2021-11-03T16:54:27.878Z",
+                "updatedAt": "2021-11-03T16:54:27.878Z",
+                "doctorId": "cea5f0e4-a818-4a53-b842-4f5b5e3301c0",
+                "patientId": "b6898307-9563-40f5-8a06-0220147d07c6"
+            },
+            "person": {
+                "dni": 222,
+                "name": "Carlos",
+                "lastname": "Villa",
+                "address": "Calle falsa 123",
+                "imageProfile": null,
+                "email": "cacho02@hotmail.com",
+                "password": "12345",
+                "rol": "Doctor"
+            },
+            "specialities": [
+                {
+                    "id": "87b65fcf-8951-493a-b246-02f9a35fc968",
+                    "name": "ALERGIA",
+                    "Doctor_Speciality": {
+                        "createdAt": "2021-11-03T16:43:25.167Z",
+                        "updatedAt": "2021-11-03T16:43:25.167Z",
+                        "doctorId": "cea5f0e4-a818-4a53-b842-4f5b5e3301c0",
+                        "specialityId": "87b65fcf-8951-493a-b246-02f9a35fc968"
+                    }
+                }
+            ]
+        }
+    ],
+    "message": "Lista de Doctores de Alex"
+}
+*/
 const getDoctor = async (req, res) => {
-  const { name, id } = req.query;
+  let { name, dni } = req.query;
+  name = name.toString();
+  dni = parseInt(dni);
   try {
-    const patient = await Patient.findOne({
+    const patient = await Person.findOne({
       where: {
-        id: id,
+        dni: dni,
       },
       include: {
-        model: Doctor,
+        model: Patient,
         include: {
-          model: Person,
-          where: {
-            name: {
-              [Op.like]: `%${name}%`,
+          model: Doctor,
+          include: [
+            {
+              model: Person,
+              where: {
+                name: {
+                  [Op.like]: `%${name}%`,
+                },
+              },
             },
-          },
+            {
+              model: Speciality,
+            },
+          ],
         },
       },
     });
-    console.log(patient.dataValues.doctors[0].person);
-    let doctors = await patient
-      .getDoctors({
-        attributes: ["personDni"],
-      })
-      .then((element) => element.map((item) => item.personDni));
-    let persons = await Person.findAll({
-      where: {
-        [Op.and]: [
-          {
-            name: {
-              [Op.like]: `%${name}%`,
-            },
-          },
-          {
-            dni: {
-              [Op.in]: doctors,
-            },
-          },
-        ],
-      },
-    });
+    if (patient) {
+      if (patient.patient.doctors.length > 0) {
+        return res.json({
+          data: patient.patient.doctors,
+          message: `Lista de Doctores de ${patient.name}`,
+        });
+      }
+      return res.json({
+        data: patient.patient.doctors,
+        message: `El Paciente ${patient.name} no tiene a nadie en su lista de Doctores`,
+      });
+    }
     res.json({
-      data: patient.doctors,
-      message: "Lista de Doctores de un Paciente",
+      data: patient,
+      message: `Paciente no existe`,
     });
   } catch (error) {
     console.log(error);
