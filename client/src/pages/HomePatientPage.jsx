@@ -51,7 +51,7 @@ function HomePatientPage() {
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">
             <ShifsNotificator />
-            <ContainerCards />
+            <ContainerCards cardInfo={cardInfo}/>
           </Grid>
         </Grid>
       </Box>
