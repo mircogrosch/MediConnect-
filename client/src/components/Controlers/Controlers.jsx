@@ -1,11 +1,14 @@
 import { postPatient, postDoctor } from "../../actions";
 import swal from "sweetalert";
+import { filterSpecialities } from "../../actions/index";
 
 export const handleChange = (prop, state, set) => (event) => {
   set({ ...state, [prop]: event.target.value });
 };
-export const handleChangeSpecial = (e, state, set) => {
+// Controla los cambios del componente "Select especialidad"
+export const handleChangeSpecial = (e, state, set, dispatch) => {
   set(e.target.value);
+  dispatch(filterSpecialities(e.target.value));
 };
 
 export const handleClickShowPassword = (state, set) => {

@@ -112,11 +112,9 @@ export const getMyDoctors = (payload) => {
 export const postMyDoctor = (payload, id_Doctor) => {
   return async function (dispatch) {
     try {
-      console.log("POST_MY_DOCTOR ACTIONNNNNNN", id_Doctor);
       const response = await axios.post(`${URL}/patient/doctors/${payload}`, {
         id_Doctor: id_Doctor,
       });
-      console.log("POST_MY_DOCTOR ACTIONNNNNNN response", response);
       return dispatch({
         type: types.POST_MY_DOCTOR,
         id_Doctor,
@@ -124,5 +122,12 @@ export const postMyDoctor = (payload, id_Doctor) => {
     } catch (error) {
       alert(error); // CORREGIR! ----> EL MENSAJE A MOSTRAR TIENE QUE VENIR DEL BACK
     }
+  };
+};
+
+export const filterSpecialities = (payload) => {
+  return {
+    type: types.FILTER_SPECIALITIES,
+    payload,
   };
 };
