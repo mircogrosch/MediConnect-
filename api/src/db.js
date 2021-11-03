@@ -50,17 +50,18 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 const { Person, Doctor, Patient, Speciality, HealthInsurance, Notification } = sequelize.models;
 
-// Uno a muchos
+// Uno a Uno
 Patient.belongsTo(Person); // crea tabla personDni dentro de la tabla Patient
-Person.hasMany(Patient);
+Person.hasOne(Patient);
+
+
+// Uno a Uno
+Doctor.belongsTo(Person);
+Person.hasOne(Doctor);
 
 // Uno a muchos
 Notification.belongsTo(Person); // crea tabla personDni dentro de la tabla Notification
 Person.hasMany(Notification);
-
-// Uno a muchos
-Doctor.belongsTo(Person);
-Person.hasMany(Doctor);
 
 // Uno a muchos
 Patient.belongsTo(HealthInsurance);
