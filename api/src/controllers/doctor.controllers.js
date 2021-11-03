@@ -63,53 +63,108 @@ const createDoctor = async (req, res) => {
   }
 };
 
+/******************* getDoctors ******************
+http://localhost:3001/doctor?dni=dni_Paciente
+ej: http://localhost:3001/doctor?dni=999
+
+res: {
+    "data": [
+        {
+            "dni": 3738,
+            "name": "Victorio",
+            "lastname": "Galoeano",
+            "address": "Calle falsa 123",
+            "imageProfile": null,
+            "email": "vito@hotmail.com",
+            "password": "12345",
+            "rol": "Doctor",
+            "doctor": {
+                "id": "d515c130-e0c7-417a-8a7a-13401b82714b",
+                "enrollment": 12,
+                "location": "Belgrano 125",
+                "personDni": 3738
+            }
+        }
+    ],
+    "message": "Doctores de la BD"
+}
+*/
 const getDoctors = async (req, res) => {
-  let { name } = req.query;
+  let { name, dni } = req.query; // Nombre de especialidad , DNI de Paciente
+  let doctors = null;
   try {
-    let doctorsDB;
-    if (typeof name != "undefined") {
-      name = name.toUpperCase();
-      doctorsDB = await Doctor.findAll({
-        include: [
-          {
-            model: Person,
-          },
-          {
-            model: Speciality,
-            where: {
-              name: { [Op.like]: `%${name}%` },
-            },
-          },
-        ],
+    if (typeof dni != "undefined") {
+      const patient = await Patient.findOne({
+        where: {
+          personDni: dni,
+        },
+        include: {
+          model: Doctor,
+        },
       });
+      let doctors_dni = await patient.getDoctors({
+        attributes: ["personDni"],
+      });
+      doctors_dni = doctors_dni.map((doc) => doc.dataValues.personDni); // arreglo de dnis de Doctores
+      if (typeof name !== "undefined") {
+        doctors = await Person.findAll({
+          where: {
+            [Op.and]: [
+              {
+                dni: {
+                  [Op.not]: doctors_dni,
+                },
+              },
+              {
+                rol: "Doctor",
+              },
+              {
+                name: {
+                  [Op.like]: `%${name}%`,
+                },
+              },
+            ],
+          },
+          include: {
+            model: Doctor,
+          },
+        });
+      } else {
+        doctors = await Person.findAll({
+          where: {
+            [Op.and]: [
+              {
+                dni: {
+                  [Op.not]: doctors_dni,
+                },
+              },
+              {
+                rol: "Doctor",
+              },
+            ],
+          },
+          include: {
+            model: Doctor,
+          },
+        });
+      }
     } else {
-      doctorsDB = await Doctor.findAll({
-        include: [
-          {
-            model: Person,
-          },
-          {
-            model: Speciality,
-          },
-        ],
+      doctors = await Person.findAll({
+        where: {
+          rol: "Doctor",
+        },
+        include: {
+          model: Doctor,
+        },
       });
     }
-
-    let doctors = [];
-    doctorsDB.forEach((doctor) => {
-      let aux = {};
-      for (let key in doctor.dataValues) {
-        if (key != "person") {
-          aux[key] = doctor.dataValues[key];
-        } else {
-          for (let key in doctor.dataValues.person.dataValues) {
-            aux[key] = doctor.dataValues.person.dataValues[key];
-          }
-        }
-      }
-      doctors.push(aux);
-    });
-    res.json({ data: doctors, message: "Doctores de la BD" });
+    if (doctors.length === 0) {
+      return res.json({
+        data: doctors,
+        message: "No se encontraron Doctores registrados",
+      });
+    }
+    res.json({ data: doctors, message: "Todos los Doctores Registrados" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
