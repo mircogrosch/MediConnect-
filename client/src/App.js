@@ -8,6 +8,8 @@ import HomePatientPage from "./pages/HomePatientPage";
 import MisProfesionales from "./components/MisProfesionales/MisProfesionales";
 import AddDoctors from "./pages/AddDoctors";
 import HomePageDoctor from "./pages/HomePageDoctor";
+import Mensajes from './pages/Mensajes'
+
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
       <Route path="/account/patient" component={HomePatientPage} />
       <Route path="/account/doctors/:id" component={AddDoctors} />
       <Route exact path="/" component={LandingPage} />
+      <Route path='/mensajes' component={Mensajes}/>
     </div>
   );
 }
