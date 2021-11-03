@@ -55,7 +55,12 @@ function ContainerCards() {
           <Card title="Mis Órdenes" icon={cardInfo[4].icon} />
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          <Card title="Mensajes" icon={cardInfo[5].icon} />
+          <Link
+              to={`/mensajes`}
+              style={{ textDecoration: "none" }}
+            >
+            <Card title="Mensajes" icon={cardInfo[5].icon} />
+          </Link>
         </Grid>
       </Grid>
     </Box>
