@@ -3,15 +3,22 @@ import { Grid } from "@mui/material";
 import CardAdd from "./CardAdd";
 import { useDispatch, useSelector } from "react-redux";
 import { getDoctors, postMyDoctor } from "../../actions/index";
+import {socket,socket_Connect,send_Notifications} from '../Controlers/notifications'
+
 
 function ContainerCardAdd({ props }) {
   const dispatch = useDispatch();
   let allDoctors = useSelector((state) => state.allDoctors);
+  let userLog = useSelector((state) => state.users.users.user);
   allDoctors = allDoctors.allDoctors;
 
   useEffect(() => {
     dispatch(getDoctors());
   }, []);
+
+  useEffect(()=>{
+    socket_Connect(userLog,socket)
+  },[])
 
   return (
     <Grid
@@ -35,12 +42,13 @@ function ContainerCardAdd({ props }) {
                 name={e.name}
                 lastname={e.lastname}
                 address={e.address}
-                post={postMyDoctor}
+                sendNotification={send_Notifications}
                 idPatient={props.match.params.id}
                 idDoctor={e.id}
                 specialities={
                   e.specialities.length ? e.specialities[0].name : "Cardio"
                 }
+                email={e.email}
               />
             </Grid>
           );

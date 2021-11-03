@@ -1,5 +1,11 @@
 const { Person, Doctor, Patient, Speciality } = require("../db");
 const { Op } = require("sequelize");
+const bcrypt = require("bcrypt");
+
+//Encriptar password
+function encryptPassword(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+}
 
 const createDoctor = async (req, res) => {
   const {
@@ -24,7 +30,7 @@ const createDoctor = async (req, res) => {
         address,
         imageProfile,
         email,
-        password,
+        password:encryptPassword(password),
         rol,
       },
       {
