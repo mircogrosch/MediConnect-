@@ -61,6 +61,7 @@ const FormProfesionalCreate = () => {
     if (data.password !== data.confirmPass) return setEqual(false);
     data.signature = input.signature;
     dispatch(postDoctor(data));
+    console.log(data);
     swal({
       title: `El registro fue exitoso`,
       // dangerMode: false,
@@ -195,7 +196,7 @@ const FormProfesionalCreate = () => {
             <MyInput
               id="standard-basic"
               label="Dirección"
-              error={errors.confirmPass ? true : false}
+              error={errors.address ? true : false}
               {...register("address", { required: true })}
               variant="standard"
             />
