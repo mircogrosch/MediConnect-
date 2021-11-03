@@ -7,46 +7,44 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSpecialities } from "../../actions";
 
 const MySelect = styled(TextField)({
-    backgroundColor: '#80cbc4',
-    width: '500px',
-    // height: '50px',
-    borderRadius: '3px',
-    margin: '30px',
-    marginRight:'270px',
-})
+  backgroundColor: "#80cbc4",
+  width: "500px",
+  borderRadius: "3px",
+  margin: "30px",
+  marginRight: "270px",
+});
 
-const FiltroSelect = () =>{
+const FiltroSelect = () => {
+  const specialities = useSelector((state) => state.allSpecialities);
+  const dispatch = useDispatch();
+  const [special, setSpecial] = useState("");
 
-    const specialities = useSelector((state) => state.allSpecialities)
-    console.log(specialities)
-    const dispatch = useDispatch()
-    const [special, setSpecial] = useState('')
+  useEffect(() => {
+    dispatch(getSpecialities());
+  }, [dispatch]);
 
-    useEffect(() => {
-        dispatch(getSpecialities())
-    },[dispatch])
-      
-    return(
-        <Box>
-            <MySelect
-            select
-            color = 'transparent'
-            label="Especialidades"
-            value={special}
-            SelectProps={{
-                native: true,
-            }}
-            onChange={(e) => handleChangeSpecial(e, special, setSpecial)}
-            // variant='standard'
-            >
-                {specialities.allSpecialities.map((p) => (
-                    <option key={p.id} value={p.id}>
-                        {p.name}
-                    </option>
-                ))}
-            </MySelect>
-         </Box>
-    )
-}
+  return (
+    <Box>
+      <MySelect
+        select
+        color="transparent"
+        label="Especialidad"
+        value={special}
+        SelectProps={{
+          native: true,
+        }}
+        onChange={(e) => handleChangeSpecial(e, special, setSpecial, dispatch)}
+      >
+        <option select>{""}</option>
+        <option>{"TODAS"}</option>
+        {specialities.allSpecialities.map((p) => (
+          <option key={p.id} value={p.id}>
+            {p.name}
+          </option>
+        ))}
+      </MySelect>
+    </Box>
+  );
+};
 
-export default FiltroSelect
+export default FiltroSelect;

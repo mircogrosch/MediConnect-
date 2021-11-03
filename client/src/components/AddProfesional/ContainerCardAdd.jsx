@@ -11,7 +11,7 @@ function ContainerCardAdd({ props }) {
   let allDoctors = useSelector((state) => state.allDoctors);
   let userLog = useSelector((state) => state.users.users.user);
   allDoctors = allDoctors.allDoctors;
- 
+
   useEffect(() => {
     dispatch(getDoctors());
   }, []);
@@ -37,7 +37,7 @@ function ContainerCardAdd({ props }) {
       {allDoctors &&
         allDoctors.map((e) => {
           return (
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} key={e.id}>
               <CardAdd
                 name={e.name}
                 lastname={e.lastname}
@@ -46,7 +46,7 @@ function ContainerCardAdd({ props }) {
                 idPatient={props.match.params.id}
                 idDoctor={e.id}
                 specialities={
-                  e.specialities.length ? e.specialities[0].name : "CARDIOLOGIA"
+                  e.specialities.length ? e.specialities[0].name : "Cardio"
                 }
                 email={e.email}
               />

@@ -18,6 +18,8 @@ import {
 import { teal } from "@mui/material/colors";
 import logo from "../../img/mediconnect-logo.png";
 import {socket } from "../Controlers/notifications";
+import MenuPrueba from './MenuPrueba'
+
 
 export default function PrimarySearchAppBar(props) {
   //state global
@@ -88,7 +90,7 @@ export default function PrimarySearchAppBar(props) {
   );
 
   return (
-    <Box>
+    <Box sx={{boxShadow: "-1px 4px 3px rgba(171,171,171,1)"}}>
       <AppBar
         position="static"
         elevation={0}
@@ -99,18 +101,10 @@ export default function PrimarySearchAppBar(props) {
             <img src={logo} width="200px" alt="MediConnect+" />
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
               <Badge badgeContent={numberNotification} color="error">
-                <NotificationsOutlined
-                  fontSize="large"
-                  sx={{ color: props.color || teal[900] }}
-                />
+                <MenuPrueba/>
               </Badge>
-            </IconButton>
+            {/* </IconButton> */}
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton

@@ -19,8 +19,6 @@ const MyGrid = styled(Grid)({
 const MisProfesionales = (props) => {
   const dispatch = useDispatch();
   let MyDoctors = useSelector((state) => state.myDoctors.names);
-  console.log("myDoctors", MyDoctors);
-  console.log("myDoctors typeof", typeof MyDoctors);
 
   useEffect(() => {
     dispatch(getMyDoctors(props.match.params.id));

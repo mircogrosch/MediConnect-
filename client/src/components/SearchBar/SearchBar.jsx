@@ -8,8 +8,10 @@ const MySearchbar = styled(InputBase)({
     backgroundColor: '#80cbc4',
     width: '500px',
     borderRadius: '3px',
-    margin:'30px',
-    padding:'0px 0px 0px 10px'
+    margin:'15px',
+    // marginBottom:'0px',
+    padding:'0px 0px 0px 10px',
+    height: '50px'
 })
 
 const SearchBar = () =>{
