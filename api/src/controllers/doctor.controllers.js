@@ -174,28 +174,67 @@ const getDoctors = async (req, res) => {
   }
 };
 
-const getDoctor = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const doctor = await Doctor.findOne({
-      where: {
-        id: id,
-      },
-      include: {
-        model: Person,
-      },
-    });
-    let doctor_person = {};
-    for (let key in doctor.dataValues) {
-      if (key != "person") {
-        doctor_person[key] = doctor.dataValues[key];
-      } else {
-        for (let key in doctor.dataValues.person.dataValues) {
-          doctor_person[key] = doctor.dataValues.person.dataValues[key];
+/******************* getDoctor ******************
+ * http://localhost:3001/doctor/dni_Doctor
+ * 
+ * ej: http://localhost:3001/doctor/222
+ * 
+ * res: {
+    "data": {
+        "dni": 222,
+        "name": "Carlos",
+        "lastname": "Villa",
+        "address": "Calle falsa 123",
+        "imageProfile": null,
+        "email": "cacho02@hotmail.com",
+        "password": "12345",
+        "rol": "Doctor",
+        "doctor": {
+            "id": "cea5f0e4-a818-4a53-b842-4f5b5e3301c0",
+            "enrollment": 12,
+            "location": "Belgrano 125",
+            "personDni": 222,
+            "specialities": [
+                {
+                    "id": "87b65fcf-8951-493a-b246-02f9a35fc968",
+                    "name": "ALERGIA",
+                    "Doctor_Speciality": {
+                        "createdAt": "2021-11-03T16:43:25.167Z",
+                        "updatedAt": "2021-11-03T16:43:25.167Z",
+                        "doctorId": "cea5f0e4-a818-4a53-b842-4f5b5e3301c0",
+                        "specialityId": "87b65fcf-8951-493a-b246-02f9a35fc968"
+                    }
+                }
+            ]
         }
-      }
+    },
+    "message": "Doctor registrado con DNI: 222"
+}
+ * 
+*/
+const getDoctor = async (req, res) => {
+  let { id } = req.params;
+  let doctor = null;
+  try {
+    if (typeof id !== "undefined") {
+      id = parseInt(id);
+      doctor = await Person.findOne({
+        where: {
+          dni: id,
+          rol: "Doctor",
+        },
+        include: {
+          model: Doctor,
+          include: {
+            model: Speciality,
+          },
+        },
+      });
     }
-    res.json({ data: doctor_person, message: "Doctor de la BD" });
+    if (!doctor) {
+      return res.json({ data: doctor, message: `No se encontro Doctor registrado con DNI: ${id}` });
+    }
+    res.json({ data: doctor, message: `Doctor registrado con DNI: ${id}` });
   } catch (error) {
     console.log(error);
     res.status(500).json({
