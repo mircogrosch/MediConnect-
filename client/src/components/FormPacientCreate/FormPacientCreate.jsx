@@ -7,6 +7,7 @@ import { useStyles } from "../../styles/registerForms/patient.js";
 import { teal } from "@mui/material/colors";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
+  Box,
   FormControl,
   Input,
   InputLabel,
@@ -16,7 +17,6 @@ import {
   Grid,
   IconButton,
 } from "@mui/material";
-import swal from "sweetalert";
 import SimpleAppBar from "../AppBar/SimpleAppBar";
 
 const FormPacientCreate = () => {
@@ -46,18 +46,7 @@ const FormPacientCreate = () => {
     setEqual(true);
     if (data.password !== data.idem_password) return setEqual(false);
 
-    dispatch(postPatient(data));
-
-    swal({
-      title: `El registro fue exitoso`,
-      // dangerMode: false,
-      // icon: "error",
-      button: "Continuar",
-    });
-
-    setTimeout(() => {
-      history.push("/login");
-    }, 2000);
+    dispatch(postPatient(data, history));
   };
 
   return (
@@ -79,6 +68,7 @@ const FormPacientCreate = () => {
               variant="standard"
               label="Nombre"
               type="text"
+              className={classes.input}
               error={errors.name ? true : false}
               {...register("name", { required: true, maxLength: 30 })}
             />
@@ -180,20 +170,23 @@ const FormPacientCreate = () => {
               label="Ubicacion"
               type="text"
               className={classes.input}
-              error={errors.location ? true : false}
-              {...register("location", { required: true })}
+              error={errors.address ? true : false}
+              {...register("address", { required: true })}
             />
             <TextField
               select
+              variant="standard"
               label="Obra social"
               SelectProps={{
                 native: true,
               }}
-              variant="standard"
-              error={errors.obra_social ? true : false}
-              {...register("obra_social")}
+              className={classes.input}
+              error={errors.healthInsuranceId ? true : false}
+              {...register("healthInsuranceId")}
             >
-              <option disabled>Obra Social</option>
+              <option disabled selected>
+                {" "}
+              </option>
               {healthInsurances.names &&
                 healthInsurances.names.map((option) => {
                   return (
@@ -208,8 +201,8 @@ const FormPacientCreate = () => {
               label="N° socio"
               type="number"
               className={classes.input}
-              {...register("n_socio", { required: true })}
-              error={errors.n_socio ? true : false}
+              {...register("num_member", { required: true })}
+              error={errors.num_member ? true : false}
             />
           </FormControl>
         </Grid>
