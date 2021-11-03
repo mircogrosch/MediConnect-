@@ -1,5 +1,6 @@
 import axios from "axios";
 import types from "./types.js";
+import swal from "sweetalert";
 const URL = "http://localhost:3001";
 
 export const getDoctors = () => {
@@ -18,16 +19,26 @@ export const getUser = (user) => {
   };
 };
 
-export const postDoctor = (payload) => {
+export const postDoctor = (payload, history) => {
   return async function (dispatch) {
     try {
       const response = await axios.post(`${URL}/doctor`, payload);
+      swal({
+        title: `El registro fue exitoso`,
+        icon: "success",
+        button: "Continuar",
+      }).then(() => history.push("/login"));
       return dispatch({
         type: types.POST_DOCTOR,
         payload: response.data,
       });
     } catch (error) {
-      alert(error); // CORREGIR! ----> EN EL CASO DE QUE HAYA UN ERROR, EL MENSAJE A MOSTRAR TIENE QUE VENIR DEL BACK
+      swal({
+        title: "No se puedo registrar el usuario",
+        dangerMode: true,
+        icon: "error",
+        button: "Reintentar",
+      }).then(() => history.push("/register/doctor"));
     }
   };
 };

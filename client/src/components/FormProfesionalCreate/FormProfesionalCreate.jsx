@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { getSpecialities } from "../../actions/index";
 import {
   FormControl,
@@ -20,8 +19,8 @@ import useStyles from "./styles";
 import SimpleAppBar from "../AppBar/SimpleAppBar";
 import { useForm } from "react-hook-form";
 import { postDoctor } from "../../actions/index";
-import swal from "sweetalert";
 import { teal } from "@mui/material/colors";
+import { useHistory } from "react-router-dom";
 
 const MyButton = styled(Button)({
   width: "500px",
@@ -47,7 +46,6 @@ const FormProfesionalCreate = () => {
   });
   const [equal, setEqual] = useState(true);
 
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const {
@@ -56,21 +54,13 @@ const FormProfesionalCreate = () => {
     formState: { errors },
   } = useForm();
 
+  const history = useHistory();
+
   const onSubmit = (data) => {
     setEqual(true);
     if (data.password !== data.confirmPass) return setEqual(false);
     data.signature = input.signature;
-    dispatch(postDoctor(data));
-    console.log(data);
-    swal({
-      title: `El registro fue exitoso`,
-      // dangerMode: false,
-      // icon: "error",
-      button: "Continuar",
-    });
-    setTimeout(() => {
-      history.push("/login");
-    }, 1000);
+    dispatch(postDoctor(data, history));
   };
 
   let allSpecialities = useSelector((state) => state.allSpecialities);
@@ -85,13 +75,13 @@ const FormProfesionalCreate = () => {
   return (
     <div className={classes.root}>
       <Grid
-        marginTop="60px"
+        marginTop="50px"
         container
         spacing={0}
         direction="column"
         alignItems="center"
         justifyContent="center"
-        style={{ height: "100vh" }}
+        style={{ height: "110vh" }}
       >
         <Grid item xs={3}>
           <MyTitle variant="h4" align="center">
@@ -193,6 +183,14 @@ const FormProfesionalCreate = () => {
               {...register("dni", { required: true })}
               variant="standard"
             />
+            <MyInput
+              id="standard-basic"
+              label="Ubicación"
+              error={errors.location ? true : false}
+              {...register("location", { required: true })}
+              variant="standard"
+            />
+
             <MyInput
               id="standard-basic"
               label="Dirección"
