@@ -1,10 +1,11 @@
 import { Box, Icon, Typography, Button } from "@material-ui/core";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { AccountCircle } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
+import {socket} from '../Controlers/notifications'
 const MyIcon = styled(Icon)({
   display: "contents",
 });
@@ -54,17 +55,23 @@ const CardAdd = ({
   lastname,
   address,
   specialities,
-  post,
+  sendNotification,
   idPatient,
   idDoctor,
+  email
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-
+  //Global state
+  let userLog = useSelector((state) => state.users.users);
+  
   const handleClick = () => {
-    dispatch(post(idPatient, idDoctor));
-    alert("Medico agregado exitosamente");
-    history.push(`/account/prueba/${idPatient}`);
+    let userReciver ={ 
+      email: email,
+      id: idDoctor
+    }
+    sendNotification(userReciver,userLog,socket)
+    // history.push(`/account/prueba/${idPatient}`);
   };
 
   let docName = "Dr. " + name + " " + lastname;
