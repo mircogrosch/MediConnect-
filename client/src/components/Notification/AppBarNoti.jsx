@@ -17,7 +17,9 @@ import {
 } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import logo from "../../img/mediconnect-logo.png";
+import {socket } from "../Controlers/notifications";
 import MenuPrueba from './MenuPrueba'
+
 
 export default function PrimarySearchAppBar(props) {
   //state global
@@ -26,11 +28,15 @@ export default function PrimarySearchAppBar(props) {
   );
   const [numberNotification, setNotification] = useState(0);
 
-  useEffect(() => {
-    setNotification(notifications.length / 2);
-  }, [notifications]);
+  const dispatch = useDispatch();
 
-  console.log(notifications);
+  socket.on('reciveNotifications', request => {
+    dispatch({type:'SAVE_NOTIFICATION',payload:request})
+}) 
+
+  useEffect(() => {
+    setNotification(notifications.length);
+  }, [notifications]);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);

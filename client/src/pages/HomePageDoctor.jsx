@@ -13,7 +13,8 @@ import Perfil from "../components/Home/Perfil";
 import ShifsNotificator from "../components/Home/ShifsNotificator.jsx";
 import ContainerCards from "../components/Home/ContainerCards.jsx";
 import { useStyles } from "../styles/home";
-
+import { useSelector } from "react-redux";
+import {socket_Connect,socket} from '../components/Controlers/notifications'
 const cardInfo = [
   {
     title: "Agenda",
@@ -33,7 +34,10 @@ const cardInfo = [
 ];
 
 function HomePageDoctor() {
+  const user = useSelector(state=> state.users.users.user);
   const classes = useStyles();
+  //conexion con socket 
+  socket_Connect(user,socket);
 
   return (
     <Box className={classes.root} sx={{ background: teal[100] }}>
@@ -45,6 +49,10 @@ function HomePageDoctor() {
               bgColor={teal[500]}
               bgDarkColor={teal[800]}
               color={teal[50]}
+              name={user.name}
+              lastname={user.lastname}
+              dni={user.dni}
+              address={user.address}
             />
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">

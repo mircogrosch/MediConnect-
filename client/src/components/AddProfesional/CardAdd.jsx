@@ -1,11 +1,11 @@
 import { Box, Icon, Typography, Button } from "@material-ui/core";
 import React from "react";
-import { useDispatch,useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import { AccountCircle } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import {socket} from '../Controlers/notifications'
+import swal from "sweetalert";
 const MyIcon = styled(Icon)({
   display: "contents",
 });
@@ -60,8 +60,7 @@ const CardAdd = ({
   idDoctor,
   email
 }) => {
-  const dispatch = useDispatch();
-  const history = useHistory();
+
   //Global state
   let userLog = useSelector((state) => state.users.users);
   
@@ -71,7 +70,12 @@ const CardAdd = ({
       id: idDoctor
     }
     sendNotification(userReciver,userLog,socket)
-    // history.push(`/account/prueba/${idPatient}`);
+    swal({
+      title: "Se envio la solicitud!",
+      text: `Espera a que ${name} la acepte`,
+      icon: "success",
+      button: "Entendido",
+    });
   };
 
   let docName = "Dr. " + name + " " + lastname;

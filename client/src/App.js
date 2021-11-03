@@ -18,7 +18,7 @@ function App() {
       <Route path="/register/pacient" component={FormPacientCreate} />
       <Route path="/register/form" component={SelectorRegisterForm} />
       <Route path="/login" component={LoginPage} />
-      <Route path="/account/prueba/:id" component={MisProfesionales} />
+      <Route path="/account/profesionales/:id" component={MisProfesionales} />
       <Route path="/account/profesional" component={HomePageDoctor} />
       <Route path="/account/patient" component={HomePatientPage} />
       <Route path="/account/doctors/:id" component={AddDoctors} />
