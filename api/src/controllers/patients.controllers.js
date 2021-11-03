@@ -124,9 +124,51 @@ const getPatient = async (req, res) => {
   }
 };
 
+
+/******************* getPatients ******************
+ej: (method GET) http://localhost:3001/patient
+
+res: {
+    "data": [
+        {
+            "dni": 999,
+            "name": "Alex",
+            "lastname": "Villanueva",
+            "address": "Calle falsa 123",
+            "imageProfile": null,
+            "email": "alex@hotmail.com",
+            "password": "$2b$10$LBvXkX1ihvshYofwbH24JuRVHI5ZP5i6KIpu3ck/uPhuWLZxF4Kci",
+            "rol": "Patient",
+            "patient": {
+                "id": "b6898307-9563-40f5-8a06-0220147d07c6",
+                "num_member": 1,
+                "personDni": 999,
+                "healthInsuranceId": null
+            }
+        },
+        {
+            "dni": 888,
+            "name": "Maria",
+            "lastname": "Alvarez",
+            "address": "Calle falsa 123",
+            "imageProfile": null,
+            "email": "majo@hotmail.com",
+            "password": "$2b$10$UYaI3GZszizunmbMWQeyP.U67h4a4w8ytcFyUM5LjdpSCS3NkZjh6",
+            "rol": "Patient",
+            "patient": {
+                "id": "62fbf62c-64b1-43dc-82ef-26b1e0f2e253",
+                "num_member": 1,
+                "personDni": 888,
+                "healthInsuranceId": null
+            }
+        }
+    ],
+    "message": "Todos los Pcientes registrados"
+}
+*/
 const getPatients = async (req, res) => {
   try {
-    let patientsDB = await Person.findAll({
+    let patients = await Person.findAll({
       where: {
         rol: "Patient",
       },
@@ -134,7 +176,13 @@ const getPatients = async (req, res) => {
         model: Patient,
       },
     });
-    res.json({ data: patientsDB, message: "Pacientes de la BD" });
+    if (patients.length > 0) {
+      return res.json({
+        data: patients,
+        message: "Todos los Pcientes registrados",
+      });
+    }
+    res.json({ data: patients, message: "No se registran Pacientes" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
