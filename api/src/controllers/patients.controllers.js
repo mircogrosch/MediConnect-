@@ -1,5 +1,5 @@
 const { Person, Patient, Doctor, Speciality } = require("../db");
-const { Op, INTEGER, NUMBER } = require("sequelize");
+const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
 
 //Encriptar password
@@ -248,6 +248,7 @@ const getDoctor = async (req, res) => {
     const patient = await Person.findOne({
       where: {
         dni: dni,
+        rol: "Patient",
       },
       include: {
         model: Patient,
@@ -266,6 +267,7 @@ const getDoctor = async (req, res) => {
               model: Speciality,
             },
           ],
+          attributes: { exclude: ["Doctor_Patient"] },
         },
       },
     });
