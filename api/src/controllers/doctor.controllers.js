@@ -219,7 +219,7 @@ const getPatients = async (req, res) => {
     res.json({
       data: patients_persons,
       message: "Pacientes de Doctor",
-    });
+    }); 
   } catch (error) {
     console.log(error);
     res.status(500).json({
