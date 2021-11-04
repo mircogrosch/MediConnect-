@@ -2,7 +2,7 @@ import { MenuItem, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
-import { handleChangeSpecial } from "../Controlers/Controlers";
+import { handleSelect } from "../Controlers/Controlers";
 import { useDispatch, useSelector } from "react-redux";
 import { getSpecialities } from "../../actions";
 
@@ -33,7 +33,7 @@ const FiltroSelect = () => {
         SelectProps={{
           native: true,
         }}
-        onChange={(e) => handleChangeSpecial(e, special, setSpecial, dispatch)}
+        onChange={(e) => handleSelect(e, special, setSpecial, dispatch)}
       >
         <option select>{""}</option>
         <option>{"TODAS"}</option>
