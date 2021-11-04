@@ -17,19 +17,26 @@ import {
 } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import logo from "../../img/mediconnect-logo.png";
+import {socket } from "../Controlers/notifications";
+import MenuPrueba from './MenuPrueba'
 
-export default function PrimarySearchAppBar() {
+
+export default function PrimarySearchAppBar(props) {
   //state global
   const notifications = useSelector(
     (state) => state.notification.notifications
   );
   const [numberNotification, setNotification] = useState(0);
 
-  useEffect(() => {
-    setNotification(notifications.length / 2);
-  }, [notifications]);
+  const dispatch = useDispatch();
 
-  console.log(notifications);
+  socket.on('reciveNotifications', request => {
+    dispatch({type:'SAVE_NOTIFICATION',payload:request})
+}) 
+
+  useEffect(() => {
+    setNotification(notifications.length);
+  }, [notifications]);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -68,14 +75,6 @@ export default function PrimarySearchAppBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <IconButton size="large" color="inherit">
-          <Badge>
-            <AccountBoxOutlined />
-          </Badge>
-        </IconButton>
-        <Typography variant="inherit">List</Typography>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
@@ -91,29 +90,21 @@ export default function PrimarySearchAppBar() {
   );
 
   return (
-    <Box>
-      <AppBar position="static" elevation={0} sx={{ background: teal[200] }}>
+    <Box sx={{boxShadow: "-1px 4px 3px rgba(171,171,171,1)"}}>
+      <AppBar
+        position="static"
+        elevation={0}
+        sx={{ background: props.bgColor || teal[200] }}
+      >
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
             <img src={logo} width="200px" alt="MediConnect+" />
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton size="large">
-              <AccountBoxOutlined fontSize="large" sx={{ color: teal[900] }} />
-            </IconButton>
-            <Box width={20}></Box>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
               <Badge badgeContent={numberNotification} color="error">
-                <NotificationsOutlined
-                  fontSize="large"
-                  sx={{ color: teal[900] }}
-                />
+                <MenuPrueba/>
               </Badge>
-            </IconButton>
+            {/* </IconButton> */}
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -124,7 +115,7 @@ export default function PrimarySearchAppBar() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreVert sx={{ color: teal[900] }} />
+              <MoreVert sx={{ color: props.color || teal[900] }} />
             </IconButton>
           </Box>
         </Toolbar>

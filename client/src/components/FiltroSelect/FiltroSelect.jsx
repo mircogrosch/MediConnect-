@@ -3,51 +3,48 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { handleChangeSpecial } from "../Controlers/Controlers";
-import { useDispatch } from "react-redux";
-// import { getSpecialities } from "../../actions";
+import { useDispatch, useSelector } from "react-redux";
+import { getSpecialities } from "../../actions";
 
 const MySelect = styled(TextField)({
-    backgroundColor: '#80cbc4',
-    width: '500px',
-    // height: '50px',
-    borderRadius: '3px',
-    margin: '30px',
-    marginRight:'270px',
-})
+  backgroundColor: "#80cbc4",
+  width: "500px",
+  borderRadius: "3px",
+  margin: "30px",
+  marginRight: "270px",
+});
 
-const specialties = [
-    {value: 'Pediatria'},
-    {value: 'Kinesiologia'},
-    {value: 'Clinica medica'},
-    {value: 'Oftalmologo'},
-  ];
+const FiltroSelect = () => {
+  const specialities = useSelector((state) => state.allSpecialities);
+  const dispatch = useDispatch();
+  const [special, setSpecial] = useState("");
 
-const FiltroSelect = () =>{
-    // const dispatch = useDispatch()
-    // useEffect(() => {
-    //     dispatch(getSpecialities)
-    // })
-      
-    const [speciality, setSpeciality] = useState('');
-      
-    return(
-        <Box>
-            <MySelect
-            select
-            color = 'transparent'
-            label="Especialidades"
-            value={speciality}
-            onChange={(e) => handleChangeSpecial(e, speciality, setSpeciality)}
-            // variant='standard'
-            >
-                {specialties.map((p) => (
-                    <MenuItem key={p.value} value={p.value}>
-                        {p.value}
-                    </MenuItem>
-                ))}
-            </MySelect>
-         </Box>
-    )
-}
+  useEffect(() => {
+    dispatch(getSpecialities());
+  }, [dispatch]);
 
-export default FiltroSelect
+  return (
+    <Box>
+      <MySelect
+        select
+        color="transparent"
+        label="Especialidad"
+        value={special}
+        SelectProps={{
+          native: true,
+        }}
+        onChange={(e) => handleChangeSpecial(e, special, setSpecial, dispatch)}
+      >
+        <option select>{""}</option>
+        <option>{"TODAS"}</option>
+        {specialities.allSpecialities.map((p) => (
+          <option key={p.id} value={p.id}>
+            {p.name}
+          </option>
+        ))}
+      </MySelect>
+    </Box>
+  );
+};
+
+export default FiltroSelect;
