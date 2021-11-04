@@ -1,31 +1,27 @@
-import React, { useEffect } from "react";
-import SimpleAppBar from "../components/AppBar/SimpleAppBar";
-import ConteinerCardAdd from "../components/AddProfesional/ContainerCardAdd";
+import React from "react";
 import { Grid, Box } from "@mui/material";
+import { useStyles } from "../styles/doctors/add_doctor";
 import SearchBar from "../components/SearchBar/SearchBar";
 import FiltroSelect from "../components/FiltroSelect/FiltroSelect";
-import { styled } from "@mui/material/styles";
+import PrimarySearchAppBar from "../components/Notification/AppBarNoti.jsx";
+import ContainerCardAdd from "../components/AddDoctors/ContainerCardAdd";
 
-const MyGrid = styled(Grid)({
-  display: "flex",
-  marginTop: "70px",
-});
 function AddDoctors(props) {
+  const classes = useStyles();
+
   return (
-    <div>
-      <Grid conteiner justifyContent="center" backgroundColor="primary">
-        <Box bgcolor="#B2DFDB">
-          <Grid item pb="50px">
-            <SimpleAppBar />
-            <MyGrid>
-              <FiltroSelect />
-              <SearchBar />
-            </MyGrid>
+    <Box>
+      <PrimarySearchAppBar />
+      <Box className={classes.root}>
+        <Box className={classes.container}>
+          <Grid container justifyContent="space-between">
+            <FiltroSelect styles={classes} />
+            <SearchBar styles={classes} />
           </Grid>
-          <ConteinerCardAdd props={props} />
+          <ContainerCardAdd props={props} />
         </Box>
-      </Grid>
-    </div>
+      </Box>
+    </Box>
   );
 }
 export default AddDoctors;
