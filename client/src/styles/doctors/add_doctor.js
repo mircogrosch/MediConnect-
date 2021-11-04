@@ -14,4 +14,16 @@ export const useStyles = makeStyles({
     background: teal[100],
     borderRadius: "12px",
   },
+  selectFilter: {
+    background: teal[200],
+    borderRadius: "5px",
+  },
+  searchBar: {
+    width: "300px",
+    height: "50px",
+    margin: "15px",
+    paddingLeft: "10px",
+    background: teal[200],
+    borderRadius: "5px",
+  },
 });
