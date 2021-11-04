@@ -3,33 +3,45 @@ import { Box, Grid } from "@mui/material";
 import Card from "./cards/Card.jsx";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { teal } from "@material-ui/core/colors";
 
 function ContainerCards({ cardInfo,bgColor,infoColor }) {
   const user = useSelector((state) => state.users.users);
   return (
     <Box sx={{ marginTop: { md: "2em"} }}>
       <Grid container columnSpacing={3} rowSpacing={4}>
-        {cardInfo.map((info) =>
-          info.title === "Mis Profesionales" ||
-          info.title === "Mis Pacientes" ? (
-            <Grid item md={4} sm={4} xs={5}>
-              <Link
-                to={
-                  user.patient
-                    ? `/account/profesionales/${user.patient.id}`
-                    : `/account/profesionales/${user.doctor.id}`
-                }
-                style={{textDecoration:"none"}}
-              >
-                <Card title={info.title} icon={info.icon} bgColor={bgColor} color={infoColor} />
-              </Link>
-            </Grid>
-          ) : (
-            <Grid item md={4} sm={4} xs={5}>
-              <Card title={info.title} icon={info.icon} bgColor={bgColor} color={infoColor}/>
-            </Grid>
-          )
-        )}
+      <Grid item md={4} sm={4} xs={5}>
+          {user.doctor ? (<Card title="Mis Turnos" icon={cardInfo[0].icon} bgColor={teal[600]} color={teal[50]} />):
+          (<Card title="Mis Turnos" icon={cardInfo[0].icon} />)}
+        </Grid>
+        <Grid item md={4} sm={4} xs={5}>
+          {user.doctor ? (<Card title="Historial Medico" icon={cardInfo[1].icon} bgColor={teal[600]} color={teal[50]}/>):
+          (<Card title="Historial Medico" icon={cardInfo[0].icon}/>)}
+        </Grid>
+        <Grid item md={4} sm={4} xs={5}>
+          {user.doctor ? (<Card title="Mis Pacientes" icon={cardInfo[2].icon} bgColor={teal[600]} color={teal[50]} />):
+          (<Link
+            to={`/account/profesionales/${user.patient.id}`}
+            style={{ textDecoration: "none" }}>
+            <Card title="Mis Profesionales" icon={cardInfo[2].icon}/>
+          </Link>)}
+        </Grid>
+        <Grid item md={4} sm={4} xs={5}>
+          {user.doctor ? (<Card title="Mis Recetas" icon={cardInfo[3].icon} bgColor={teal[600]} color={teal[50]}/>):
+          <Card title="Mis Recetas" icon={cardInfo[3].icon}/>}
+        </Grid>
+        <Grid item md={4} sm={4} xs={5}>
+          {user.doctor ? (<Card title="Mis Órdenes" icon={cardInfo[4].icon} bgColor={teal[600]} color={teal[50]}/>):
+          (<Card title="Mis Ordenes" icon={cardInfo[3].icon}/>)}
+        </Grid>
+        <Grid item md={4} sm={4} xs={5}>
+          {user.doctor ? (<Card title="Mensajes" icon={cardInfo[5].icon} bgColor={teal[600]} color={teal[50]}/>):
+          (<Link
+            to={`/mensajes`}
+            style={{ textDecoration: "none" }}>
+              <Card title="Mensajes" icon={cardInfo[5].icon}/>
+              </Link>)}
+        </Grid>
       </Grid>
     </Box>
   );

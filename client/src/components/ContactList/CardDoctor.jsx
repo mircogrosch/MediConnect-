@@ -15,12 +15,13 @@ const MyIcon = styled(AccountCircle)({
     marginRight:'20px'
 })
 
-function CardDoctor() { 
+function CardDoctor({name, lastname}) { 
+    let docName = `${name} ${lastname}`
     return (
         <MyGrid>
             <MyIcon/>
             <Grid>
-                <Typography variant='h6'>Nombre del doctor/paciente</Typography>
+                <Typography variant='h6'>{docName}</Typography>
                 <Typography variant='body'>Ultimo mensaje del chat o si no tiene msj nada</Typography>
             </Grid>
         </MyGrid>
