@@ -11,7 +11,10 @@ export const getDoctors = () => {
 
 export const getUser = (user) => {
   return async function (dispatch) {
-    const response = await axios.post(`${URL}/login`, user,{withCredentials:true});
+    const response = await axios.post(`${URL}/login`, user, {
+      withCredentials: true,
+    });
+    console.log(response.data);
     dispatch({ type: types.GET_USER_LOGIN, payload: response.data });
   };
 };
@@ -75,15 +78,15 @@ export const getHealthInsurances = () => {
 };
 
 export const getMyDoctors = (payload) => {
-  return async function(dispatch) {
+  return async function (dispatch) {
     try {
       let myDocs = await axios.get(`${URL}/patient/doctors/${payload}`);
       return dispatch({
         type: types.GET_MY_DOCTORS,
-        payload: myDocs.data
-      })
+        payload: myDocs.data,
+      });
     } catch (error) {
       alert(error);
     }
-  }
-}
+  };
+};

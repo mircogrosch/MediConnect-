@@ -13,6 +13,7 @@ const bcryptjs = require("bcryptjs");
 const specialitiesRouter = require("./routes/specialities");
 const healthinsuranceRouter = require("./routes/healthinsurance");
 const cors = require("cors");
+const flash = require("connect-flash");
 require("./db.js");
 
 //Para poder comparar con la password encrypt
@@ -26,19 +27,17 @@ passport.use(
     {
       usernameField: "email",
       passwordField: "password",
+      passReqToCallback: true,
     },
-
-    async function (username, password, done) {
+    async function (req, username, password, done) {
       try {
         let user = await Person.findOne({
           where: {
             email: username,
           },
         });
-
         if (user !== null) {
           //Si existe usera con ese email
-
           if (comparePassword(password, user.password)) {
             //Si coincide password ingresada con la registrada del usuario
             //Para traer el perfil de DOCTOR
@@ -52,7 +51,7 @@ passport.use(
                 user = { ...user, doctor };
                 user = {
                   user: user.dataValues,
-                  doctor: user.doctor,
+                  rol: user.doctor.dataValues,
                 };
               } catch (e) {
                 console.log("Error al traer al doctor: ", e);
@@ -62,49 +61,52 @@ passport.use(
               try {
                 let patient = await Patient.findOne({
                   where: {
-                    personDni: DNI,
+                    personDni: user.dni,
                   },
                 });
                 user = { ...user, patient };
-
                 user = {
                   user: user.dataValues,
-                  patient: user.patient,
+                  rol: user.patient.dataValues,
                 };
               } catch (e) {
                 console.log("Error al traer al paciente: ", e);
               }
             }
-            // res.status(200).send({
-            //   data: user,
-
-            //   message: "Logged user",
-            // });
-            done(null, user);
+            return done(
+              null,
+              user,
+              req.flash("loginMessage", "User logged!!!")
+            );
           } else {
             //Se encontro usera, pero password es incorrecta
-            // res.status(200).send({ message: "Incorrect password" });
-            done(null, false, { message: "Incorrect password" });
+            return done(
+              null,
+              false,
+              req.flash("loginMessage", "Incorrect password")
+            );
           }
         } else {
           //No se encontro usera con email ingresado
-          // res.status(200).send({ message: "There is no such registered email" });
-          done(null, false, { message: "There is no such registered email" });
+          return done(
+            null,
+            false,
+            req.flash("loginMessage", "There is no such registered email")
+          );
         }
       } catch (error) {
-        // res.status(400).send("Error desde base de datos: ", e);
-        done(error);
+        console.log(error);
       }
     }
   )
 );
 
+//Serializar
 passport.serializeUser(function (user, done) {
   return done(null, user.user.dni);
 });
-
+//Deserializar
 passport.deserializeUser(async function (dni, done) {
-  console.log("DES:", dni);
   try {
     let user = await Person.findOne({
       where: {
@@ -120,7 +122,10 @@ passport.deserializeUser(async function (dni, done) {
           },
         });
         user = { ...user, doctor };
-        user.doctor = user.doctor.dataValues;
+        user = {
+          user: user.dataValues,
+          rol: user.doctor.dataValues,
+        };
       } catch (e) {
         console.log("Error al traer al doctor: ", e);
       }
@@ -133,7 +138,10 @@ passport.deserializeUser(async function (dni, done) {
           },
         });
         user = { ...user, patient };
-        user.patient = user.patient.dataValues;
+        user = {
+          user: user.dataValues,
+          rol: user.patient.dataValues,
+        };
       } catch (e) {
         console.log("Error al traer al paciente: ", e);
       }
@@ -152,9 +160,7 @@ server.name = "API";
 server.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
-
 server.use(cookieParser("secret"));
-
 server.use(morgan("dev"));
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
@@ -167,45 +173,34 @@ server.use((req, res, next) => {
   next();
 });
 server.use(
-  require("express-session")({
-    secret: "secret",
+  session({
+    secret: "1234",
     resave: false,
     saveUninitialized: false,
   })
 );
 
 // Inicializa Passport y recupera el estado de autenticación de la sesión.
+server.use(flash());
 server.use(passport.initialize());
 server.use(passport.session());
 
 // Middleware para mostrar la sesión actual en cada request
 server.use((req, res, next) => {
+  console.log(req.cookies);
   console.log(req.session);
   console.log(req.user);
   next();
 });
 
 // Routes
-
-// server.get("/login", (req, res) => {
-//   console.log("Soy home!", req.user);
-// });
-// server.get("/login/fail", (req, res) => {
-//   console.log("Soy login!", req.user);
-// });
-// server.post(
-//   "/login",
-//   passport.authenticate("local", {
-//     successRedirect: "/login",
-//     failureRedirect: "/login/fail",
-//   })
-// );
 server.use("/", routes);
 server.use("/login", loginRouter);
 server.use("/patient", patientRouter);
 server.use("/doctor", doctorRouter);
 server.use("/specialities", specialitiesRouter);
 server.use("/healthinsurance", healthinsuranceRouter);
+
 // Error catching endware.
 server.use((err, req, res, next) => {
   // eslint-disable-line no-unused-vars
