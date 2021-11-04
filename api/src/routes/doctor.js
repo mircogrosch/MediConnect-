@@ -35,7 +35,7 @@ router.route("/").post(createDoctor);
 
 /*
 Para traer todos los Pacientes del Doctor, dado el nombre del Paciente
-Se envia el nombre del paciente y el id del Doctor mediante query
+Se envia el nombre del paciente y el dni del Doctor mediante query
 ej: localhost:3001/doctor/patient?name=Robert&id=id_doctor
 */
 router.route("/patient").get(getPatient);
