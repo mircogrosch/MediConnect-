@@ -6,18 +6,11 @@ import {
   Box,
   Grid,
   InputAdornment,
-  Checkbox,
-  FormControlLabel,
-  Typography,
   Button,
-  AppBar,
-  Toolbar,
   IconButton,
 } from "@mui/material";
 import { Email, Lock, AccountCircle } from "@mui/icons-material";
 import useStyles from "./styles.js";
-import LogoMediConnect from "../../img/mediconnect-logo.png";
-import theme from "../../themes/index.js";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
@@ -28,6 +21,8 @@ import {
 import { getUser } from "../../actions/index.js";
 import { useHistory } from "react-router-dom";
 import { validateUser } from "../Controlers/Controlers";
+import SimpleAppBar from "../AppBar/SimpleAppBar";
+
 const Login = () => {
   //Local states
   const [input, setInput] = useState({ email: "", password: "" });
@@ -42,16 +37,12 @@ const Login = () => {
   const history = useHistory();
 
   useEffect(() => {
-    userLog && validateUser(userLog.user, history);
-  }, [userLog, history]);
+    userLog && validateUser(userLog, history);
+  }, [userLog]);
 
   return (
     <div className={classes.root}>
-      <AppBar sx={{ bgcolor: "transparent" }} elevation={0}>
-        <Toolbar>
-          <img src={LogoMediConnect} alt="logo" width="200" />
-        </Toolbar>
-      </AppBar>
+      <SimpleAppBar />
       <Grid
         container
         spacing={0}

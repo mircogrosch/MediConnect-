@@ -1,5 +1,6 @@
 import axios from "axios";
 import types from "./types.js";
+import swal from "sweetalert";
 const URL = "http://localhost:3001";
 
 export const getDoctors = () => {
@@ -14,21 +15,30 @@ export const getUser = (user) => {
     const response = await axios.post(`${URL}/login`, user, {
       withCredentials: true,
     });
-    console.log(response.data);
     dispatch({ type: types.GET_USER_LOGIN, payload: response.data });
   };
 };
 
-export const postDoctor = (payload) => {
+export const postDoctor = (payload, history) => {
   return async function (dispatch) {
     try {
       const response = await axios.post(`${URL}/doctor`, payload);
+      swal({
+        title: `El registro fue exitoso`,
+        icon: "success",
+        button: "Continuar",
+      }).then(() => history.push("/login"));
       return dispatch({
         type: types.POST_DOCTOR,
         payload: response.data,
       });
     } catch (error) {
-      alert(error); // CORREGIR! ----> EN EL CASO DE QUE HAYA UN ERROR, EL MENSAJE A MOSTRAR TIENE QUE VENIR DEL BACK
+      swal({
+        title: "No se puedo registrar el usuario",
+        dangerMode: true,
+        icon: "error",
+        button: "Reintentar",
+      }).then(() => history.push("/register/doctor"));
     }
   };
 };
@@ -47,18 +57,26 @@ export function getSpecialities() {
   };
 }
 
-export const postPatient = (payload) => {
+export const postPatient = (payload, history) => {
   return async function (dispatch) {
     try {
       await axios.post(`${URL}/patient`, payload);
-      console.log(payload);
-      alert("Se creo el paciente exitosamente");
+      swal({
+        title: `El registro fue exitoso`,
+        icon: "success",
+        button: "Continuar",
+      }).then(() => history.push("/login"));
       return dispatch({
         type: types.POST_PATIENT,
         payload,
       });
     } catch (error) {
-      alert(error);
+      swal({
+        title: "No se puedo registrar el usuario",
+        dangerMode: true,
+        icon: "error",
+        button: "Reintentar",
+      }).then(() => history.push("/register/pacient"));
     }
   };
 };
@@ -84,6 +102,45 @@ export const getMyDoctors = (payload) => {
       return dispatch({
         type: types.GET_MY_DOCTORS,
         payload: myDocs.data,
+      });
+    } catch (error) {
+      alert(error);
+    }
+  };
+};
+
+export const postMyDoctor = (payload, id_Doctor) => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.post(`${URL}/patient/doctors/${payload}`, {
+        id_Doctor: id_Doctor,
+      });
+      return dispatch({
+        type: types.POST_MY_DOCTOR,
+        id_Doctor,
+      });
+    } catch (error) {
+      alert(error); // CORREGIR! ----> EL MENSAJE A MOSTRAR TIENE QUE VENIR DEL BACK
+    }
+  };
+};
+
+export const filterSpecialities = (payload) => {
+  return {
+    type: types.FILTER_SPECIALITIES,
+    payload,
+  };
+};
+//ej: localhost:3001/patient/doctor?name=Robert&id=id_paciente
+export const filterDoctorsByName = (nameDoc, idPatient) => {
+  return async function (dispatch) {
+    try {
+      let response = await axios.get(
+        `${URL}/patient/doctor?name=${nameDoc}&id=${idPatient}`
+      );
+      return dispatch({
+        type: types.FILTER_DOCTORS_BY_NAME,
+        payload: response.data,
       });
     } catch (error) {
       alert(error);

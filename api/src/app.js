@@ -12,8 +12,9 @@ const Strategy = require("passport-local").Strategy;
 const bcryptjs = require("bcryptjs");
 const specialitiesRouter = require("./routes/specialities");
 const healthinsuranceRouter = require("./routes/healthinsurance");
-const cors = require("cors");
 const flash = require("connect-flash");
+const notification = require('./routes/notifications')
+const cors = require('cors')
 require("./db.js");
 
 //Para poder comparar con la password encrypt
@@ -200,6 +201,7 @@ server.use("/patient", patientRouter);
 server.use("/doctor", doctorRouter);
 server.use("/specialities", specialitiesRouter);
 server.use("/healthinsurance", healthinsuranceRouter);
+server.use('/notifications', notification)
 
 // Error catching endware.
 server.use((err, req, res, next) => {

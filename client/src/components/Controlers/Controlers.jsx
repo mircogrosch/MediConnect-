@@ -1,46 +1,17 @@
 import { postPatient, postDoctor } from "../../actions";
 import swal from "sweetalert";
-
-export const handleSelectProfesional = (event, input, setInput) => {
-  setInput({
-    ...input,
-    specialities: [event.target.value],
-  });
-};
-
-export const handleSubmitProfesional = (
-  event,
-  state,
-  set,
-  dispatch,
-  history
-) => {
-  event.preventDefault();
-  set({
-    name: "",
-    lastname: "",
-    email: "",
-    password: "",
-    confirmPass: "",
-    showPassword: false,
-    showConf: false,
-    dni: "",
-    address: "",
-    specialities: [],
-    signature: "",
-    enrollment: "",
-  });
-  dispatch(postDoctor(state));
-  console.log(state);
-  alert("Usuario registrado exitosamente");
-  history.push("/login");
-};
+import { filterSpecialities } from "../../actions/index";
 
 export const handleChange = (prop, state, set) => (event) => {
   set({ ...state, [prop]: event.target.value });
 };
+// Controla los cambios del componente "Select especialidad"
+export const handleSelect = (e, state, set, dispatch) => {
+  set(e.target.value);
+  dispatch(filterSpecialities(e.target.value));
+};
 export const handleChangeSpecial = (e, state, set) => {
-  set({ ...state, [e.target.name]: e.target.value });
+  set(e.target.value);
 };
 
 export const handleClickShowPassword = (state, set) => {
@@ -98,7 +69,6 @@ export const handleSubmit = (e, errors, state, set, dispatch, history) => {
  */
 
 export const validateUser = (user, history) => {
-  console.log(user);
   if (!user) {
     return swal({
       title: `El nombre de usuario o la contraseña son incorrectos`,

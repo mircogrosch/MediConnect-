@@ -2,6 +2,7 @@ const { Person, Patient, Doctor } = require("../db");
 const { Op } = require("sequelize");
 const bcryptjs = require("bcryptjs");
 
+const {deleteNotification} = require('./notification')
 //Encriptar password
 function encryptPassword(password) {
   return bcryptjs.hashSync(password, 10);
@@ -17,7 +18,7 @@ const createPatient = async (req, res) => {
     email,
     password,
     num_member,
-    healthInsuranceId
+    healthInsuranceId,
   } = req.body;
   const rol = "Patient";
   try {
@@ -204,17 +205,22 @@ const getDoctors = async (req, res) => {
 
 const addDoctor = async (req, res) => {
   const { id } = req.params; // id de Paciente
-  const { id_Doctor } = req.body; // id de Doctor
+  const { id_Doctor,idNotification } = req.body; // id de Doctor
   let patient = await Patient.findOne({
     where: {
       id: id,
     },
   });
-  await patient.addDoctor([id_Doctor]);
-  res.json({
-    data: patient,
-    message: "Doctor añadido a lista de doctores de paciente",
-  });
+  try {
+    await patient.addDoctor([id_Doctor]);
+    deleteNotification(idNotification) //borra la notificación
+    res.json({
+      data: patient,
+      message: "Doctor añadido a lista de doctores de paciente",
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
 const deleteDoctor = async (req, res) => {
@@ -225,11 +231,15 @@ const deleteDoctor = async (req, res) => {
       id: id,
     },
   });
-  await patient.removeDoctor([id_Doctor]);
-  res.json({
-    data: patient,
-    message: "Doctor borrado de la lista de doctores de paciente",
-  });
+  try {
+    await patient.removeDoctor([id_Doctor]);
+    res.json({
+      data: patient,
+      message: "Doctor borrado de la lista de doctores de paciente",
+    });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
 module.exports = {

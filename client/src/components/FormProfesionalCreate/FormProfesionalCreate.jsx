@@ -1,33 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { getSpecialities } from "../../actions/index";
 import {
   FormControl,
   Input,
   InputLabel,
   TextField,
-  MenuItem,
   Typography,
   Button,
   Grid,
   IconButton,
-  InputAdornment,
-  NativeSelect,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import {
-  handleClickShowPassword,
-  handleClickShowConf,
-  handleMouseDownPassword,
-  handleSubmitProfesional,
-  handleSelectProfesional,
-} from "../Controlers/Controlers";
 import Signature from "./Signature/Signature";
 import useStyles from "./styles";
 import SimpleAppBar from "../AppBar/SimpleAppBar";
+import { useForm } from "react-hook-form";
+import { postDoctor } from "../../actions/index";
+import { teal } from "@mui/material/colors";
+import { useHistory } from "react-router-dom";
 
 const MyButton = styled(Button)({
   width: "500px",
@@ -46,89 +39,76 @@ const MyTitle = styled(Typography)({
 });
 
 const FormProfesionalCreate = () => {
-  let errors = {};
-
-  const [input, setInput] = useState({
-    name: "",
-    lastname: "",
-    email: "",
-    password: "",
-    confirmPass: "",
-    showPassword: false,
-    showConf: false,
-    dni: "",
-    address: "",
-    specialities: [],
-    signature: "",
-    enrollment: "",
+  const [input, setInput] = useState({ signature: "" });
+  const [visibled, setVisibled] = useState({
+    password: false,
+    idemPassword: false,
   });
-
-  // ACA VAN LAS VALIDACIONES
-  if (input.password !== input.confirmPass) {
-    errors.idemPass = "Contraseña distinta";
-  }
-  // ----------------------------------------
-
-  // ESTA FUNCION ESTA ACA TEMPORALMENTE, HASTA QUE UNIFIQUEMOS DE QUE FORMA IMPLEMENTAMOS EL handleChange() EN CONTROLERS
-  const handleChange = (event, input, setInput) => {
-    setInput({
-      ...input,
-      [event.target.name]: event.target.value,
-    });
-  };
+  const [equal, setEqual] = useState(true);
 
   const dispatch = useDispatch();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const history = useHistory();
+
+  const onSubmit = (data) => {
+    setEqual(true);
+    if (data.password !== data.confirmPass) return setEqual(false);
+    data.signature = input.signature;
+    dispatch(postDoctor(data, history));
+  };
+
   let allSpecialities = useSelector((state) => state.allSpecialities);
   allSpecialities = allSpecialities.allSpecialities;
-  console.log("allSpecialities", allSpecialities);
+
   useEffect(() => {
     dispatch(getSpecialities());
   }, [dispatch]);
 
   const classes = useStyles();
 
-  const history = useHistory();
-
   return (
     <div className={classes.root}>
       <Grid
+        marginTop="50px"
         container
         spacing={0}
         direction="column"
         alignItems="center"
-        justify="center"
-        style={{ minHeight: "100vh" }}
+        justifyContent="center"
+        style={{ height: "110vh" }}
       >
         <Grid item xs={3}>
           <MyTitle variant="h4" align="center">
             Ingresa tus datos
           </MyTitle>
-          <SimpleAppBar></SimpleAppBar>
+          <SimpleAppBar background={teal[900]}></SimpleAppBar>
           <FormControl>
             <MyInput
               id="standard-basic"
               label="Nombre"
-              value={input.name}
-              name="name"
-              onChange={(e) => handleChange(e, input, setInput)}
+              error={errors.name ? true : false}
+              {...register("name", { required: true })}
               variant="standard"
             />
             <MyInput
               id="standard-basic"
               label="Apellido"
-              value={input.lastname}
-              name="lastname"
-              onChange={(e) => handleChange(e, input, setInput)}
+              error={errors.lastname ? true : false}
+              {...register("lastname", { required: true })}
               variant="standard"
             />
 
             <MyInput
               id="standard-basic"
               label="Email"
-              value={input.email}
-              name="email"
-              onChange={(e) => handleChange(e, input, setInput)}
+              error={errors.email ? true : false}
+              {...register("email", { required: true })}
               variant="standard"
             />
 
@@ -138,20 +118,22 @@ const FormProfesionalCreate = () => {
               </InputLabel>
               <Input
                 id="standar-adornment-password"
-                type={input.showPassword ? "text" : "password"}
-                value={input.password}
-                name="password"
-                onChange={(e) => handleChange(e, input, setInput)}
+                onChange={() => setEqual(true)}
+                type={visibled.password ? "text" : "password"}
+                error={errors.password ? true : false}
+                {...register("password", { required: true })}
                 endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => handleClickShowPassword(input, setInput)}
-                      onMouseDown={(e) => handleMouseDownPassword(e)}
-                    >
-                      {input.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() =>
+                      setVisibled({
+                        ...visibled,
+                        password: !visibled.password,
+                      })
+                    }
+                  >
+                    {visibled.password ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
                 }
               />
             </FormControl>
@@ -160,40 +142,60 @@ const FormProfesionalCreate = () => {
                 Confirme contraseña
               </InputLabel>
               <Input
-                error={errors.idemPass ? true : false}
                 id="standar-adornment-password"
-                type={input.showConf ? "text" : "password"}
-                value={input.confirmPass}
-                name="confirmPass"
-                onChange={(e) => handleChange(e, input, setInput)}
+                onChange={() => setEqual(true)}
+                type={visibled.idemPassword ? "text" : "password"}
+                error={errors.confirmPass ? true : false}
+                {...register("confirmPass", {
+                  required: true,
+                })}
                 endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => handleClickShowConf(input, setInput)}
-                      onMouseDown={(e) => handleMouseDownPassword(e)}
-                    >
-                      {input.showConf ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() =>
+                      setVisibled({
+                        ...visibled,
+                        idemPassword: !visibled.idemPassword,
+                      })
+                    }
+                  >
+                    {visibled.idemPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
                 }
               />
+              {!equal && (
+                <Typography
+                  variant="body1"
+                  align="right"
+                  fontSize={12}
+                  fontWeight="bold"
+                  color="red"
+                >
+                  Las contraseñas no coinciden
+                </Typography>
+              )}
             </FormControl>
             <MyInput
               id="standard-basic"
               type="number"
+              error={errors.dni ? true : false}
               label="DNI"
-              value={input.dni}
-              name="dni"
-              onChange={(e) => handleChange(e, input, setInput)}
+              {...register("dni", { required: true })}
               variant="standard"
             />
             <MyInput
               id="standard-basic"
+              label="Ubicación"
+              error={errors.location ? true : false}
+              {...register("location", { required: true })}
+              variant="standard"
+            />
+
+            <MyInput
+              id="standard-basic"
               label="Dirección"
-              value={input.address}
-              name="address"
-              onChange={(e) => handleChange(e, input, setInput)}
+              error={errors.address ? true : false}
+              {...register("address", { required: true })}
               variant="standard"
             />
 
@@ -201,16 +203,17 @@ const FormProfesionalCreate = () => {
               id="filled-select-currency-native"
               select
               label="Especialidad"
-              // placeholder="Especialidad"
-              // defaultValue={"Especialidad"}
-              value={input.specialities}
-              name="specialities"
-              onChange={(e) => handleSelectProfesional(e, input, setInput)}
+              error={errors.specialities ? true : false}
+              {...register("specialities", { required: true })}
               SelectProps={{
                 native: true,
               }}
               variant="standard"
             >
+              {" "}
+              <option selected disabled>
+                Especialidad
+              </option>
               {allSpecialities.map((a) => {
                 return (
                   <option key={a.id} value={a.id}>
@@ -219,29 +222,16 @@ const FormProfesionalCreate = () => {
                 );
               })}
             </TextField>
-
             <MyInput
               id="standard-basic"
               label="N° matrícula"
+              error={errors.enrollment ? true : false}
               type="number"
-              value={input.enrollment}
-              name="enrollment"
-              onChange={(e) => handleChange(e, input, setInput)}
+              {...register("enrollment", { required: true })}
               variant="standard"
             />
             <Signature state={input} setState={setInput} />
-            <MyButton
-              onClick={(event) =>
-                handleSubmitProfesional(
-                  event,
-                  input,
-                  setInput,
-                  dispatch,
-                  history
-                )
-              }
-              variant="contained"
-            >
+            <MyButton onClick={handleSubmit(onSubmit)} variant="contained">
               Registrar
             </MyButton>
           </FormControl>

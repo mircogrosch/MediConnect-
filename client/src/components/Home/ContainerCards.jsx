@@ -1,58 +1,46 @@
 import React from "react";
 import { Box, Grid } from "@mui/material";
-import {
-  EventAvailableOutlined,
-  EventNoteOutlined,
-  AccountBoxOutlined,
-  ListAltOutlined,
-  ForumOutlined,
-} from "@mui/icons-material";
 import Card from "./cards/Card.jsx";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { teal } from "@material-ui/core/colors";
 
-const cardInfo = [
-  {
-    title: "Mis Turnos",
-    icon: <EventAvailableOutlined sx={{ fontSize: 50 }} />,
-  },
-  {
-    title: "Historial Medico",
-    icon: <EventNoteOutlined sx={{ fontSize: 40 }} />,
-  },
-  {
-    title: "Mis Profesionales",
-    icon: <AccountBoxOutlined sx={{ fontSize: 40 }} />,
-  },
-  { title: "Mis Recetas", icon: <ListAltOutlined sx={{ fontSize: 40 }} /> },
-  { title: "Mis Órdenes", icon: <ListAltOutlined sx={{ fontSize: 40 }} /> },
-  { title: "Mensajes", icon: <ForumOutlined sx={{ fontSize: 40 }} /> },
-];
-
-function ContainerCards() {
-  const user = useSelector((state) => state.users);
+function ContainerCards({ cardInfo,bgColor,infoColor }) {
+  const user = useSelector((state) => state.users.users);
   return (
-    <Box sx={{ marginTop: { md: "2em" } }}>
+    <Box sx={{ marginTop: { md: "2em"} }}>
       <Grid container columnSpacing={3} rowSpacing={4}>
-        <Grid item md={4} sm={4} xs={5}>
-          <Card title="Mis Turnos" icon={cardInfo[0].icon} />
+      <Grid item md={4} sm={4} xs={5}>
+          {user.doctor ? (<Card title="Mis Turnos" icon={cardInfo[0].icon} bgColor={teal[600]} color={teal[50]} />):
+          (<Card title="Mis Turnos" icon={cardInfo[0].icon} />)}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          <Card title="Historial Medico" icon={cardInfo[1].icon} />
+          {user.doctor ? (<Card title="Historial Medico" icon={cardInfo[1].icon} bgColor={teal[600]} color={teal[50]}/>):
+          (<Card title="Historial Medico" icon={cardInfo[0].icon}/>)}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          <Link to={`prueba/${user.users.user.patientz.id}`}>
-            <Card title="Mis Profesionales" icon={cardInfo[2].icon} />
-          </Link>
+          {user.doctor ? (<Card title="Mis Pacientes" icon={cardInfo[2].icon} bgColor={teal[600]} color={teal[50]} />):
+          (<Link
+            to={`/account/profesionales/${user.patient.id}`}
+            style={{ textDecoration: "none" }}>
+            <Card title="Mis Profesionales" icon={cardInfo[2].icon}/>
+          </Link>)}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          <Card title="Mis Recetas" icon={cardInfo[3].icon} />
+          {user.doctor ? (<Card title="Mis Recetas" icon={cardInfo[3].icon} bgColor={teal[600]} color={teal[50]}/>):
+          <Card title="Mis Recetas" icon={cardInfo[3].icon}/>}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          <Card title="Mis Órdenes" icon={cardInfo[4].icon} />
+          {user.doctor ? (<Card title="Mis Órdenes" icon={cardInfo[4].icon} bgColor={teal[600]} color={teal[50]}/>):
+          (<Card title="Mis Ordenes" icon={cardInfo[3].icon}/>)}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          <Card title="Mensajes" icon={cardInfo[5].icon} />
+          {user.doctor ? (<Card title="Mensajes" icon={cardInfo[5].icon} bgColor={teal[600]} color={teal[50]}/>):
+          (<Link
+            to={`/mensajes`}
+            style={{ textDecoration: "none" }}>
+              <Card title="Mensajes" icon={cardInfo[5].icon}/>
+              </Link>)}
         </Grid>
       </Grid>
     </Box>
