@@ -12,8 +12,7 @@ import { NotificationsOutlined } from '@mui/icons-material';
 import { teal } from '@mui/material/colors';
 import { AccountCircle } from '@mui/icons-material';
 import CardNotification from './CardNotification';
-
-const arr = [1,2,3,4,5,6,7,8,9,10,11]
+import { useSelector } from 'react-redux';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -33,7 +32,7 @@ const StyledMenu = styled((props) => (
 ))(({ theme }) => ({
   '& .MuiPaper-root': {
     borderRadius: 6,
-    width: 400,
+    width: 470,
     color:
       theme.palette.mode === 'light',
     '& .MuiMenuItem-root': {
@@ -69,6 +68,7 @@ const StyledMenu = styled((props) => (
 }));
 
 export default function CustomizedMenus() {
+  let notifications = useSelector((state) => state.notification);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -106,8 +106,8 @@ export default function CustomizedMenus() {
         open={open}
         onClose={handleClose}
       >
-        {arr.map(e => <MenuItem onClick={handleClose} disableRipple>
-          <CardNotification/>
+        {notifications.notifications.map(e => <MenuItem onClick={handleClose} disableRipple>
+          <CardNotification msg={e.message} idDoctor={e.idReciver} idPatient={e.id_patient}/>
         </MenuItem>)}
       </StyledMenu>
     </div>
