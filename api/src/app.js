@@ -11,6 +11,7 @@ let Strategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const specialitiesRouter = require("./routes/specialities");
 const healthinsuranceRouter = require("./routes/healthinsurance");
+const notification = require('./routes/notifications')
 const cors = require('cors')
 require("./db.js");
 
@@ -193,6 +194,7 @@ server.use("/patient", patientRouter);
 server.use("/doctor", doctorRouter);
 server.use("/specialities", specialitiesRouter);
 server.use("/healthinsurance", healthinsuranceRouter);
+server.use('/notifications', notification)
 
 // Error catching endware.
 server.use((err, req, res, next) => {
