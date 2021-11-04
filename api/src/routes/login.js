@@ -5,10 +5,9 @@ const jwt = require("jsonwebtoken");
 
 router.get("/", isAuthenticated, (req, res) => {
   const token = jwt.sign(req.user, "secret");
-  const decoded = jwt.verify(token, "secret");
+  //respuesta un token
   res.send({
     token,
-    decoded,
   });
 });
 
