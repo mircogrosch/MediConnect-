@@ -1,7 +1,7 @@
 const { Person, Patient, Doctor } = require("../db");
 const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
-
+const {deleteNotification} = require('./notification')
 //Encriptar password
 function encryptPassword(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -204,7 +204,7 @@ const getDoctors = async (req, res) => {
 
 const addDoctor = async (req, res) => {
   const { id } = req.params; // id de Paciente
-  const { id_Doctor } = req.body; // id de Doctor
+  const { id_Doctor,idNotification } = req.body; // id de Doctor
   let patient = await Patient.findOne({
     where: {
       id: id,
@@ -212,6 +212,7 @@ const addDoctor = async (req, res) => {
   });
   try {
     await patient.addDoctor([id_Doctor]);
+    deleteNotification(idNotification) //borra la notificación
     res.json({
       data: patient,
       message: "Doctor añadido a lista de doctores de paciente",
