@@ -15,8 +15,8 @@ function AddDoctors(props) {
       <Box className={classes.root}>
         <Box className={classes.container}>
           <Grid container justifyContent="space-between">
-            <FiltroSelect />
-            <SearchBar />
+            <FiltroSelect styles={classes} />
+            <SearchBar styles={classes} />
           </Grid>
           <ContainerCardAdd props={props} />
         </Box>
