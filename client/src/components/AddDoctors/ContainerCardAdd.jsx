@@ -1,54 +1,54 @@
 import React, { useEffect } from "react";
-import { Grid } from "@mui/material";
+import { useStyles } from "../../styles/doctors/add_doctor";
+import { Grid, Box } from "@mui/material";
 import CardAdd from "./CardAdd";
 import { useDispatch, useSelector } from "react-redux";
-import { getDoctors, postMyDoctor } from "../../actions/index";
-import {socket,socket_Connect,send_Notifications} from '../Controlers/notifications'
-
+import { getDoctors } from "../../actions/index";
+import {
+  socket,
+  socket_Connect,
+  send_Notifications,
+} from "../Controlers/notifications";
 
 function ContainerCardAdd({ props }) {
+  const classes = useStyles();
   const dispatch = useDispatch();
-  let allDoctors = useSelector((state) => state.allDoctors);
+  let allDoctors = useSelector((state) => state.allDoctors.allDoctors);
   let userLog = useSelector((state) => state.users.users.user);
-  allDoctors = allDoctors.allDoctors;
 
   useEffect(() => {
     dispatch(getDoctors());
+    socket_Connect(userLog, socket);
   }, []);
-
-  useEffect(()=>{
-    socket_Connect(userLog,socket)
-  },[])
 
   return (
     <Grid
       container
-      width="100%"
-      display="flex"
-      flex-direction="row"
-      justify-content="center"
-      backgroundColor="primary"
-      //   justify-content="space-around"
-      columnSpacing={1}
-      rowSpacing={1}
-      //   pl="200px"
-      //   p="10px"
+      rowSpacing={2}
+      className={classes.containerCards}
+      sx={{ height: { sm: "70vh", xs: "65vh" } }}
     >
       {allDoctors &&
         allDoctors.map((e) => {
           return (
-            <Grid item xs={12} md={6} key={e.id}>
+            <Grid
+              item
+              xl={4}
+              md={6}
+              xs={12}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
               <CardAdd
                 name={e.name}
                 lastname={e.lastname}
                 address={e.address}
+                email={e.email}
                 sendNotification={send_Notifications}
                 idPatient={props.match.params.id}
                 idDoctor={e.id}
                 specialities={
                   e.specialities.length ? e.specialities[0].name : "Cardio"
                 }
-                email={e.email}
               />
             </Grid>
           );
