@@ -1,37 +1,28 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Box, Grid, Icon, Typography, IconButton } from "@material-ui/core";
 import { AccountCircle, ControlPoint } from "@mui/icons-material";
-import { useSelector } from "react-redux";
-import { socket } from "../Controlers/notifications";
 import { teal } from "@mui/material/colors";
-import swal from "sweetalert";
 
 const CardAdd = ({
   name,
   lastname,
   address,
   specialities,
-  sendNotification,
+  post,
   idPatient,
   idDoctor,
-  email,
 }) => {
-  let userLog = useSelector((state) => state.users.users);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   let docName = "Dr. " + name + " " + lastname;
 
   const handleClick = () => {
-    let userReciver = {
-      email: email,
-      id: idDoctor,
-    };
-    sendNotification(userReciver, userLog, socket);
-    swal({
-      title: "Se envio la solicitud!",
-      text: `Espere a que ${name} la acepte`,
-      icon: "success",
-      button: "Entendido",
-    });
+    dispatch(post(idPatient, idDoctor));
+    alert("Medico agregado exitosamente");
+    history.push(`/account/prueba/${idPatient}`);
   };
 
   return (

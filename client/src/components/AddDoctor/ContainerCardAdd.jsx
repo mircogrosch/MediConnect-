@@ -1,23 +1,16 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDoctors } from "../../actions/index";
+import { getDoctors, postMyDoctor } from "../../actions/index";
 import { Grid } from "@mui/material";
-import {
-  socket,
-  socket_Connect,
-  send_Notifications,
-} from "../Controlers/notifications";
 import CardAdd from "./CardAdd";
 
 function ContainerCardAdd({ props }) {
   const dispatch = useDispatch();
 
-  let userLog = useSelector((state) => state.users.users.user);
   let allDoctors = useSelector((state) => state.allDoctors.allDoctors);
 
   useEffect(() => {
     dispatch(getDoctors());
-    socket_Connect(userLog, socket);
   }, []);
 
   return (
@@ -29,26 +22,25 @@ function ContainerCardAdd({ props }) {
       }}
     >
       {allDoctors &&
-        allDoctors.map((doctor) => {
+        allDoctors.map((e) => {
           return (
             <Grid
               item
-              xs={6}
-              key={doctor.id}
+              xl={4}
+              md={6}
+              xs={12}
+              key={e.id}
               style={{ display: "flex", justifyContent: "center" }}
             >
               <CardAdd
-                name={doctor.name}
-                lastname={doctor.lastname}
-                address={doctor.address}
-                email={doctor.email}
-                sendNotification={send_Notifications}
+                name={e.name}
+                lastname={e.lastname}
+                address={e.address}
+                post={postMyDoctor}
                 idPatient={props.match.params.id}
-                idDoctor={doctor.id}
+                idDoctor={e.id}
                 specialities={
-                  doctor.specialities.length
-                    ? doctor.specialities[0].name
-                    : "CARDIOLOGIA"
+                  e.specialities.length ? e.specialities[0].name : "CARDIOLOGIA"
                 }
               />
             </Grid>
