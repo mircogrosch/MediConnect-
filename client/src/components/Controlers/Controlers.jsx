@@ -10,7 +10,6 @@ export const handleSelect = (e, state, set, dispatch) => {
   set(e.target.value);
   dispatch(filterSpecialities(e.target.value));
 };
-
 export const handleChangeSpecial = (e, state, set) => {
   set(e.target.value);
 };

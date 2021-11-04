@@ -35,7 +35,7 @@ const cardInfo = [
 
 function HomePatientPage() {
   const classes = useStyles();
-  const user = useSelector(state=> state.users.users.user);
+  const user = useSelector((state) => state.users.users.user.user);
   return (
     <Box className={classes.root} sx={{ background: teal[50] }}>
       <PrimarySearchAppBar />
