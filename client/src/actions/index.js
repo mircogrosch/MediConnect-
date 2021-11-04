@@ -131,3 +131,19 @@ export const filterSpecialities = (payload) => {
     payload,
   };
 };
+//ej: localhost:3001/patient/doctor?name=Robert&id=id_paciente
+export const filterDoctorsByName = (nameDoc, idPatient) => {
+  return async function (dispatch) {
+    try {
+      let response = await axios.get(
+        `${URL}/patient/doctor?name=${nameDoc}&id=${idPatient}`
+      );
+      return dispatch({
+        type: types.FILTER_DOCTORS_BY_NAME,
+        payload: response.data,
+      });
+    } catch (error) {
+      alert(error);
+    }
+  };
+};

@@ -1,4 +1,3 @@
-import { CallToActionSharp } from "@mui/icons-material";
 import types from "../actions/types";
 const initialState = {
   allDoctors: [],
@@ -9,7 +8,7 @@ export default function allDoctors(state = initialState, action) {
     case types.GET_DOCTORS:
       return {
         ...state,
-        allDoctors: [...action.payload.data],
+        allDoctors: action.payload.data,
         copyAllDoctors: action.payload.data,
       };
 
@@ -22,14 +21,10 @@ export default function allDoctors(state = initialState, action) {
           (doc) => doc.specialities[0].id === action.payload
         );
       }
-      console.log("allDoctors en el reducer", state.allDoctors);
-      console.log("payload el reducer", action.payload);
-      console.log("state.allDoctors", state.allDoctors.specialities);
       return {
         ...state,
         allDoctors: filtered,
       };
-
     default:
       return state;
   }
