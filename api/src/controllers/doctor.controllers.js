@@ -3,7 +3,6 @@ const {
   Doctor,
   Patient,
   Speciality,
-  Healthinsurance,
 } = require("../db");
 const { Op } = require("sequelize");
 
@@ -253,6 +252,40 @@ const getDoctor = async (req, res) => {
   }
 };
 
+/******************* getPatient ******************
+http://localhost:3001/doctor/patient?name=Name_Paciente&dni=DNI_Doctor
+
+ej: http://localhost:3001/doctor/patient?name=Ale&dni=222
+
+res:  {
+    "data": [
+        {
+            "id": "b6898307-9563-40f5-8a06-0220147d07c6",
+            "num_member": 1,
+            "personDni": 999,
+            "healthInsuranceId": null,
+            "Doctor_Patient": {
+                "createdAt": "2021-11-03T16:54:27.878Z",
+                "updatedAt": "2021-11-03T16:54:27.878Z",
+                "doctorId": "cea5f0e4-a818-4a53-b842-4f5b5e3301c0",
+                "patientId": "b6898307-9563-40f5-8a06-0220147d07c6"
+            },
+            "person": {
+                "dni": 999,
+                "name": "Alex",
+                "lastname": "Villanueva",
+                "address": "Calle falsa 123",
+                "imageProfile": null,
+                "email": "alex@hotmail.com",
+                "password": "$2b$10$LBvXkX1ihvshYofwbH24JuRVHI5ZP5i6KIpu3ck/uPhuWLZxF4Kci",
+                "rol": "Patient"
+            }
+        }
+    ],
+    "message": "Lista de Pacientes de Carlos"
+}
+
+*/
 const getPatient = async (req, res) => {
   let { name, dni } = req.query;
   name = name.toString();
@@ -292,7 +325,7 @@ const getPatient = async (req, res) => {
       });
     }
     res.json({
-      data: patient,
+      data: doctor,
       message: `Doctor no existe`,
     });
   } catch (error) {
@@ -304,30 +337,74 @@ const getPatient = async (req, res) => {
   }
 };
 
+/******************* getPatients ******************
+http://localhost:3001/doctor/patients/DNI_Doctor
+
+ej: http://localhost:3001/doctor/patients/222
+
+res: {
+    "data": [
+        {
+            "id": "b6898307-9563-40f5-8a06-0220147d07c6",
+            "num_member": 1,
+            "personDni": 999,
+            "healthInsuranceId": null,
+            "person": {
+                "dni": 999,
+                "name": "Alex",
+                "lastname": "Villanueva",
+                "address": "Calle falsa 123",
+                "imageProfile": null,
+                "email": "alex@hotmail.com",
+                "password": "$2b$10$LBvXkX1ihvshYofwbH24JuRVHI5ZP5i6KIpu3ck/uPhuWLZxF4Kci",
+                "rol": "Patient"
+            },
+            "Doctor_Patient": {
+                "createdAt": "2021-11-03T16:54:27.878Z",
+                "updatedAt": "2021-11-03T16:54:27.878Z",
+                "doctorId": "cea5f0e4-a818-4a53-b842-4f5b5e3301c0",
+                "patientId": "b6898307-9563-40f5-8a06-0220147d07c6"
+            }
+        }
+    ],
+    "message": "Lista de Pacientes de Carlos"
+}
+*/
 const getPatients = async (req, res) => {
+  let { dni } = req.params;
+  dni = parseInt(dni);
   try {
-    const { id } = req.params;
-    const doctor = await Doctor.findOne({
+    const doctor = await Person.findOne({
       where: {
-        id: id,
+        dni: dni,
+        rol: "Doctor",
+      },
+      include: {
+        model: Doctor,
+        include: {
+          model: Patient,
+          include: {
+            model: Person,
+          },
+          attributes: { exclude: "Doctor_Patient" },
+        },
       },
     });
-    let patients = await doctor.getPatients();
-    let patients_persons = [];
-    for (let i = 0; i < patients.length; i++) {
-      let person = await Person.findOne({
-        where: {
-          dni: patients[i].dataValues.personDni,
-        },
-      });
-      for (let key in person.dataValues) {
-        patients[i].dataValues[key] = person.dataValues[key];
+    if (doctor) {
+      if (doctor.doctor.patients.length > 0) {
+        return res.json({
+          data: doctor.doctor.patients,
+          message: `Lista de Pacientes de ${doctor.name}`,
+        });
       }
-      patients_persons.push(patients[i].dataValues);
+      return res.json({
+        data: doctor.doctor.patients,
+        message: `El Doctor ${doctor.name} no tiene a nadie en su lista de Pacientes`,
+      });
     }
     res.json({
-      data: patients_persons,
-      message: "Pacientes de Doctor",
+      data: doctor,
+      message: `Doctor no existe`,
     });
   } catch (error) {
     console.log(error);

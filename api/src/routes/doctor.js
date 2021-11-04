@@ -42,10 +42,10 @@ router.route("/patient").get(getPatient);
 
 /*
 Para traer todos los Pacientes de la lista de Pacientes de un Doctor
-Se envia por params el id del Doctor
+Se envia por params el DNI del Doctor
 ej: localhost:3001/doctor/patients/id_doctor
 */
-router.route("/patients/:id").get(getPatients);
+router.route("/patients/:dni").get(getPatients);
 
 router.route("/:id").get(getDoctor);
 

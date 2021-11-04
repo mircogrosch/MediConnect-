@@ -384,6 +384,7 @@ const getDoctors = async (req, res) => {
       attributes: { exclude: ["Doctor_Patient"] },
       where: {
         dni: dni,
+        rol: "Patient"
       },
       include: {
         model: Patient,
