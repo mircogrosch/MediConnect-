@@ -22,7 +22,7 @@ const MisProfesionales = (props) => {
 
   useEffect(() => {
     dispatch(getMyDoctors(props.match.params.id));
-  }, []);
+  }, [MyDoctors]);
   return (
     <Box
       sx={{ backgroundColor: "#b2dfdb", margin: "5px", borderRadius: "10px" }}

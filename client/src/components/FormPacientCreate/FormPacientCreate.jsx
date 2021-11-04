@@ -7,7 +7,6 @@ import { useStyles } from "../../styles/registerForms/patient.js";
 import { teal } from "@mui/material/colors";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
-  Box,
   FormControl,
   Input,
   InputLabel,

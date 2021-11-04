@@ -3,14 +3,8 @@ import { styled, alpha } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import EditIcon from '@mui/icons-material/Edit';
-import Divider from '@mui/material/Divider';
-import ArchiveIcon from '@mui/icons-material/Archive';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { NotificationsOutlined } from '@mui/icons-material';
 import { teal } from '@mui/material/colors';
-import { AccountCircle } from '@mui/icons-material';
 import CardNotification from './CardNotification';
 import { useSelector } from 'react-redux';
 

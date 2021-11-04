@@ -1,5 +1,5 @@
 import { AccountCircle } from '@mui/icons-material'
-import { Divider, Grid, IconButton, Typography } from '@mui/material'
+import { Grid, IconButton, Typography } from '@mui/material'
 import React from 'react'
 import { styled } from '@mui/system'
 import { Check, Close } from '@mui/icons-material'

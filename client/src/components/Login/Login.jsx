@@ -6,18 +6,11 @@ import {
   Box,
   Grid,
   InputAdornment,
-  Checkbox,
-  FormControlLabel,
-  Typography,
   Button,
-  AppBar,
-  Toolbar,
   IconButton,
 } from "@mui/material";
 import { Email, Lock, AccountCircle } from "@mui/icons-material";
 import useStyles from "./styles.js";
-import LogoMediConnect from "../../img/mediconnect-logo.png";
-import theme from "../../themes/index.js";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {

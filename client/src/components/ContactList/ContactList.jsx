@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import { Grid } from '@material-ui/core';
 import { styled } from '@material-ui/core';
 import { teal } from '@material-ui/core/colors';
 import SearchBar from '../SearchBar/SearchBar';
 import CardDoctor from './CardDoctor';
 import { useSelector } from 'react-redux';
+import { MenuItem } from '@mui/material';
 
 const MyGrid = styled(Grid)({
     backgroundColor: teal[100],
@@ -20,7 +20,7 @@ const MyGrid = styled(Grid)({
 
 const ContactList = () => {
   let myList = useSelector((state) => state.myDoctors.names);
-  console.log(myList)
+
   return (
     <MyGrid
     container
@@ -57,12 +57,12 @@ const ContactList = () => {
       }}
       subheader={<li />}
     >
-      {myList && myList.data.map((e) => (
-        <li key={e.id}>
+      {myList && myList.data.map((r) => (
+        <li key={r.id}>
           <ul>
-              <ListItem>
-                <CardDoctor name={e.name} lastname={e.lastname}/>
-              </ListItem>
+              <MenuItem>
+                <CardDoctor name={r.name} lastname={r.lastname}/>
+              </MenuItem>
           </ul>
         </li>
       ))}
