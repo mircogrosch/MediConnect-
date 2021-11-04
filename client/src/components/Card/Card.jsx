@@ -2,7 +2,6 @@ import { Box, Icon, Typography } from "@material-ui/core";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { AccountCircle } from "@mui/icons-material";
-import { maxWidth } from "@mui/system";
 
 const MyIcon = styled(Icon)({
     display: 'contents'

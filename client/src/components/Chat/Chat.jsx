@@ -1,12 +1,19 @@
 import React from 'react'
 import { Grid } from '@mui/material'
 import { styled } from '@mui/system'
-import { InputBase } from '@material-ui/core'
+import { InputBase, Typography } from '@material-ui/core'
 import { IconButton } from '@material-ui/core'
-import { Send } from '@mui/icons-material'
+import { AccountCircle, Send } from '@mui/icons-material'
 import { Box } from '@mui/system'
 import { teal } from '@material-ui/core/colors'
 
+const MyBox = styled(Box)({
+    backgroundColor: teal[200],
+    borderRadius:'5px',
+    display:'flex',
+    alignItems:'center',
+    // marginTop:'11px'
+})
 
 const MyGrid = styled(Grid)({
     backgroundColor: teal[100],
@@ -26,11 +33,21 @@ const MyTextInput = styled(InputBase)({
     height:'45px',
     padding:'3px'
 })
+const MyIcon = styled(AccountCircle)({
+    width:'50px',
+    height:'50px',
+    marginRight:'5px',
+    marginLeft:'10px'
+})
 
 function Chat() { 
     return (
         <MyGrid>
-            <Box sx={{backgroundColor:'grey', width:700, height:500, maxWidth:700, maxHeight:500}}/>
+            <MyBox sx={{ whidth:700, height:75}}>
+            <MyIcon/>
+                <Typography variant='h5'>Nombre del doctor</Typography>
+            </MyBox>
+            <Box sx={{ width:700, height:500, maxWidth:700, maxHeight:500}}/>
             <MyTextInput
             placeholder='Escriba su mensaje...'
             // onChange = {(e) => handleChangeSpecial(e, input, setInput)}
