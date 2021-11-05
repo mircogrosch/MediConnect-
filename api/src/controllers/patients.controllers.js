@@ -5,7 +5,7 @@ const {
   HealthInsurance,
   Speciality,
 } = require("../db");
-const { Op } = require("sequelize");
+const { Op, json } = require("sequelize");
 const bcryptjs = require("bcryptjs");
 
 const { deleteNotification } = require("./notification");
@@ -97,32 +97,34 @@ const createPatient = async (req, res) => {
 
 const getPatient = async (req, res) => {
   const { id } = req.params;
-  try {
-    const patient = await Patient.findOne({
-      where: {
-        id: id,
-      },
-      include: {
-        model: Person,
-      },
-    });
-    let patient_person = {};
-    for (let key in patient.dataValues) {
-      if (key != "person") {
-        patient_person[key] = patient.dataValues[key];
-      } else {
-        for (let key in patient.dataValues.person.dataValues) {
-          patient_person[key] = patient.dataValues.person.dataValues[key];
-        }
-      }
+  if (id) {
+    try {
+      const patient = await Person.findOne({
+        include: {
+          model: Patient,
+          where: {
+            id: id,
+          },
+          include: {
+            model: HealthInsurance,
+          },
+        },
+      });
+
+      let json = {};
+      console.log(patient.dataValues.patients);
+      concat_json(patient.dataValues, json);
+      concat_json(patient.dataValues.patients[0].dataValues, json);
+      res.json({ data: json, message: "Paciente de la BD" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        data: error,
+        message: "something goes wrong",
+      });
     }
-    res.json({ data: patient_person, message: "Paciente de la BD" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      data: error,
-      message: "something goes wrong",
-    });
+  } else {
+    res.status(500).json({ data: null, message: "No se envio id de Paciente" });
   }
 };
 
@@ -244,7 +246,7 @@ const addDoctor = async (req, res) => {
   });
   try {
     await patient.addDoctor([id_Doctor]);
-    deleteNotification(id) //borra la notificación
+    deleteNotification(id); //borra la notificación
     res.json({
       data: patient,
       message: "Doctor añadido a lista de doctores de paciente",
