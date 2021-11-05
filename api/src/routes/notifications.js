@@ -3,8 +3,8 @@ const router = Router();
 const {getNotificationById,deleteNotification} = require('../controllers/notification')
 router.route("/").get(getNotificationById);
 router.put("/reject",(req,res)=>{
-    const {idNotification} = req.body;
-    deleteNotification(idNotification);
+    const {idPatient} = req.body;
+    deleteNotification(idPatient);
     res.status(200)
 })
 
