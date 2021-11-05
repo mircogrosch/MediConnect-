@@ -8,8 +8,8 @@ export default function allDoctors(state = initialState, action) {
     case types.GET_DOCTORS:
       return {
         ...state,
-        allDoctors: action.payload.data,
-        copyAllDoctors: action.payload.data,
+        allDoctors: action.payload.data.unlinked,
+        copyAllDoctors: action.payload.data.unlinked,
       };
 
     case types.FILTER_SPECIALITIES:
@@ -21,9 +21,22 @@ export default function allDoctors(state = initialState, action) {
           (doc) => doc.specialities[0].id === action.payload
         );
       }
+    case types.FILTER_DOCTORS_BY_NAME:
+      // // let filtered;
+      // if (action.payload.data.length) {
+      //   filtered = action.payload;
+      // } else {
+      //   swal({
+      //     title: "El profesional no se encuentra asociado",
+      //     icon: "info",
+      //     button: "Ok",
+      //   });
+      //   filtered = state.names;
+      // }
+      console.log("estoy en el reducer filter name", action.payload);
       return {
         ...state,
-        allDoctors: filtered,
+        allDoctors: action.payload.data.unlinked,
       };
     default:
       return state;

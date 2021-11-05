@@ -14,7 +14,7 @@ import ShifsNotificator from "../components/Home/ShifsNotificator.jsx";
 import ContainerCards from "../components/Home/ContainerCards.jsx";
 import { useStyles } from "../styles/home";
 import { useSelector } from "react-redux";
-import {socket_Connect,socket} from '../components/Controlers/notifications'
+import { socket_Connect, socket } from "../components/Controlers/notifications";
 import jwt from "jsonwebtoken";
 
 const cardInfo = [
@@ -42,7 +42,6 @@ function HomePageDoctor() {
   useEffect(() => {
     socket_Connect(user.user,socket);
   }, [])
-  
 
   return (
     <Box className={classes.root} sx={{ background: teal[100] }}>

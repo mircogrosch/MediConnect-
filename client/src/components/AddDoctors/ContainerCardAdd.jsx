@@ -15,10 +15,13 @@ function ContainerCardAdd({ props }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   let allDoctors = useSelector((state) => state.allDoctors.allDoctors);
-  let userLog = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret")
+  let userLog = jwt.verify(
+    JSON.parse(sessionStorage.getItem("user"))?.token,
+    "secret"
+  );
 
   useEffect(() => {
-    dispatch(getDoctors());
+    dispatch(getDoctors(props.match.params.id));
     socket_Connect(userLog.user, socket);
   }, []);
 

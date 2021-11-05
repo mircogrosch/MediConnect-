@@ -1,11 +1,25 @@
-const { Person, Patient, Doctor } = require("../db");
+const {
+  Person,
+  Patient,
+  Doctor,
+  HealthInsurance,
+  Speciality,
+} = require("../db");
 const { Op } = require("sequelize");
 const bcryptjs = require("bcryptjs");
 
-const {deleteNotification} = require('./notification')
+const { deleteNotification } = require("./notification");
 //Encriptar password
 function encryptPassword(password) {
   return bcryptjs.hashSync(password, 10);
+}
+
+function concat_json(json, json_empty) {
+  for (let key in json) {
+    if (!Array.isArray(json[key])) {
+      json_empty[key] = json[key];
+    }
+  }
 }
 
 const createPatient = async (req, res) => {
@@ -21,48 +35,63 @@ const createPatient = async (req, res) => {
     healthInsuranceId,
   } = req.body;
   const rol = "Patient";
-  try {
-    let newPerson = await Person.create(
-      {
-        dni,
-        name,
-        lastname,
-        address,
-        imageProfile,
-        email,
-        password: encryptPassword(password),
-        rol,
-      },
-      {
-        fields: [
-          "dni",
-          "name",
-          "lastname",
-          "address",
-          "imageProfile",
-          "email",
-          "password",
-          "rol",
-        ],
-      }
-    );
-    let newPatient = await Patient.create(
-      {
-        num_member,
-      },
-      {
-        fields: ["num_member"],
-      }
-    );
-    newPatient.setPerson(dni);
-    newPatient.setHealthInsurance(healthInsuranceId);
-    res.json({ data: [newPerson, newPatient], message: "Patient created" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      data: error,
-      message: "something goes wrong",
-    });
+  if (
+    dni &&
+    name &&
+    lastname &&
+    address &&
+    email &&
+    password &&
+    num_member &&
+    healthInsuranceId
+  ) {
+    try {
+      let newPerson = await Person.create(
+        {
+          dni: parseInt(dni),
+          name,
+          lastname,
+          address,
+          imageProfile,
+          email,
+          password: encryptPassword(password),
+          rol,
+        },
+        {
+          fields: [
+            "dni",
+            "name",
+            "lastname",
+            "address",
+            "imageProfile",
+            "email",
+            "password",
+            "rol",
+          ],
+        }
+      );
+      let newPatient = await Patient.create(
+        {
+          num_member,
+        },
+        {
+          fields: ["num_member"],
+        }
+      );
+      newPatient.setPerson(dni);
+      newPatient.setHealthInsurance(healthInsuranceId);
+      res.json({ data: [newPerson, newPatient], message: "Patient created" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        data: error,
+        message: "something goes wrong",
+      });
+    }
+  } else {
+    res
+      .status(500)
+      .json({ data: null, message: "No se enviaron todo los parametros" });
   }
 };
 
@@ -129,69 +158,70 @@ const getPatients = async (req, res) => {
   }
 };
 
-const getDoctor = async (req, res) => {
-  const { name, id } = req.query;
+// http://localhost:3001/patient/doctors/id_Paciente
+const getDoctors = async (req, res) => {
   try {
-    const patient = await Patient.findOne({
+    const { id } = req.params;
+    const { doctor } = req.query;
+    const doctors = await Person.findAll({
       where: {
-        id: id,
+        rol: "Doctor",
+        name: doctor ? { [Op.like]: `%${doctor}%` } : { [Op.like]: "%%" },
       },
-    });
-    console.log(patient);
-    let doctors = await patient
-      .getDoctors({
-        attributes: ["personDni"],
-      })
-      .then((element) => element.map((item) => item.personDni));
-    let persons = await Person.findAll({
-      where: {
-        [Op.and]: [
+      include: {
+        model: Doctor,
+        required: true,
+        include: [
           {
-            name: {
-              [Op.like]: `%${name}%`,
+            model: Patient,
+            where: {
+              id: id,
             },
           },
           {
-            dni: {
-              [Op.in]: doctors,
-            },
+            model: Speciality,
           },
         ],
       },
     });
-    res.json({ data: persons, message: "Lista de Doctores de un Paciente" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      data: error,
-      message: "something goes wrong",
-    });
-  }
-};
-
-const getDoctors = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const patient = await Patient.findOne({
+    const dni_linked_patient = doctors.map((doctor) => doctor.dataValues.dni);
+    const doctors_unlinked = await Person.findAll({
       where: {
-        id: id,
+        rol: "Doctor",
+        dni: {
+          [Op.not]: dni_linked_patient,
+        },
+        name: doctor ? { [Op.like]: `%${doctor}%` } : { [Op.like]: "%%" },
+      },
+      include: {
+        model: Doctor,
+        include: {
+          model: Speciality,
+        },
       },
     });
-    let doctors = await patient.getDoctors();
-    let doctors_persons = [];
-    for (let i = 0; i < doctors.length; i++) {
-      let person = await Person.findOne({
-        where: {
-          dni: doctors[i].dataValues.personDni,
-        },
-      });
-      for (let key in person.dataValues) {
-        doctors[i].dataValues[key] = person.dataValues[key];
-      }
-      doctors_persons.push(doctors[i].dataValues);
-    }
+    let json = {};
+    // Se concatena la informacion en un solo json
+    data = doctors.map((doctor) => {
+      json = {};
+      concat_json(doctor.dataValues, json);
+      concat_json(doctor.dataValues.doctors[0].dataValues, json);
+      json["specialities"] =
+        doctor.dataValues.doctors[0].dataValues.specialities;
+      return json;
+    });
+    // Se concatena la informacion en un solo json
+    unlinked = doctors_unlinked.map((doctor) => {
+      json = {};
+      concat_json(doctor.dataValues, json);
+      concat_json(doctor.dataValues.doctors[0].dataValues, json);
+      json["specialities"] =
+        doctor.dataValues.doctors[0].dataValues.specialities;
+      return json;
+    });
     res.json({
-      data: doctors_persons,
+      data: data,
+      unlinked: unlinked,
       message: "Doctores de Paciente",
     });
   } catch (error) {
@@ -206,6 +236,7 @@ const getDoctors = async (req, res) => {
 const addDoctor = async (req, res) => {
   const { id } = req.params; // id de Paciente
   const { id_Doctor } = req.body; // id de Doctor
+
   let patient = await Patient.findOne({
     where: {
       id: id,
@@ -245,7 +276,6 @@ const deleteDoctor = async (req, res) => {
 };
 
 module.exports = {
-  getDoctor,
   getDoctors,
   getPatient,
   getPatients,

@@ -1,6 +1,6 @@
 const { Person, Doctor, Patient, Speciality } = require("../db");
 const { Op } = require("sequelize");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 //Encriptar password
 function encryptPassword(password) {
@@ -21,50 +21,67 @@ const createDoctor = async (req, res) => {
     specialities, // tiene que ser un arreglo de id de specialties o un arreglo vacio
   } = req.body;
   const rol = "Doctor";
-  try {
-    let newPerson = await Person.create(
-      {
-        dni,
-        name,
-        lastname,
-        address,
-        imageProfile,
-        email,
-        password:encryptPassword(password),
-        rol,
-      },
-      {
-        fields: [
-          "dni",
-          "name",
-          "lastname",
-          "address",
-          "imageProfile",
-          "email",
-          "password",
-          "rol",
-        ],
+  if (
+    dni &&
+    name &&
+    lastname &&
+    address &&
+    email &&
+    password &&
+    enrollment &&
+    location &&
+    specialities
+  ) {
+    try {
+      let newPerson = await Person.create(
+        {
+          dni,
+          name,
+          lastname,
+          address,
+          imageProfile,
+          email,
+          password: encryptPassword(password),
+          rol,
+        },
+        {
+          fields: [
+            "dni",
+            "name",
+            "lastname",
+            "address",
+            "imageProfile",
+            "email",
+            "password",
+            "rol",
+          ],
+        }
+      );
+      let newDoctor = await Doctor.create(
+        {
+          enrollment,
+          location,
+        },
+        {
+          fields: ["enrollment", "location"],
+        }
+      );
+      await newDoctor.setPerson(dni);
+      if (specialities.length != 0) {
+        await newDoctor.addSpecialities(specialities);
       }
-    );
-    let newDoctor = await Doctor.create(
-      {
-        enrollment,
-        location,
-      },
-      {
-        fields: ["enrollment", "location"],
-      }
-    );
-    await newDoctor.setPerson(dni);
-    if (specialities.length != 0) {
-      await newDoctor.addSpecialities(specialities);
+      res.json({ data: [newPerson, newDoctor], message: "Doctor created" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        data: error,
+        message: "something goes wrong",
+      });
     }
-    res.json({ data: [newPerson, newDoctor], message: "Doctor created" });
-  } catch (error) {
-    console.log(error);
+  } else {
     res.status(500).json({
-      data: error,
-      message: "something goes wrong",
+      data: null,
+      message: "No se enviaron todos los parametros",
     });
   }
 };
@@ -219,7 +236,7 @@ const getPatients = async (req, res) => {
     res.json({
       data: patients_persons,
       message: "Pacientes de Doctor",
-    }); 
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
