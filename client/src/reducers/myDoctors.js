@@ -24,9 +24,12 @@ export const myDoctors = (state = [], action) => {
         });
         filtered = state.names;
       }
+    case types.DELETE_DOCTOR:
+      console.log("reducer delete doctor", action.payload);
+      alert(action.payload.data.message);
       return {
         ...state,
-        names: filtered,
+        // state.filter(id=>id !== action.payload.data.id)
       };
     default:
       return state;

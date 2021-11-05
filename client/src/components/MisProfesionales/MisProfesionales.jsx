@@ -53,6 +53,8 @@ const MisProfesionales = (props) => {
                     name={e.name}
                     lastname={e.lastname}
                     address={e.address}
+                    idPatient={props.match.params.id}
+                    idDoctor={e.id}
                   />
                 );
               })}
