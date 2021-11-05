@@ -12,18 +12,18 @@ export const myDoctors = (state = [], action) => {
         names: action.payload,
         // copyNames: action.payload,
       };
-    case types.FILTER_DOCTORS_BY_NAME:
-      let filtered;
-      if (action.payload.data.length) {
-        filtered = action.payload;
-      } else {
-        swal({
-          title: "El profesional no se encuentra asociado",
-          icon: "info",
-          button: "Ok",
-        });
-        filtered = state.names;
-      }
+    // case types.FILTER_DOCTORS_BY_NAME:
+    //   let filtered;
+    //   if (action.payload.data.length) {
+    //     filtered = action.payload;
+    //   } else {
+    //     swal({
+    //       title: "El profesional no se encuentra asociado",
+    //       icon: "info",
+    //       button: "Ok",
+    //     });
+    //     filtered = state.names;
+    //   }
     case types.DELETE_DOCTOR:
       console.log("reducer delete doctor", action.payload);
       alert(action.payload.data.message);

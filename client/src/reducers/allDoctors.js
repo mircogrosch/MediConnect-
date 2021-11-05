@@ -6,10 +6,6 @@ const initialState = {
 export default function allDoctors(state = initialState, action) {
   switch (action.type) {
     case types.GET_DOCTORS:
-      console.log(
-        "estoy en el reducer alldoctors",
-        action.payload.data.unlinked
-      );
       return {
         ...state,
         allDoctors: action.payload.data.unlinked,
@@ -25,9 +21,22 @@ export default function allDoctors(state = initialState, action) {
           (doc) => doc.specialities[0].id === action.payload
         );
       }
+    case types.FILTER_DOCTORS_BY_NAME:
+      // // let filtered;
+      // if (action.payload.data.length) {
+      //   filtered = action.payload;
+      // } else {
+      //   swal({
+      //     title: "El profesional no se encuentra asociado",
+      //     icon: "info",
+      //     button: "Ok",
+      //   });
+      //   filtered = state.names;
+      // }
+      console.log("estoy en el reducer filter name", action.payload);
       return {
         ...state,
-        allDoctors: filtered,
+        allDoctors: action.payload.data.unlinked,
       };
     default:
       return state;

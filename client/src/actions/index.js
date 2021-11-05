@@ -136,11 +136,11 @@ export const filterDoctorsByName = (nameDoc, idPatient) => {
   return async function (dispatch) {
     try {
       let response = await axios.get(
-        `${URL}/patient/doctor?name=${nameDoc}&id=${idPatient}`
+        `${URL}/patient/doctors/${idPatient}?doctor=${nameDoc}`
       );
       return dispatch({
         type: types.FILTER_DOCTORS_BY_NAME,
-        payload: response.data,
+        payload: response,
       });
     } catch (error) {
       alert(error);
