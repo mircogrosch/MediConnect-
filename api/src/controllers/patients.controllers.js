@@ -275,7 +275,6 @@ const deleteDoctor = async (req, res) => {
 };
 
 module.exports = {
-  getDoctor,
   getDoctors,
   getPatient,
   getPatients,
