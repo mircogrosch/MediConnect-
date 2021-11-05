@@ -195,6 +195,7 @@ server.use((req, res, next) => {
 });
 
 // Routes
+// localhost:3001/
 server.use("/", routes);
 server.use("/login", loginRouter);
 server.use("/patient", patientRouter);
