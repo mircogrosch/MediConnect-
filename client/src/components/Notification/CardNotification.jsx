@@ -4,7 +4,7 @@ import React from 'react'
 import { styled } from '@mui/system'
 import { Check, Close } from '@mui/icons-material'
 import { useDispatch } from 'react-redux'
-import { postMyDoctor } from '../../actions'
+import { postMyDoctor, deleteNotifications, rejectNotification } from '../../actions'
 
 const MyGrid = styled(Grid)({
     display: 'flex',
@@ -17,12 +17,17 @@ const MyIcon = styled(AccountCircle)({
     height:'50px'
 })
 
-function CardNotification({msg, idDoctor, idPatient}) { 
+function CardNotification({msg, idDoctor, idPatient, id}) { 
 
     const dispatch = useDispatch()
     const handleAcept = (idPatient, idDoctor, e) =>{
-        e.preventDefault()
+        console.log(idPatient)
         dispatch(postMyDoctor(idPatient, idDoctor))
+        dispatch(deleteNotifications(id))
+    }
+    const handleReject = (idPatient) =>{
+        dispatch(rejectNotification(idPatient))
+        dispatch(deleteNotifications(id))
     }
 
     return (
@@ -33,7 +38,7 @@ function CardNotification({msg, idDoctor, idPatient}) {
                 <Typography variant='body'>{msg}</Typography>
             </Grid>
             <IconButton sx={{marginLeft:'20px'}} onClick={(e) => handleAcept(idPatient, idDoctor, e)}><Check/></IconButton>
-            <IconButton><Close/></IconButton>
+            <IconButton onClick={(e) => handleReject(idPatient, id)}><Close/></IconButton>
         </MyGrid>
     )
 }
