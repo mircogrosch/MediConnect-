@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteDoctor } from "../../actions/index";
 import { useDispatch, useSelector } from "react-redux";
 
+
 const MyIcon = styled(Icon)({
   display: "contents",
 });

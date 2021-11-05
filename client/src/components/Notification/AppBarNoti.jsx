@@ -11,7 +11,6 @@ import {
   Typography,
 } from "@mui/material";
 import {
-  AccountBoxOutlined,
   NotificationsOutlined,
   MoreVert,
 } from "@mui/icons-material";
@@ -76,11 +75,11 @@ export default function PrimarySearchAppBar(props) {
     >
       <MenuItem onClick={handleMenuClose}>
         <IconButton
-          size="large"
+          size="small"
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={numberNotification} color="error">
+          <Badge badgeContent={numberNotification} color="error" overlap='circular'>
             <NotificationsOutlined />
           </Badge>
         </IconButton>
@@ -101,7 +100,7 @@ export default function PrimarySearchAppBar(props) {
             <img src={logo} width="200px" alt="MediConnect+" />
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <Badge badgeContent={numberNotification} color="error">
+              <Badge badgeContent={numberNotification} color="error" overlap='circular'>
                 <MenuPrueba/>
               </Badge>
             {/* </IconButton> */}

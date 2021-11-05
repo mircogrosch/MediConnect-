@@ -9,6 +9,7 @@ export default function users(state = initialState, action) {
         ...state,
         users: action.payload,
       };
+
     default:
       return state;
   }

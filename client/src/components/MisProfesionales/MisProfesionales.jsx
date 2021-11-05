@@ -25,8 +25,8 @@ const MisProfesionales = (props) => {
   useEffect(() => {
     // Dispara la accion para traer todos los doctores asociados al paciente
     dispatch(getMyDoctors(props.match.params.id));
-  }, []);
-
+  }, [MyDoctors]);
+  
   return (
     <Box
       sx={{ backgroundColor: "#b2dfdb", margin: "5px", borderRadius: "10px" }}

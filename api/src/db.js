@@ -55,10 +55,10 @@ Patient.belongsTo(Person); // crea tabla personDni dentro de la tabla Patient
 Person.hasMany(Patient);
 
 // Uno a muchos
-Notification.belongsTo(Person); // crea tabla personDni dentro de la tabla Notification
-Person.hasMany(Notification);
+ Notification.belongsTo(Person); // crea tabla personDni dentro de la tabla Notification
+ Person.hasMany(Notification);  
 
-// Uno a muchos
+// Uno a muchos 
 Doctor.belongsTo(Person);
 Person.hasMany(Doctor);
 
