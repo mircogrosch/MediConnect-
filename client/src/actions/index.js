@@ -115,6 +115,7 @@ export const postMyDoctor = (payload, id_Doctor) => {
       const response = await axios.post(`${URL}/patient/doctors/${payload}`, {
         id_Doctor: id_Doctor,
       });
+      alert('Se acepto la solicitud')
       return dispatch({
         type: types.POST_MY_DOCTOR,
         id_Doctor,
@@ -170,3 +171,39 @@ export const deleteDoctor = (id, id_Doctor) => {
     }
   };
 };
+
+export const getNotifications = (idDoctor) => {
+  return async function(dispatch) {
+    try {
+      const notif = await axios.get(`${URL}/notifications?idDoctor=${idDoctor}`)
+      return dispatch({
+        type: types.GET_NOTIFICATIONS,
+        payload: notif.data,
+      })
+    } catch(error) {
+      alert(error)
+    }
+  }
+}
+
+export const deleteNotifications = (id) => {
+  return ({
+    type: types.DELETE_NOTIFICATIONS,
+    payload: id
+  })
+}
+
+export const rejectNotification = (id) => {
+  return async function (dispatch){
+    try {
+      await axios.put(`${URL}/notifications/reject`, {idPatient: id})
+      alert('Se rechazo la notificacion')
+      return({
+        type: types.REJECT_NOTIFICATION,
+        payload: id
+      })
+    } catch (error) {
+      alert(error)
+    }
+  }
+}
