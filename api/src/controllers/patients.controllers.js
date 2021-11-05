@@ -224,8 +224,10 @@ const addDoctor = async (req, res) => {
 };
 
 const deleteDoctor = async (req, res) => {
+  console.log("REq", req);
   const { id } = req.params; // id de Paciente
-  const { id_Doctor } = req.body; // id de Doctor
+  const { id_Doctor } = req.query; // id de Doctor
+
   let patient = await Patient.findOne({
     where: {
       id: id,

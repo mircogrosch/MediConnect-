@@ -19,8 +19,8 @@ const MyGrid = styled(Grid)({
 const MisProfesionales = (props) => {
   const dispatch = useDispatch();
   let MyDoctors = useSelector((state) => state.myDoctors.names); // Guarda doctores asociados para renderizar en las cards
-  console.log("MyDoctors", MyDoctors);
-  console.log("MyDoctors typeof", typeof MyDoctors);
+  // console.log("MyDoctors", MyDoctors);
+  // console.log("MyDoctors typeof", typeof MyDoctors);
 
   useEffect(() => {
     // Dispara la accion para traer todos los doctores asociados al paciente
@@ -55,6 +55,8 @@ const MisProfesionales = (props) => {
                     name={e.name}
                     lastname={e.lastname}
                     address={e.address}
+                    idPatient={props.match.params.id}
+                    idDoctor={e.id}
                   />
                 );
               })}
