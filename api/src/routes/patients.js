@@ -38,7 +38,8 @@ router.route("/doctors/:id").post(addDoctor);
 /*
 Para eliminar un Doctor a lista de Doctores de un Paciente
 Se envia por params el id del Paciente
-Y se envia por body el id del Doctor
+Y se envia por query el id del Doctor
+ej: localhost:3001/patient/doctors/:id_paciente?id_Doctor=Mauricio
 */
 router.route("/doctors/:id").delete(deleteDoctor);
 
