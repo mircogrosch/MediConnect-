@@ -147,3 +147,26 @@ export const filterDoctorsByName = (nameDoc, idPatient) => {
     }
   };
 };
+
+/*
+Para eliminar un Doctor a lista de Doctores de un Paciente
+Se envia por params el id del Paciente
+Y se envia por query el id del Doctor
+*/
+export const deleteDoctor = (id, id_Doctor) => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.delete(
+        `${URL}/patient/doctors/${id}?id_Doctor=${id_Doctor}`
+      );
+      console.log("Action deleteDoctor response ", response);
+
+      return dispatch({
+        type: types.DELETE_DOCTOR,
+        payload: response,
+      });
+    } catch (error) {
+      alert(error);
+    }
+  };
+};
