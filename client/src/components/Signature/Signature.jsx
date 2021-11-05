@@ -1,20 +1,27 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
+import { Grid, Button } from "@mui/material";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import SignaturePad from "react-signature-canvas";
-import "./sigCanvas.css";
+import "../../styles/registerForms/sig_canvas.css";
 
-export default function Signature() {
+export default function Signature({ imgURL, setImgURL, bgColor }) {
   const sigCanvas = useRef({});
-  const [imgURL, setImgURL] = useState(null);
+
   const cleanUp = () => sigCanvas.current.clear();
+
   const save = () =>
     setImgURL(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
+
   return (
-    <div>
+    <Grid container>
       <Popup
         modal
-        trigger={<button>Agregar firma</button>}
+        trigger={
+          <Button variant="contained" sx={{ height: "50px", bgcolor: bgColor }}>
+            Agregar firma
+          </Button>
+        }
         closeOnDocumentClick={false}
       >
         {(close) => (
@@ -25,19 +32,52 @@ export default function Signature() {
                 className: "signatureCanvas",
               }}
             />
-            <button onClick={close}>Cerrar</button>
-            <button onClick={cleanUp}>Limpiar</button>
-            <button onClick={save}>Guardar</button>
+            <Grid container justifyContent="space-between">
+              <Button
+                variant="contained"
+                sx={{
+                  height: "50px",
+                  width: { md: "30%", xs: "100%" },
+                  marginBottom: "0.5em",
+                  bgcolor: bgColor,
+                }}
+                onClick={close}
+              >
+                Cerrar
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  height: "50px",
+                  width: { md: "30%", xs: "100%" },
+                  marginBottom: "0.5em",
+                  bgcolor: bgColor,
+                }}
+                onClick={cleanUp}
+              >
+                Limpiar
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  height: "50px",
+                  width: { md: "30%", xs: "100%" },
+                  marginBottom: "0.5em",
+                  bgcolor: bgColor,
+                }}
+                onClick={save}
+              >
+                Guardar
+              </Button>
+            </Grid>
           </>
         )}
       </Popup>
-      <br />
-      <br />
       {imgURL ? (
         <img src={imgURL} className={"img"} alt="notfound"></img>
       ) : (
         false
       )}
-    </div>
+    </Grid>
   );
 }
