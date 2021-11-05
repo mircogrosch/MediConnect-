@@ -15,10 +15,10 @@ export const getUser = (user) => {
     const response = await axios.post(`${URL}/login`, user, {
       withCredentials: true,
     });
+    sessionStorage.setItem("user", JSON.stringify(response.data));
     dispatch({ type: types.GET_USER_LOGIN, payload: response.data });
   };
 };
-
 export const postDoctor = (payload, history) => {
   return async function (dispatch) {
     try {
