@@ -18,7 +18,7 @@ function Body() {
       >
         <Button
           component={Link}
-          to="/register/pacient"
+          to="/register/patient"
           variant="contained"
           size="large"
           style={{
