@@ -5,7 +5,7 @@ const {
   HealthInsurance,
   Speciality,
 } = require("../db");
-const { Op, json } = require("sequelize");
+const { Op } = require("sequelize");
 const bcryptjs = require("bcryptjs");
 
 const { deleteNotification } = require("./notification");
@@ -95,6 +95,7 @@ const createPatient = async (req, res) => {
   }
 };
 
+// http://localhost:3001/patient/id_Paciente
 const getPatient = async (req, res) => {
   const { id } = req.params;
   if (id) {
@@ -128,6 +129,8 @@ const getPatient = async (req, res) => {
   }
 };
 
+// VER SI USAN ESTA RUTA SINO ELIMNIARLA
+// http://localhost:3001/patient
 const getPatients = async (req, res) => {
   try {
     let patientsDB = await Patient.findAll({
@@ -239,13 +242,24 @@ const addDoctor = async (req, res) => {
   const { id } = req.params; // id de Paciente
   const { id_Doctor } = req.body; // id de Doctor
 
-  let patient = await Patient.findOne({
-    where: {
-      id: id,
-    },
-  });
   try {
-    await patient.addDoctor([id_Doctor]);
+    let patient = await Patient.findOne({
+      where: {
+        id: id,
+      },
+    });
+    let doctor = await Doctor.findOne({
+      where: {
+        id: id_Doctor,
+      },
+    });
+    if (!patient || !doctor) {
+      return res.status(500).json({
+        data: null,
+        message: "Id de Paciente o id de Doctor erroneo",
+      });
+    }
+    await patient.addDoctor(doctor);
     deleteNotification(id); //borra la notificación
     res.json({
       data: patient,
@@ -257,16 +271,26 @@ const addDoctor = async (req, res) => {
 };
 
 const deleteDoctor = async (req, res) => {
-  console.log("REq", req);
   const { id } = req.params; // id de Paciente
   const { id_Doctor } = req.query; // id de Doctor
 
-  let patient = await Patient.findOne({
-    where: {
-      id: id,
-    },
-  });
   try {
+    let patient = await Patient.findOne({
+      where: {
+        id: id,
+      },
+    });
+    let doctor = await Doctor.findOne({
+      where: {
+        id: id_Doctor,
+      },
+    });
+    if (!patient || !doctor) {
+      return res.status(500).json({
+        data: null,
+        message: "Id de Paciente o id de Doctor erroneo",
+      });
+    }
     await patient.removeDoctor([id_Doctor]);
     res.json({
       data: patient,
