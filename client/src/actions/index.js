@@ -3,10 +3,10 @@ import types from "./types.js";
 import swal from "sweetalert";
 const URL = "http://localhost:3001";
 
-export const getDoctors = () => {
+export const getDoctors = (id_patient) => {
   return async function (dispatch) {
-    const response = await axios.get(`${URL}/doctor`);
-    dispatch({ type: types.GET_DOCTORS, payload: response.data });
+    const response = await axios.get(`${URL}/patient/doctors/${id_patient}`);
+    dispatch({ type: types.GET_DOCTORS, payload: response });
   };
 };
 
@@ -136,11 +136,11 @@ export const filterDoctorsByName = (nameDoc, idPatient) => {
   return async function (dispatch) {
     try {
       let response = await axios.get(
-        `${URL}/patient/doctor?name=${nameDoc}&id=${idPatient}`
+        `${URL}/patient/doctors/${idPatient}?doctor=${nameDoc}`
       );
       return dispatch({
         type: types.FILTER_DOCTORS_BY_NAME,
-        payload: response.data,
+        payload: response,
       });
     } catch (error) {
       alert(error);
