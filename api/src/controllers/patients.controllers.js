@@ -296,11 +296,7 @@ const getDoctors = async (req, res) => {
 
 const addDoctor = async (req, res) => {
   const { id } = req.params; // id de Paciente
-<<<<<<< HEAD
   const { id_Doctor, idNotification } = req.body; // id de Doctor
-=======
-  const { id_Doctor } = req.body; // id de Doctor
->>>>>>> 91b363b38a16aabb833a0d98c7cbeaba82f6f20d
   let patient = await Patient.findOne({
     where: {
       id: id,
@@ -308,10 +304,7 @@ const addDoctor = async (req, res) => {
   });
   try {
     await patient.addDoctor([id_Doctor]);
-<<<<<<< HEAD
     deleteNotification(idNotification); //borra la notificación
-=======
->>>>>>> 91b363b38a16aabb833a0d98c7cbeaba82f6f20d
     res.json({
       data: patient,
       message: "Doctor añadido a lista de doctores de paciente",
