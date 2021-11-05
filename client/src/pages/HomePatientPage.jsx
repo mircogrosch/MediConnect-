@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { useStyles } from "../styles/home";
 import { Box, Grid } from "@mui/material";
 import { teal } from "@mui/material/colors";
@@ -14,7 +13,7 @@ import Perfil from "../components/Home/Perfil";
 import ShifsNotificator from "../components/Home/ShifsNotificator.jsx";
 import ContainerCards from "../components/Home/ContainerCards.jsx";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti.jsx";
-
+import jwt from "jsonwebtoken";
 const cardInfo = [
   {
     title: "Mis Turnos",
@@ -35,7 +34,7 @@ const cardInfo = [
 
 function HomePatientPage() {
   const classes = useStyles();
-  const user = useSelector((state) => state.users.users.user.user);
+  const user = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret");
   return (
     <Box className={classes.root} sx={{ background: teal[50] }}>
       <PrimarySearchAppBar />
@@ -43,10 +42,10 @@ function HomePatientPage() {
         <Grid container columnSpacing={4} justifyContent="center">
           <Grid item lg={3} md={4} xs={10}>
             <Perfil
-              name={user.name}
-              lastname={user.lastname}
-              dni={user.dni}
-              address={user.address}
+              name={user.user.name}
+              lastname={user.user.lastname}
+              dni={user.user.dni}
+              address={user.user.address}
             />
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">

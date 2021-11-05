@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useStyles } from "../../styles/doctors/add_doctor";
-import { Grid, Box } from "@mui/material";
+import { Grid } from "@mui/material";
 import CardAdd from "./CardAdd";
 import { useDispatch, useSelector } from "react-redux";
 import { getDoctors } from "../../actions/index";
@@ -9,16 +9,17 @@ import {
   socket_Connect,
   send_Notifications,
 } from "../Controlers/notifications";
+import jwt from "jsonwebtoken";
 
 function ContainerCardAdd({ props }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   let allDoctors = useSelector((state) => state.allDoctors.allDoctors);
-  let userLog = useSelector((state) => state.users.users.user);
+  let userLog = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret")
 
   useEffect(() => {
     dispatch(getDoctors());
-    socket_Connect(userLog, socket);
+    socket_Connect(userLog.user, socket);
   }, []);
 
   return (
@@ -39,6 +40,7 @@ function ContainerCardAdd({ props }) {
               style={{ display: "flex", justifyContent: "center" }}
             >
               <CardAdd
+                key={e.id}
                 name={e.name}
                 lastname={e.lastname}
                 address={e.address}

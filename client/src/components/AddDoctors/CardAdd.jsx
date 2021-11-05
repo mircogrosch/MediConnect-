@@ -1,11 +1,10 @@
 import { Box, IconButton, Icon, Typography, Grid } from "@material-ui/core";
 import React from "react";
-import { useSelector } from "react-redux";
 import { AccountCircle, ControlPoint } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import { socket } from "../Controlers/notifications";
 import swal from "sweetalert";
-
+import jwt from "jsonwebtoken";
 const CardAdd = ({
   name,
   lastname,
@@ -18,7 +17,7 @@ const CardAdd = ({
   styles,
 }) => {
   //Global state
-  let userLog = useSelector((state) => state.users.users);
+  let userLog = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret");
 
   const handleClick = () => {
     let userReciver = {
