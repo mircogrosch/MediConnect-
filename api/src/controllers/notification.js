@@ -6,11 +6,13 @@ const {Notification,Doctor} = require('../db.js')
  * @param {*} res response de express
  */
 const getNotificationById = async (req,res)=> { 
-     const {idDoctor} = req.body; 
+     const {idDoctor} = req.query; 
+     console.log(idDoctor)
      const notifications = await Notification.findAll({
        where:{
         idDoctor: idDoctor
-       }
+       },
+      //  attributes: ['id', 'idDoctor', 'idPatient', 'description', 'personDni']
      }); 
      res.send(notifications)
 }
@@ -19,10 +21,11 @@ const getNotificationById = async (req,res)=> {
  * ELIMINA UNA NOTIFICACION ESPECIFICA
  * @param {*} idNotification recibe el id de una notificacion especifica
  */
-const deleteNotification = async (idNotification)=> { 
+const deleteNotification = async (idPatient)=> { 
+      console.log(idPatient)
       const notificationToRemove =  await Notification.findOne({
         where:{
-          id:idNotification
+          idPatient:idPatient
         }
       })
       console.log(notificationToRemove)

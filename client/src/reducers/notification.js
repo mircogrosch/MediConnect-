@@ -6,11 +6,28 @@ const notification = (state=initialState,action)=>{
     switch(action.type){
         
         case types.SAVE_NOTIFICATION: 
-        return { 
-            ...state, notifications:[...state.notifications,action.payload]
-        }
-    default: 
-    return state;
+            return { 
+                ...state, 
+                notifications:[action.payload]
+            }
+        case types.GET_NOTIFICATIONS:
+            return {
+                ...state,
+                notifications: action.payload
+            }
+        case types.DELETE_NOTIFICATIONS:
+            let notification = state.notifications
+            let filter = notification.filter(e => e.id !== action.payload)
+            return {
+                ...state,
+                notifications: filter
+            }
+        case types.REJECT_NOTIFICATION:
+            return{
+                ...state
+            }
+        default: 
+        return state;
     }
 } 
 

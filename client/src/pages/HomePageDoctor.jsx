@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Grid } from "@mui/material";
 import { teal } from "@mui/material/colors";
 import {
@@ -36,13 +36,12 @@ const cardInfo = [
 ];
 
 function HomePageDoctor() {
-  const user = jwt.verify(
-    JSON.parse(sessionStorage.getItem("user"))?.token,
-    "secret"
-  );
+  const user = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret");
   const classes = useStyles();
-  //conexion con socket
-  socket_Connect(user, socket);
+  //conexion con socket 
+  useEffect(() => {
+    socket_Connect(user.user,socket);
+  }, [])
 
   return (
     <Box className={classes.root} sx={{ background: teal[100] }}>

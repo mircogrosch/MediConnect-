@@ -100,8 +100,8 @@ export default function CustomizedMenus() {
         open={open}
         onClose={handleClose}
       >
-        {notifications.notifications.map(e => <MenuItem onClick={handleClose} disableRipple>
-          <CardNotification msg={e.message} idDoctor={e.idReciver} idPatient={e.id_patient}/>
+        {notifications.notifications && notifications.notifications.map(e => <MenuItem onClick={handleClose} disableRipple>
+          <CardNotification msg={e.description} idDoctor={e.idDoctor} idPatient={e.idPatient} id={e.id}/>
         </MenuItem>)}
       </StyledMenu>
     </div>
