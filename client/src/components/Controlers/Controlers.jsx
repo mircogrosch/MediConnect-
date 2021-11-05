@@ -1,7 +1,7 @@
-import { postPatient, postDoctor } from "../../actions";
+import { postPatient} from "../../actions";
 import swal from "sweetalert";
 import { filterSpecialities } from "../../actions/index";
-
+import jwt from "jsonwebtoken";
 export const handleChange = (prop, state, set) => (event) => {
   set({ ...state, [prop]: event.target.value });
 };
@@ -68,18 +68,24 @@ export const handleSubmit = (e, errors, state, set, dispatch, history) => {
  * Valida que haya un usuario logeado y cual es su rol, si no está logeado lo regresa al login.
  */
 
-export const validateUser = (user, history) => {
-  if (!user) {
-    return swal({
-      title: `El nombre de usuario o la contraseña son incorrectos`,
-      dangerMode: true,
-      icon: "error",
-      button: "Continuar",
-    });
-  }
-  if (user.rol === "Patient") {
-    return history.push("/account/patient");
-  } else if (user.rol === "Doctor") {
-    return history.push("/account/profesional");
+export const validateUser = (token, history) => {
+  if (token) {
+    const userLog = JSON.parse(sessionStorage.getItem("user"))?.token;
+    if (userLog) {
+      const decoded = jwt.verify(userLog, "secret");
+      console.log(decoded);
+      if (decoded.user.rol === "Patient") {
+        return history.push("/account/patient");
+      } else if (decoded.user.rol === "Doctor") {
+        return history.push("/account/profesional");
+      }
+    } else if (token.message) {
+      swal({
+        title: `${token.message}`,
+        icon: "error",
+        text: "Por favor vuelve a intentar",
+        buttons: "Reintentar",
+      });
+    }
   }
 };
