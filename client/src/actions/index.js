@@ -3,10 +3,10 @@ import types from "./types.js";
 import swal from "sweetalert";
 const URL = "http://localhost:3001";
 
-export const getDoctors = () => {
+export const getDoctors = (id_patient) => {
   return async function (dispatch) {
-    const response = await axios.get(`${URL}/doctor`);
-    dispatch({ type: types.GET_DOCTORS, payload: response.data });
+    const response = await axios.get(`${URL}/patient/doctors/${id_patient}`);
+    dispatch({ type: types.GET_DOCTORS, payload: response });
   };
 };
 

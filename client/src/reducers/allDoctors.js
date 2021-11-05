@@ -6,10 +6,14 @@ const initialState = {
 export default function allDoctors(state = initialState, action) {
   switch (action.type) {
     case types.GET_DOCTORS:
+      console.log(
+        "estoy en el reducer alldoctors",
+        action.payload.data.unlinked
+      );
       return {
         ...state,
-        allDoctors: action.payload.data,
-        copyAllDoctors: action.payload.data,
+        allDoctors: action.payload.data.unlinked,
+        copyAllDoctors: action.payload.data.unlinked,
       };
 
     case types.FILTER_SPECIALITIES:
