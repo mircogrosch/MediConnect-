@@ -52,9 +52,7 @@ const io = socketIO(server_pp, {
     methods: ["GET","POST","PUT"]
   }
 })
-const {SOCKET_NOTIFICATION}=require('./src/controllers/notification')
-
-SOCKET_NOTIFICATION(io)
+require('./src/controllers/notification')(io)
  
   // Syncing all the models at once.
 conn.sync({ force: false }).then(async () => {

@@ -1,25 +1,22 @@
 const express = require("express");
-const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const routes = require("./routes/index.js");
 const loginRouter = require("./routes/login");
 const patientRouter = require("./routes/patients");
 const doctorRouter = require("./routes/doctor");
-const { Person, Patient, Doctor } = require("./db");
-const passport = require("passport");
-const Strategy = require("passport-local").Strategy;
-const bcryptjs = require("bcryptjs");
+let { Person, Patient, Doctor } = require("./db");
+let passport = require("passport");
+let Strategy = require("passport-local").Strategy;
+const bcrypt = require("bcrypt");
 const specialitiesRouter = require("./routes/specialities");
 const healthinsuranceRouter = require("./routes/healthinsurance");
-const flash = require("connect-flash");
-const notification = require('./routes/notifications')
 const cors = require('cors')
 require("./db.js");
 
 //Para poder comparar con la password encrypt
 function comparePassword(password, passwordDB) {
-  return bcryptjs.compareSync(password, passwordDB);
+  return bcrypt.compareSync(password, passwordDB);
 }
 
 //Configuración de estrategia local
@@ -28,86 +25,82 @@ passport.use(
     {
       usernameField: "email",
       passwordField: "password",
-      passReqToCallback: true,
     },
-    async function (req, username, password, done) {
-      try {
-        let user = await Person.findOne({
-          where: {
-            email: username,
-          },
-        });
-        if (user !== null) {
+     async function (username, password, done) {
+       try {
+         let user = await Person.findOne({
+           where: {
+             email: username,
+           },
+         });
+
+       if (user !== null) {
           //Si existe usera con ese email
-          if (comparePassword(password, user.password)) {
-            //Si coincide password ingresada con la registrada del usuario
-            //Para traer el perfil de DOCTOR
-            if (user.rol === "Doctor") {
-              try {
-                let doctor = await Doctor.findOne({
-                  where: {
+
+           if (comparePassword(password, user.password)) {
+             //Si coincide password ingresada con la registrada del usuario
+             //Para traer el perfil de DOCTOR
+             if (user.rol === "Doctor") {
+               try {
+                 let doctor = await Doctor.findOne({
+                   where: {
                     personDni: user.dni,
                   },
-                });
-                user = { ...user, doctor };
-                user = {
-                  user: user.dataValues,
-                  rol: user.doctor.dataValues,
-                };
-              } catch (e) {
+                 });
+                 user = { ...user, doctor };
+                 user = {
+                   user: user.dataValues,
+                   doctor: user.doctor,
+                 };
+               } catch (e) {
                 console.log("Error al traer al doctor: ", e);
-              }
-              //Para traer el perfil de PACIENTE
-            } else if (user.rol === "Patient") {
-              try {
-                let patient = await Patient.findOne({
+            }
+               //Para traer el perfil de PACIENTE
+             } else if (user.rol === "Patient") {
+               try {
+                 let patient = await Patient.findOne({
                   where: {
                     personDni: user.dni,
                   },
-                });
+               });
                 user = { ...user, patient };
-                user = {
+                 user = {
                   user: user.dataValues,
-                  rol: user.patient.dataValues,
+                   patient: user.patient,
                 };
-              } catch (e) {
+               } catch (e) {
                 console.log("Error al traer al paciente: ", e);
               }
             }
-            return done(
-              null,
-              user,
-              req.flash("loginMessage", "User logged!!!")
-            );
-          } else {
-            //Se encontro usera, pero password es incorrecta
-            return done(
-              null,
-              false,
-              req.flash("loginMessage", "Incorrect password")
-            );
-          }
-        } else {
-          //No se encontro usera con email ingresado
-          return done(
-            null,
-            false,
-            req.flash("loginMessage", "There is no such registered email")
-          );
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
+            // res.status(200).send({
+            //   data: user,
+          //   message: "Logged user",
+          // });
+             done(null, user);  
+           } else {
+             //Se encontro usera, pero password es incorrecta
+             // res.status(200).send({ message: "Incorrect password" });
+             done(null, false, { message: "Incorrect password" });
+           }
+         } else {
+           //No se encontro usera con email ingresado
+         // res.status(200).send({ message: "There is no such registered email" });
+           done(null, false, { message: "There is no such registered email" });
+         }
+       } catch (error) {
+         // res.status(400).send("Error desde base de datos: ", e);
+         done(error);
+       }
+     }
   )
 );
 
-//Serializar
 passport.serializeUser(function (user, done) {
   return done(null, user.user.dni);
 });
-//Deserializar
-passport.deserializeUser(async function (dni, done) {
+
+passport.deserializeUser( async function (dni, done) {
+  console.log("DES:",dni)
   try {
     let user = await Person.findOne({
       where: {
@@ -125,7 +118,7 @@ passport.deserializeUser(async function (dni, done) {
         user = { ...user, doctor };
         user = {
           user: user.dataValues,
-          rol: user.doctor.dataValues,
+          doctor: user.doctor,
         };
       } catch (e) {
         console.log("Error al traer al doctor: ", e);
@@ -141,15 +134,15 @@ passport.deserializeUser(async function (dni, done) {
         user = { ...user, patient };
         user = {
           user: user.dataValues,
-          rol: user.patient.dataValues,
+          patient: user.patient,
         };
       } catch (e) {
         console.log("Error al traer al paciente: ", e);
       }
     }
-    return done(null, user);
+    done(null, user);
   } catch (error) {
-    return done(error);
+    console.log(error);
   }
 });
 
@@ -158,10 +151,10 @@ const server = express();
 server.name = "API";
 
 // middlewares
-server.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+server.use(cors({credentials: true, origin: 'http://localhost:3000'}))
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
-server.use(cookieParser("secret"));
+server.use(cookieParser('secret'));
 server.use(morgan("dev"));
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
@@ -171,38 +164,34 @@ server.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-  next();
+  next(); 
 });
+server.set("views", __dirname + "/views");
+server.set("view engine", "ejs");
 server.use(
-  session({
-    secret: "1234",
+  require("express-session")({
+    secret: 'secret',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: false
   })
 );
-
 // Inicializa Passport y recupera el estado de autenticación de la sesión.
-server.use(flash());
 server.use(passport.initialize());
 server.use(passport.session());
 
 // Middleware para mostrar la sesión actual en cada request
 server.use((req, res, next) => {
-  console.log(req.cookies);
-  console.log(req.session);
   console.log(req.user);
   next();
 });
 
 // Routes
-// localhost:3001/
 server.use("/", routes);
 server.use("/login", loginRouter);
 server.use("/patient", patientRouter);
 server.use("/doctor", doctorRouter);
 server.use("/specialities", specialitiesRouter);
 server.use("/healthinsurance", healthinsuranceRouter);
-server.use('/notifications', notification)
 
 // Error catching endware.
 server.use((err, req, res, next) => {

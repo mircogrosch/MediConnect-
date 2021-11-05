@@ -1,17 +1,11 @@
-const {
-  Person,
-  Patient,
-  Doctor,
-  HealthInsurance,
-  Speciality,
-} = require("../db");
+const { Person, Patient, Doctor, Speciality } = require("../db");
 const { Op } = require("sequelize");
-const bcryptjs = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const { deleteNotification } = require("./notification");
 //Encriptar password
 function encryptPassword(password) {
-  return bcryptjs.hashSync(password, 10);
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 }
 
 function concat_json(json, json_empty) {
@@ -95,28 +89,58 @@ const createPatient = async (req, res) => {
   }
 };
 
-const getPatient = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const patient = await Patient.findOne({
-      where: {
-        id: id,
-      },
-      include: {
-        model: Person,
-      },
-    });
-    let patient_person = {};
-    for (let key in patient.dataValues) {
-      if (key != "person") {
-        patient_person[key] = patient.dataValues[key];
-      } else {
-        for (let key in patient.dataValues.person.dataValues) {
-          patient_person[key] = patient.dataValues.person.dataValues[key];
+/****************** getPatient ******************
+http://localhost:3001/patient/dni_paciente
+
+ej: (method: GET) http://localhost:3001/patient/999
+
+res: {
+    "data": {
+        "dni": 999,
+        "name": "Alex",
+        "lastname": "Villanueva",
+        "address": "Calle falsa 123",
+        "imageProfile": null,
+        "email": "alex@hotmail.com",
+        "password": "$2b$10$LBvXkX1ihvshYofwbH24JuRVHI5ZP5i6KIpu3ck/uPhuWLZxF4Kci",
+        "rol": "Patient",
+        "patient": {
+            "id": "b6898307-9563-40f5-8a06-0220147d07c6",
+            "num_member": 1,
+            "personDni": 999,
+            "healthInsuranceId": null
         }
+    },
+    "message": "Paciente de la BD"
+}
+*/
+const getPatient = async (req, res) => {
+  let { id } = req.params;
+  console.log("DNI:", id);
+  id = parseInt(id);
+  let person = null;
+  try {
+    if (id) {
+      person = await Person.findOne({
+        where: {
+          dni: id,
+        },
+        include: [
+          {
+            model: Patient,
+          },
+        ],
+      });
+      if (!person) {
+        return res.json({
+          data: person,
+          message: `No se econtro Paciente con DNI: ${id}`,
+        });
       }
+      res.json({ data: person, message: `Paciente con DNI: ${id}` });
+    } else {
+      res.json({ data: person, message: "No se envio DNI del Paciente" });
     }
-    res.json({ data: patient_person, message: "Paciente de la BD" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -126,29 +150,66 @@ const getPatient = async (req, res) => {
   }
 };
 
+/******************* getPatients ******************
+http://localhost:3001/patient
+
+ej: (method: GET) http://localhost:3001/patient
+
+res: {
+    "data": [
+        {
+            "dni": 999,
+            "name": "Alex",
+            "lastname": "Villanueva",
+            "address": "Calle falsa 123",
+            "imageProfile": null,
+            "email": "alex@hotmail.com",
+            "password": "$2b$10$LBvXkX1ihvshYofwbH24JuRVHI5ZP5i6KIpu3ck/uPhuWLZxF4Kci",
+            "rol": "Patient",
+            "patient": {
+                "id": "b6898307-9563-40f5-8a06-0220147d07c6",
+                "num_member": 1,
+                "personDni": 999,
+                "healthInsuranceId": null
+            }
+        },
+        {
+            "dni": 888,
+            "name": "Maria",
+            "lastname": "Alvarez",
+            "address": "Calle falsa 123",
+            "imageProfile": null,
+            "email": "majo@hotmail.com",
+            "password": "$2b$10$UYaI3GZszizunmbMWQeyP.U67h4a4w8ytcFyUM5LjdpSCS3NkZjh6",
+            "rol": "Patient",
+            "patient": {
+                "id": "62fbf62c-64b1-43dc-82ef-26b1e0f2e253",
+                "num_member": 1,
+                "personDni": 888,
+                "healthInsuranceId": null
+            }
+        }
+    ],
+    "message": "Todos los Pcientes registrados"
+}
+*/
 const getPatients = async (req, res) => {
   try {
-    let patientsDB = await Patient.findAll({
+    let patients = await Person.findAll({
+      where: {
+        rol: "Patient",
+      },
       include: {
-        model: Person,
+        model: Patient,
       },
     });
-
-    let patients = [];
-    patientsDB.forEach((patient) => {
-      let aux = {};
-      for (let key in patient.dataValues) {
-        if (key != "person") {
-          aux[key] = patient.dataValues[key];
-        } else {
-          for (let key in patient.dataValues.person.dataValues) {
-            aux[key] = patient.dataValues.person.dataValues[key];
-          }
-        }
-      }
-      patients.push(aux);
-    });
-    res.json({ data: patients, message: "Pacientes de la BD" });
+    if (patients.length > 0) {
+      return res.json({
+        data: patients,
+        message: "Todos los Pcientes registrados",
+      });
+    }
+    res.json({ data: patients, message: "No se registran Pacientes" });
   } catch (error) {
     console.log(error);
     res.status(500).json({

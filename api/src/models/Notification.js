@@ -10,14 +10,6 @@ module.exports = (sequelize) => {
         allowNull: false,
         primaryKey: true,
       },
-      idDoctor:{
-        type: DataTypes.STRING,
-        allowNull:false
-      },
-      idPatient:{
-        type:DataTypes.STRING,
-        allowNull:false
-      },
       description: {
         type: DataTypes.TEXT,
         allowNull: false,
