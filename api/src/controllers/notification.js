@@ -51,14 +51,6 @@ const saveNotification = async (notification)=>{
         new_Notification.setPerson(doctor.dataValues.personDni)
 
 }
-
-
-
-
-
-
-
-
 /**
  * HACE LA CONEXION SOCKET, ESCUCHA Y EMITE EVENTOS PARA LAS NOTIFICAIONES
  * @param {*} io Recibe una conexion socket

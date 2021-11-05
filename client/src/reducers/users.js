@@ -1,13 +1,11 @@
 import types from "../actions/types";
-const initialState = {
-  users: {},
-};
-export default function users(state = initialState, action) {
+
+export default function users(state = {}, action) {
   switch (action.type) {
     case types.GET_USER_LOGIN:
       return {
         ...state,
-        users: action.payload,
+        state: action.payload,
       };
 
     default:
