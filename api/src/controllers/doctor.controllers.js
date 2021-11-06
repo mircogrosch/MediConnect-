@@ -7,6 +7,16 @@ const {
 } = require("../db");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
+const cloudinary = require("cloudinary");
+const fs = require("fs-extra");
+const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
+  process.env;
+
+cloudinary.config({
+  cloud_name: CLOUDINARY_NAME,
+  api_key: CLOUDINARY_API_KEY,
+  api_secret: CLOUDINARY_API_SECRET,
+});
 
 //Encriptar password
 function encryptPassword(password) {
@@ -22,18 +32,21 @@ function concat_json(json, json_empty) {
 }
 
 const createDoctor = async (req, res) => {
+  const result;
   const {
     dni,
     name,
     lastname,
     address,
-    imageProfile,
     email,
     password,
     enrollment,
     location,
     specialities, // tiene que ser un arreglo de id de specialties o un arreglo vacio
   } = req.body;
+  if (req.file.path) {
+    result = await cloudinary.v2.uploader.upload(req.file.path);
+  }
   const rol = "Doctor";
   if (
     dni &&
@@ -53,7 +66,7 @@ const createDoctor = async (req, res) => {
           name,
           lastname,
           address,
-          imageProfile,
+          imageProfile: result.url,
           email,
           password: encryptPassword(password),
           rol,
@@ -71,6 +84,7 @@ const createDoctor = async (req, res) => {
           ],
         }
       );
+      await fs.unlink(req.file.path); // Elimina la imagen guardada en api/src/public/uploads
       let newDoctor = await Doctor.create(
         {
           enrollment,

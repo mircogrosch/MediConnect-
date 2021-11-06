@@ -13,8 +13,10 @@ const bcryptjs = require("bcryptjs");
 const specialitiesRouter = require("./routes/specialities");
 const healthinsuranceRouter = require("./routes/healthinsurance");
 const flash = require("connect-flash");
-const notification = require('./routes/notifications')
-const cors = require('cors')
+const notification = require("./routes/notifications");
+const cors = require("cors");
+const multer = require("multer");
+const path = require("path");
 require("./db.js");
 
 //Para poder comparar con la password encrypt
@@ -194,6 +196,15 @@ server.use((req, res, next) => {
   next();
 });
 
+// config multer
+const storage = multer.diskStorage({
+  destination: "./src/public/uploads/",
+  filename: function (req, file, cb) {
+    cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+  },
+});
+server.use(multer({ storage: storage }).single("image"));
+
 // Routes
 // localhost:3001/
 server.use("/", routes);
@@ -202,7 +213,7 @@ server.use("/patient", patientRouter);
 server.use("/doctor", doctorRouter);
 server.use("/specialities", specialitiesRouter);
 server.use("/healthinsurance", healthinsuranceRouter);
-server.use('/notifications', notification)
+server.use("/notifications", notification);
 
 // Error catching endware.
 server.use((err, req, res, next) => {
