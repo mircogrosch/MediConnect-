@@ -2,14 +2,13 @@ const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
 const { HealthInsurance, Speciality } = conn.models;
 const xlxs = require("xlsx");
-const http = require('http')
-const socketIO = require('socket.io');
-
+const http = require("http");
+const socketIO = require("socket.io");
 
 const excel_to_json = (dir) => {
   const excel = xlxs.readFile(dir);
   let datos = xlxs.utils.sheet_to_json(excel.Sheets[excel.SheetNames[0]]);
-  return datos;  
+  return datos;
 };
 
 async function addHealthInsurance(datos) {
@@ -39,33 +38,29 @@ const no_existen_Especialidades = async () => {
   return especialidades.length === 0 ? true : false;
 };
 
-
-
-
-
 //socket.io
-const server_pp = http.createServer(server); 
+const server_pp = http.createServer(server);
 const ioNotification = socketIO(server_pp, {
-  path:'/notification',
-  cors:{
+  path: "/notification",
+  cors: {
     origin: "http://localhost:3000",
-    methods: ["GET","POST","PUT"]
-  }
-})
+    methods: ["GET", "POST", "PUT"],
+  },
+});
 const ioChat = socketIO(server_pp, {
-  path:'/message',
-  cors:{
+  path: "/message",
+  cors: {
     origin: "http://localhost:3000",
-    methods: ["GET","POST","PUT"]
-  }
-})
-const {SOCKET_NOTIFICATION}=require('./src/controllers/notification');
-const {SOCKET_CHAT} = require('./src/controllers/chatMessage')
+    methods: ["GET", "POST", "PUT"],
+  },
+});
+const { SOCKET_NOTIFICATION } = require("./src/controllers/notification");
+const { SOCKET_CHAT } = require("./src/controllers/chatMessage");
 
 SOCKET_NOTIFICATION(ioNotification);
-SOCKET_CHAT(ioChat)
+SOCKET_CHAT(ioChat);
 
-  // Syncing all the models at once.
+// Syncing all the models at once.
 conn.sync({ force: false }).then(async () => {
   if (await no_existen_Especialidades()) {
     const obras_sociales = excel_to_json(
@@ -77,9 +72,9 @@ conn.sync({ force: false }).then(async () => {
     addHealthInsurance(obras_sociales);
     addSpeciality(especialidades);
   }
-  //start server 
-  const port =3001
- server_pp.listen(port, () => {
-    console.log(`Server is executed on port ${port}` ); // view on console
+  //start server
+  const port = 3001;
+  server_pp.listen(port, () => {
+    console.log(`Server is executed on port ${port}`); // view on console
   });
 });

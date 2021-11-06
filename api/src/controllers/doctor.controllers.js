@@ -32,7 +32,7 @@ function concat_json(json, json_empty) {
 }
 
 const createDoctor = async (req, res) => {
-  const result;
+  let result;
   const {
     dni,
     name,
@@ -45,7 +45,10 @@ const createDoctor = async (req, res) => {
     specialities, // tiene que ser un arreglo de id de specialties o un arreglo vacio
   } = req.body;
   if (req.file.path) {
+    console.log("req.file ", req.file);
+    console.log("req.file.path ", req.file.path);
     result = await cloudinary.v2.uploader.upload(req.file.path);
+    console.log("result ", result);
   }
   const rol = "Doctor";
   if (
