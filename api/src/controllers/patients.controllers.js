@@ -95,37 +95,42 @@ const createPatient = async (req, res) => {
   }
 };
 
+// http://localhost:3001/patient/id_Paciente
 const getPatient = async (req, res) => {
   const { id } = req.params;
-  try {
-    const patient = await Patient.findOne({
-      where: {
-        id: id,
-      },
-      include: {
-        model: Person,
-      },
-    });
-    let patient_person = {};
-    for (let key in patient.dataValues) {
-      if (key != "person") {
-        patient_person[key] = patient.dataValues[key];
-      } else {
-        for (let key in patient.dataValues.person.dataValues) {
-          patient_person[key] = patient.dataValues.person.dataValues[key];
-        }
-      }
+  if (id) {
+    try {
+      const patient = await Person.findOne({
+        include: {
+          model: Patient,
+          where: {
+            id: id,
+          },
+          include: {
+            model: HealthInsurance,
+          },
+        },
+      });
+
+      let json = {};
+      console.log(patient.dataValues.patients);
+      concat_json(patient.dataValues, json);
+      concat_json(patient.dataValues.patients[0].dataValues, json);
+      res.json({ data: json, message: "Paciente de la BD" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        data: error,
+        message: "something goes wrong",
+      });
     }
-    res.json({ data: patient_person, message: "Paciente de la BD" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      data: error,
-      message: "something goes wrong",
-    });
+  } else {
+    res.status(500).json({ data: null, message: "No se envio id de Paciente" });
   }
 };
 
+// VER SI USAN ESTA RUTA SINO ELIMNIARLA
+// http://localhost:3001/patient
 const getPatients = async (req, res) => {
   try {
     let patientsDB = await Patient.findAll({
@@ -237,14 +242,25 @@ const addDoctor = async (req, res) => {
   const { id } = req.params; // id de Paciente
   const { id_Doctor } = req.body; // id de Doctor
 
-  let patient = await Patient.findOne({
-    where: {
-      id: id,
-    },
-  });
   try {
-    await patient.addDoctor([id_Doctor]);
-    deleteNotification(id) //borra la notificación
+    let patient = await Patient.findOne({
+      where: {
+        id: id,
+      },
+    });
+    let doctor = await Doctor.findOne({
+      where: {
+        id: id_Doctor,
+      },
+    });
+    if (!patient || !doctor) {
+      return res.status(500).json({
+        data: null,
+        message: "Id de Paciente o id de Doctor erroneo",
+      });
+    }
+    await patient.addDoctor(doctor);
+    deleteNotification(id); //borra la notificación
     res.json({
       data: patient,
       message: "Doctor añadido a lista de doctores de paciente",
@@ -255,16 +271,26 @@ const addDoctor = async (req, res) => {
 };
 
 const deleteDoctor = async (req, res) => {
-  console.log("REq", req);
   const { id } = req.params; // id de Paciente
   const { id_Doctor } = req.query; // id de Doctor
 
-  let patient = await Patient.findOne({
-    where: {
-      id: id,
-    },
-  });
   try {
+    let patient = await Patient.findOne({
+      where: {
+        id: id,
+      },
+    });
+    let doctor = await Doctor.findOne({
+      where: {
+        id: id_Doctor,
+      },
+    });
+    if (!patient || !doctor) {
+      return res.status(500).json({
+        data: null,
+        message: "Id de Paciente o id de Doctor erroneo",
+      });
+    }
     await patient.removeDoctor([id_Doctor]);
     res.json({
       data: patient,
