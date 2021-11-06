@@ -4,22 +4,20 @@ import { Grid } from "@mui/material";
 import CardAdd from "./CardAdd";
 import { useDispatch, useSelector } from "react-redux";
 import { getDoctors } from "../../actions/index";
-import {
-  socket,
-  socket_Connect,
-  send_Notifications,
-} from "../Controlers/notifications";
+import { send_Notifications } from "../Controlers/notifications";
 import jwt from "jsonwebtoken";
 
 function ContainerCardAdd({ props }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   let allDoctors = useSelector((state) => state.allDoctors.allDoctors);
-  let userLog = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret")
+  let userLog = jwt.verify(
+    JSON.parse(sessionStorage.getItem("user"))?.token,
+    "secret"
+  );
 
   useEffect(() => {
     dispatch(getDoctors());
-    socket_Connect(userLog.user, socket);
   }, []);
 
   return (
