@@ -27,6 +27,7 @@ socket.emit('joinNotifications',sender);
  * @return {Emite un evento sendNotificaiones }
  */
 export const send_Notifications= (userReciver,userSender,socket) => {
+    console.log("entro")
     socket.emit('sendNotifications',{ 
         message: `${userSender.user.name} te envio una solicitud de amistad`,
         sender:userSender.user.email,
