@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       imageProfile: {
-        type: DataTypes.BLOB,
+        type: DataTypes.STRING,
       },
       email: {
         type: DataTypes.STRING,
