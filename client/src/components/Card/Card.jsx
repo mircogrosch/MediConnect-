@@ -2,12 +2,9 @@ import { Box, Icon, Typography } from "@material-ui/core";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { AccountCircle } from "@mui/icons-material";
-import { maxWidth } from "@mui/system";
-import { IconButton } from "@material-ui/core";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteDoctor } from "../../actions/index";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
+import ButtonRemove from "./ButtonRemove";
 
 const MyIcon = styled(Icon)({
   display: "contents",
@@ -60,15 +57,16 @@ const MyProfile = styled(AccountCircle)({
   margin: "10px",
 });
 
-const Card = ({ name, lastname, address, idPatient, idDoctor }) => {
-  const dispatch = useDispatch();
+const Card = ({
+  name,
+  lastname,
+  address,
+  idPatient,
+  idDoctor,
+  specialities,
+}) => {
   let myDoctors = useSelector((state) => state.myDoctors);
   myDoctors = myDoctors.names.data;
-
-  console.log("myDoctors", myDoctors);
-  const handleClick = () => {
-    dispatch(deleteDoctor(idPatient, idDoctor));
-  };
 
   let docName = `Dr ${name} ${lastname}`;
   return (
@@ -82,16 +80,13 @@ const Card = ({ name, lastname, address, idPatient, idDoctor }) => {
         </MyType>
       </MyBox2>
       <MyBox3>
-        <Box sx={{ marginBottom: "10px", maxWidth: "300px" }}>
-          {/* <MyType2 variant='body'><b>Especialidad:</b> {specialities}</MyType2> */}
-        </Box>
+        <Box sx={{ marginBottom: "10px", maxWidth: "300px" }}></Box>
         <MyType2 variant="body">
           <b>Localidad:</b> {address}
         </MyType2>
+        <strong>Especialidad:</strong> {specialities}
       </MyBox3>
-      <IconButton onClick={handleClick} aria-label="delete" size="small">
-        <DeleteIcon fontSize="large" />
-      </IconButton>
+      <ButtonRemove idPatient={idPatient} idDoctor={idDoctor} />
     </MyBox>
   );
 };
