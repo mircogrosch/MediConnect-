@@ -13,8 +13,8 @@ import Perfil from "../components/Home/Perfil";
 import ShifsNotificator from "../components/Home/ShifsNotificator.jsx";
 import ContainerCards from "../components/Home/ContainerCards.jsx";
 import { useStyles } from "../styles/home";
-import { useSelector } from "react-redux";
 import { socket_Connect, socket } from "../components/Controlers/notifications";
+import {initiateSocketChat,socketChat} from '../components/Controlers/chatMessage'
 import jwt from "jsonwebtoken";
 
 const cardInfo = [
@@ -36,12 +36,18 @@ const cardInfo = [
 ];
 
 function HomePageDoctor() {
-  const user = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret");
+
+  const user = jwt.verify(
+    JSON.parse(sessionStorage.getItem("user"))?.token,
+    "secret"
+  );
   const classes = useStyles();
-  //conexion con socket 
+  //conexion con socket
   useEffect(() => {
-    socket_Connect(user.user,socket);
-  }, [])
+    socket_Connect(user.user, socket);
+    initiateSocketChat(user.user.email,socketChat)
+  }, []);
+
 
   return (
     <Box className={classes.root} sx={{ background: teal[100] }}>

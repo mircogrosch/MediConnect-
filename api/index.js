@@ -45,17 +45,26 @@ const no_existen_Especialidades = async () => {
 
 //socket.io
 const server_pp = http.createServer(server); 
-const io = socketIO(server_pp, {
+const ioNotification = socketIO(server_pp, {
   path:'/notification',
   cors:{
     origin: "http://localhost:3000",
     methods: ["GET","POST","PUT"]
   }
 })
-const {SOCKET_NOTIFICATION}=require('./src/controllers/notification')
+const ioChat = socketIO(server_pp, {
+  path:'/message',
+  cors:{
+    origin: "http://localhost:3000",
+    methods: ["GET","POST","PUT"]
+  }
+})
+const {SOCKET_NOTIFICATION}=require('./src/controllers/notification');
+const {SOCKET_CHAT} = require('./src/controllers/chatMessage')
 
-SOCKET_NOTIFICATION(io)
- 
+SOCKET_NOTIFICATION(ioNotification);
+SOCKET_CHAT(ioChat)
+
   // Syncing all the models at once.
 conn.sync({ force: false }).then(async () => {
   if (await no_existen_Especialidades()) {
