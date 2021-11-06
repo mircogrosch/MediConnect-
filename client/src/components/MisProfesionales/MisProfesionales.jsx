@@ -22,7 +22,7 @@ const MisProfesionales = (props) => {
 
   useEffect(() => {
     // Dispara la accion para traer todos los doctores asociados al paciente
-    return () => dispatch(getMyDoctors(props.match.params.id));
+    dispatch(getMyDoctors(props.match.params.id));
   }, []);
 
   return (
