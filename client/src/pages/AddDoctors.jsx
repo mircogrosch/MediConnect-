@@ -5,6 +5,7 @@ import SearchBar from "../components/SearchBar/SearchBar";
 import FiltroSelect from "../components/FiltroSelect/FiltroSelect";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti.jsx";
 import ContainerCardAdd from "../components/AddDoctors/ContainerCardAdd";
+import { filterDoctorsByName } from "../actions/index";
 
 function AddDoctors(props) {
   const classes = useStyles();
@@ -16,7 +17,11 @@ function AddDoctors(props) {
         <Box className={classes.container}>
           <Grid container justifyContent="space-between">
             <FiltroSelect styles={classes} />
-            <SearchBar idPatient={props.match.params.id} styles={classes} />
+            <SearchBar
+              filterName={filterDoctorsByName}
+              idPatient={props.match.params.id}
+              styles={classes}
+            />
           </Grid>
           <ContainerCardAdd props={props} />
         </Box>

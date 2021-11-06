@@ -125,13 +125,14 @@ export const postMyDoctor = (payload, id_Doctor) => {
   };
 };
 
-export const filterSpecialities = (payload) => {
+export const filterSpecialities = (optionSelected) => {
   return {
     type: types.FILTER_SPECIALITIES,
-    payload,
+    payload: optionSelected,
   };
 };
-//ej: localhost:3001/patient/doctor?name=Robert&id=id_paciente
+
+//Filtra por nombres en el estado de doctores NO asociados al paciente
 export const filterDoctorsByName = (nameDoc, idPatient) => {
   return async function (dispatch) {
     try {
@@ -140,6 +141,23 @@ export const filterDoctorsByName = (nameDoc, idPatient) => {
       );
       return dispatch({
         type: types.FILTER_DOCTORS_BY_NAME,
+        payload: response,
+      });
+    } catch (error) {
+      alert(error);
+    }
+  };
+};
+
+//Filtra por nombres en el estado de doctores asociados al paciente
+export const filterMyDoctorsByName = (nameDoc, idPatient) => {
+  return async function (dispatch) {
+    try {
+      let response = await axios.get(
+        `${URL}/patient/doctors/${idPatient}?doctor=${nameDoc}`
+      );
+      return dispatch({
+        type: types.FILTER_MY_DOCTORS_BY_NAME,
         payload: response,
       });
     } catch (error) {
@@ -159,8 +177,6 @@ export const deleteDoctor = (id, id_Doctor) => {
       const response = await axios.delete(
         `${URL}/patient/doctors/${id}?id_Doctor=${id_Doctor}`
       );
-      console.log("Action deleteDoctor response ", response);
-
       return dispatch({
         type: types.DELETE_DOCTOR,
         payload: response,

@@ -8,7 +8,7 @@ import SimpleAppBar from "../AppBar/SimpleAppBar";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
-import { getMyDoctors } from "../../actions";
+import { getMyDoctors, filterMyDoctorsByName } from "../../actions";
 import { Link } from "react-router-dom";
 
 const MyGrid = styled(Grid)({
@@ -19,12 +19,12 @@ const MyGrid = styled(Grid)({
 const MisProfesionales = (props) => {
   const dispatch = useDispatch();
   let MyDoctors = useSelector((state) => state.myDoctors.names); // Guarda doctores asociados para renderizar en las cards
-  
+
   useEffect(() => {
     // Dispara la accion para traer todos los doctores asociados al paciente
-    dispatch(getMyDoctors(props.match.params.id));
+    return () => dispatch(getMyDoctors(props.match.params.id));
   }, []);
-  
+
   return (
     <Box
       sx={{ backgroundColor: "#b2dfdb", margin: "5px", borderRadius: "10px" }}
@@ -33,7 +33,10 @@ const MisProfesionales = (props) => {
         <SimpleAppBar />
         <MyGrid>
           <FiltroSelect />
-          <SearchBar idPatient={props.match.params.id} />
+          <SearchBar
+            filterName={filterMyDoctorsByName}
+            idPatient={props.match.params.id}
+          />
         </MyGrid>
         <Box
           sx={{
@@ -47,12 +50,17 @@ const MisProfesionales = (props) => {
               <AddProfesionals />
             </Link>
             {MyDoctors &&
-              MyDoctors.data.map((e) => {
+              MyDoctors.map((e) => {
                 return (
                   <Card
                     name={e.name}
                     lastname={e.lastname}
                     address={e.address}
+                    specialities={
+                      e.specialities.length
+                        ? e.specialities[0].name
+                        : "CARDIOLOGIA"
+                    }
                     idPatient={props.match.params.id}
                     idDoctor={e.id}
                   />
