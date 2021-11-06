@@ -5,29 +5,35 @@ const { Notification, Doctor } = require("../db.js");
  * @param {*} req request de express
  * @param {*} res response de express
  */
-const getNotificationById = async (req, res) => {
-  const { idDoctor } = req.body;
-  const notifications = await Notification.findAll({
-    where: {
-      idDoctor: idDoctor,
-    },
-  });
-  res.send(notifications);
-};
+
+const getNotificationById = async (req,res)=> { 
+     const {idDoctor} = req.query; 
+     console.log(idDoctor)
+     const notifications = await Notification.findAll({
+       where:{
+        idDoctor: idDoctor
+       },
+      //  attributes: ['id', 'idDoctor', 'idPatient', 'description', 'personDni']
+     }); 
+     res.send(notifications)
+}
 
 /**
  * ELIMINA UNA NOTIFICACION ESPECIFICA
  * @param {*} idNotification recibe el id de una notificacion especifica
  */
-const deleteNotification = async (idNotification) => {
-  const notificationToRemove = await Notification.findOne({
-    where: {
-      id: idNotification,
-    },
-  });
-  console.log(notificationToRemove);
-  await notificationToRemove.destroy();
-};
+
+const deleteNotification = async (idPatient)=> { 
+      console.log(idPatient)
+      const notificationToRemove =  await Notification.findOne({
+        where:{
+          idPatient:idPatient
+        }
+      })
+      console.log(notificationToRemove)
+      await notificationToRemove.destroy()
+
+}
 
 /**
  * GUARDA LA NOTIFICACION EN LA BASE DE DATOS

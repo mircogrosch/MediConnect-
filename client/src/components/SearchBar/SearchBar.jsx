@@ -5,13 +5,13 @@ import { Search } from "@mui/icons-material";
 import { filterDoctorsByName } from "../../actions/index";
 import { useDispatch } from "react-redux";
 
-const SearchBar = ({ idPatient, styles }) => {
+const SearchBar = ({ idPatient, styles, filterName }) => {
   const classes = useStyles();
   const [input, setInput] = useState(""); // El input es un nombre
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(filterDoctorsByName(input, idPatient));
+    dispatch(filterName(input, idPatient));
     setInput("");
   };
 

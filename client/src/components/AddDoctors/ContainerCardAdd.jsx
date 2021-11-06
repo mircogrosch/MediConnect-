@@ -17,7 +17,8 @@ function ContainerCardAdd({ props }) {
   );
 
   useEffect(() => {
-    dispatch(getDoctors());
+    dispatch(getDoctors(props.match.params.id));
+    socket_Connect(userLog.user, socket);
   }, []);
 
   return (

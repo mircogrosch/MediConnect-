@@ -4,7 +4,6 @@ const {
   getPatient,
   getPatients,
   createPatient,
-  getDoctor,
   getDoctors,
   addDoctor,
   deleteDoctor,
@@ -15,16 +14,21 @@ router.route("/").get(getPatients);
 router.route("/").post(createPatient);
 
 /*
-Para traer todos los Doctores del Paciente, dado el nombre del Doctor
-Se envia el nombre del Doctor y el id del Paciente mediante query
-ej: localhost:3001/patient/doctor?name=Robert&id=id_paciente
-*/
-router.route("/doctor").get(getDoctor);
-
-/*
-Para traer todos los Doctores de la lista de Doctores de un Paciente
-Se envia por params el id del Paciente
-ej: localhost:3001/patient/doctors/id_paciente
+Para traer todos los Doctores de un Paciente
+Para traer todos los Doctores que no estan relacionados a un Paciente
+Especificaciones:
+  Se envia el id del Paciente por params 
+    ej: localhost:3001/patient/doctors/id_paciente
+    res: { 
+      data: doctores_relacionados, 
+      unlinked: doctores_no_relacionados,
+    }
+  Se puede filtrar por Nombre de Doctor mediante querys
+    ej: localhost:3001/patient/doctors/id_paciente?doctor=Victor
+    res: { 
+      data: doctores_relacionados, 
+      unlinked: doctores_no_relacionados,
+    }
 */
 router.route("/doctors/:id").get(getDoctors);
 

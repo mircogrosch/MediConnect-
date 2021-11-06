@@ -16,6 +16,7 @@ import { useStyles } from "../styles/home";
 import { socket_Connect, socket } from "../components/Controlers/notifications";
 import {initiateSocketChat,socketChat} from '../components/Controlers/chatMessage'
 import jwt from "jsonwebtoken";
+
 const cardInfo = [
   {
     title: "Agenda",
@@ -35,6 +36,7 @@ const cardInfo = [
 ];
 
 function HomePageDoctor() {
+
   const user = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
@@ -45,6 +47,7 @@ function HomePageDoctor() {
     socket_Connect(user.user, socket);
     initiateSocketChat(user.user.email,socketChat)
   }, []);
+
 
   return (
     <Box className={classes.root} sx={{ background: teal[100] }}>

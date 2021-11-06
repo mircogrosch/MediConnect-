@@ -3,10 +3,10 @@ import types from "./types.js";
 import swal from "sweetalert";
 const URL = "http://localhost:3001";
 
-export const getDoctors = () => {
+export const getDoctors = (id_patient) => {
   return async function (dispatch) {
-    const response = await axios.get(`${URL}/doctor`);
-    dispatch({ type: types.GET_DOCTORS, payload: response.data });
+    const response = await axios.get(`${URL}/patient/doctors/${id_patient}`);
+    dispatch({ type: types.GET_DOCTORS, payload: response });
   };
 };
 
@@ -115,6 +115,7 @@ export const postMyDoctor = (payload, id_Doctor) => {
       const response = await axios.post(`${URL}/patient/doctors/${payload}`, {
         id_Doctor: id_Doctor,
       });
+      alert('Se acepto la solicitud')
       return dispatch({
         type: types.POST_MY_DOCTOR,
         id_Doctor,
@@ -125,22 +126,40 @@ export const postMyDoctor = (payload, id_Doctor) => {
   };
 };
 
-export const filterSpecialities = (payload) => {
+export const filterSpecialities = (optionSelected) => {
   return {
     type: types.FILTER_SPECIALITIES,
-    payload,
+    payload: optionSelected,
   };
 };
-//ej: localhost:3001/patient/doctor?name=Robert&id=id_paciente
+
+//Filtra por nombres en el estado de doctores NO asociados al paciente
 export const filterDoctorsByName = (nameDoc, idPatient) => {
   return async function (dispatch) {
     try {
       let response = await axios.get(
-        `${URL}/patient/doctor?name=${nameDoc}&id=${idPatient}`
+        `${URL}/patient/doctors/${idPatient}?doctor=${nameDoc}`
       );
       return dispatch({
         type: types.FILTER_DOCTORS_BY_NAME,
-        payload: response.data,
+        payload: response,
+      });
+    } catch (error) {
+      alert(error);
+    }
+  };
+};
+
+//Filtra por nombres en el estado de doctores asociados al paciente
+export const filterMyDoctorsByName = (nameDoc, idPatient) => {
+  return async function (dispatch) {
+    try {
+      let response = await axios.get(
+        `${URL}/patient/doctors/${idPatient}?doctor=${nameDoc}`
+      );
+      return dispatch({
+        type: types.FILTER_MY_DOCTORS_BY_NAME,
+        payload: response,
       });
     } catch (error) {
       alert(error);
@@ -159,8 +178,6 @@ export const deleteDoctor = (id, id_Doctor) => {
       const response = await axios.delete(
         `${URL}/patient/doctors/${id}?id_Doctor=${id_Doctor}`
       );
-      console.log("Action deleteDoctor response ", response);
-
       return dispatch({
         type: types.DELETE_DOCTOR,
         payload: response,
@@ -170,3 +187,39 @@ export const deleteDoctor = (id, id_Doctor) => {
     }
   };
 };
+
+export const getNotifications = (idDoctor) => {
+  return async function(dispatch) {
+    try {
+      const notif = await axios.get(`${URL}/notifications?idDoctor=${idDoctor}`)
+      return dispatch({
+        type: types.GET_NOTIFICATIONS,
+        payload: notif.data,
+      })
+    } catch(error) {
+      alert(error)
+    }
+  }
+}
+
+export const deleteNotifications = (id) => {
+  return ({
+    type: types.DELETE_NOTIFICATIONS,
+    payload: id
+  })
+}
+
+export const rejectNotification = (id) => {
+  return async function (dispatch){
+    try {
+      await axios.put(`${URL}/notifications/reject`, {idPatient: id})
+      alert('Se rechazo la notificacion')
+      return({
+        type: types.REJECT_NOTIFICATION,
+        payload: id
+      })
+    } catch (error) {
+      alert(error)
+    }
+  }
+}

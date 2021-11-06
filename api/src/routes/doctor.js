@@ -12,17 +12,26 @@ router.route("/").get(getDoctors);
 
 router.route("/").post(createDoctor);
 
-/*
-Para traer todos los Pacientes del Doctor, dado el nombre del Paciente
-Se envia el nombre del paciente y el id del Doctor mediante query
-ej: localhost:3001/doctor/patient?name=Robert&id=id_doctor
-*/
+/* +++++++++++++++ NO USAR ESTA FUNCION +++++++++++++++++ */
 router.route("/patient").get(getPatient);
 
 /*
-Para traer todos los Pacientes de la lista de Pacientes de un Doctor
-Se envia por params el id del Doctor
-ej: localhost:3001/doctor/patients/id_doctor
+ +++++++++++++ INFORMACION DE RUTA +++++++++++++++++++++++++
+Para traer todos los Pacientes de un Doctor
+Para traer todos los Pacientes que no estan relacionados a un Doctor
+Especificaciones:
+  Se envia el id del Paciente por params 
+    ej: localhost:3001/doctor/patients/id_doctor
+    res: { 
+      data: Pacientes_relacionados, 
+      unlinked: Pacientes_no_relacionados,
+    }
+  Se puede filtrar por Nombre de Paciente mediante querys
+    ej: localhost:3001/doctor/patients/id_doctor?patient=Victor
+    res: { 
+      data: Pacientes_relacionados, 
+      unlinked: Pacientes_no_relacionados,
+    }
 */
 router.route("/patients/:id").get(getPatients);
 

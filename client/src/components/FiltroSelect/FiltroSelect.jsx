@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useStyles } from "../../styles/doctors/add_doctor";
 import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { handleChangeSpecial } from "../Controlers/Controlers";
+// import { handleChangeSpecial } from "../Controlers/Controlers";
 import { useDispatch, useSelector } from "react-redux";
-import { getSpecialities } from "../../actions";
+import { getSpecialities, filterSpecialities } from "../../actions";
 
 const FiltroSelect = () => {
   const classes = useStyles();
@@ -17,6 +17,14 @@ const FiltroSelect = () => {
     dispatch(getSpecialities());
   }, [dispatch]);
 
+  const handleChange = (e) => {
+    setSpecial(e.target.value);
+  };
+
+  useEffect(() => {
+    dispatch(filterSpecialities(special));
+  }, [special]);
+
   return (
     <Box>
       <TextField
@@ -28,11 +36,12 @@ const FiltroSelect = () => {
           native: true,
         }}
         InputProps={{ disableUnderline: true }}
-        onChange={(e) => handleChangeSpecial(e, special, setSpecial)}
+        onChange={(e) => handleChange(e)}
         className={classes.selectFilter}
         sx={{ margin: "15px" }}
       >
         <option disabled>{""}</option>
+        <option>{"TODAS"}</option>
         {specialities.allSpecialities.map((p) => (
           <option key={p.id} value={p.id}>
             {p.name}

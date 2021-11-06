@@ -1,10 +1,11 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { grey } from "@mui/material/colors";
+import { teal, grey } from "@mui/material/colors";
 
 export const useStyles = makeStyles({
   root: {
     minHeight: "100vh",
     paddingY: "1em",
+    background: teal[50],
     alignItems: "center",
     justifyContent: "center",
     display: "flex",
@@ -12,10 +13,6 @@ export const useStyles = makeStyles({
   title: {
     color: grey[700],
     marginBottom: ".5em",
-  },
-  input: {
-    borderBottomColor: "green",
-    width: "500px",
   },
   button: {
     width: "100%",

@@ -1,15 +1,18 @@
 import types from "../actions/types";
+import swal from "sweetalert";
+
 const initialState = {
   allDoctors: [],
   copyAllDoctors: [], // Este estado sirve de soporte para que funcione bien el filtrado (siempre va a tener todos los doctores)
 };
+
 export default function allDoctors(state = initialState, action) {
   switch (action.type) {
     case types.GET_DOCTORS:
       return {
         ...state,
-        allDoctors: action.payload.data,
-        copyAllDoctors: action.payload.data,
+        allDoctors: action.payload.data.unlinked,
+        copyAllDoctors: action.payload.data.unlinked,
       };
 
     case types.FILTER_SPECIALITIES:
@@ -25,6 +28,25 @@ export default function allDoctors(state = initialState, action) {
         ...state,
         allDoctors: filtered,
       };
+
+    case types.FILTER_DOCTORS_BY_NAME:
+      if (action.payload.data.unlinked.length) {
+        return {
+          ...state,
+          allDoctors: action.payload.data.unlinked,
+        };
+      } else {
+        swal({
+          title: `No existe ningún profesional con ese nombre`,
+          icon: "info",
+          button: "Continuar",
+        });
+        return {
+          ...state,
+          allDoctors: state.copyAllDoctors,
+        };
+      }
+
     default:
       return state;
   }

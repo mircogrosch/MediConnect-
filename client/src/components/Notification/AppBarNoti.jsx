@@ -18,6 +18,9 @@ import { teal } from "@mui/material/colors";
 import logo from "../../img/mediconnect-logo.png";
 import {socket } from "../Controlers/notifications";
 import MenuPrueba from './MenuPrueba'
+import { getNotifications } from "../../actions";
+import jwt from "jsonwebtoken";
+
 
 
 export default function PrimarySearchAppBar(props) {
@@ -33,9 +36,16 @@ export default function PrimarySearchAppBar(props) {
     dispatch({type:'SAVE_NOTIFICATION',payload:request})
 }) 
 
+  const user = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret");
+
   useEffect(() => {
     setNotification(notifications.length);
   }, [notifications]);
+
+  useEffect(() => {
+    console.log(user.rol.id)
+    dispatch(getNotifications(user.rol.id))
+  }, [dispatch])
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
