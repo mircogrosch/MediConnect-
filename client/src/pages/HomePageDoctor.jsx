@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Grid } from "@mui/material";
 import { teal } from "@mui/material/colors";
 import {
@@ -13,8 +13,9 @@ import Perfil from "../components/Home/Perfil";
 import ShifsNotificator from "../components/Home/ShifsNotificator.jsx";
 import ContainerCards from "../components/Home/ContainerCards.jsx";
 import { useStyles } from "../styles/home";
-import { useSelector } from "react-redux";
-import {socket_Connect,socket} from '../components/Controlers/notifications'
+import { socket_Connect, socket } from "../components/Controlers/notifications";
+import {initiateSocketChat,socketChat} from '../components/Controlers/chatMessage'
+import jwt from "jsonwebtoken";
 const cardInfo = [
   {
     title: "Agenda",
@@ -34,10 +35,16 @@ const cardInfo = [
 ];
 
 function HomePageDoctor() {
-  const user = useSelector(state=> state.users.users.user);
+  const user = jwt.verify(
+    JSON.parse(sessionStorage.getItem("user"))?.token,
+    "secret"
+  );
   const classes = useStyles();
-  //conexion con socket 
-  socket_Connect(user,socket);
+  //conexion con socket
+  useEffect(() => {
+    socket_Connect(user.user, socket);
+    initiateSocketChat(user.user.email,socketChat)
+  }, []);
 
   return (
     <Box className={classes.root} sx={{ background: teal[100] }}>
@@ -49,10 +56,10 @@ function HomePageDoctor() {
               bgColor={teal[500]}
               bgDarkColor={teal[800]}
               color={teal[50]}
-              name={user.name}
-              lastname={user.lastname}
-              dni={user.dni}
-              address={user.address}
+              name={user.user.name}
+              lastname={user.user.lastname}
+              dni={user.user.dni}
+              address={user.user.address}
             />
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">

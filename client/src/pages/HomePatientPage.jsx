@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { useStyles } from "../styles/home";
 import { Box, Grid } from "@mui/material";
 import { teal } from "@mui/material/colors";
@@ -14,6 +14,8 @@ import ShifsNotificator from "../components/Home/ShifsNotificator.jsx";
 import ContainerCards from "../components/Home/ContainerCards.jsx";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti.jsx";
 import jwt from "jsonwebtoken";
+import { socket, socket_Connect } from "../components/Controlers/notifications";
+import {initiateSocketChat,socketChat} from '../components/Controlers/chatMessage'
 const cardInfo = [
   {
     title: "Mis Turnos",
@@ -34,7 +36,15 @@ const cardInfo = [
 
 function HomePatientPage() {
   const classes = useStyles();
-  const user = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret");
+  const user = jwt.verify(
+    JSON.parse(sessionStorage.getItem("user"))?.token,
+    "secret"
+  );
+  useEffect(() => {
+    socket_Connect(user.user, socket);
+    initiateSocketChat(user.user.email,socketChat)
+  }, []);
+
   return (
     <Box className={classes.root} sx={{ background: teal[50] }}>
       <PrimarySearchAppBar />
@@ -50,7 +60,7 @@ function HomePatientPage() {
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">
             <ShifsNotificator />
-            <ContainerCards cardInfo={cardInfo}/>
+            <ContainerCards cardInfo={cardInfo} />
           </Grid>
         </Grid>
       </Box>
