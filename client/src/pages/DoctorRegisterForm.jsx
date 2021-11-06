@@ -21,6 +21,7 @@ import { useStyles } from "../styles/registerForms/doctors";
 import axios from "axios";
 import SimpleAppBar from "../components/AppBar/SimpleAppBar";
 import Signature from "../components/Signature/Signature";
+import CheckIcon from "@mui/icons-material/Check";
 
 function DoctorRegisterForm() {
   const classes = useStyles();
@@ -32,6 +33,8 @@ function DoctorRegisterForm() {
     formState: { errors },
   } = useForm();
 
+  const [checkUpLoad, setCheckUpLoad] = useState(false);
+  const [imgPerfil, setImgPerfil] = useState(null);
   const [equal, setEqual] = useState(true);
   const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState("");
@@ -55,9 +58,15 @@ function DoctorRegisterForm() {
     (state) => state.allSpecialities.allSpecialities
   );
 
+  const handleChange = (event) => {
+    const file = event.target.files[0];
+    setImgPerfil(file);
+    setCheckUpLoad(true);
+  };
+
   const onSubmit = (data) => {
     setEqual(true);
-
+    console.log(data);
     data.location = provinces.find(
       (province) => province.id === provinceId
     ).nombre;
@@ -65,7 +74,21 @@ function DoctorRegisterForm() {
 
     if (data.password !== data.confirmPass) return setEqual(false);
 
-    dispatch(postDoctor(data, history));
+    // data.image = imgPerfil;
+
+    const user = new FormData();
+    user.append("name", data.name);
+    user.append("lastname", data.lastname);
+    user.append("image", imgPerfil);
+    user.append("email", data.email);
+    user.append("password", data.password);
+    user.append("dni", data.dni);
+    user.append("enrollment", data.enrollment);
+    user.append("specialities", data.specialities);
+    user.append("address", data.address);
+    user.append("location", data.location);
+
+    dispatch(postDoctor(user, history));
   };
 
   const getProvinces = async () => {
@@ -275,6 +298,26 @@ function DoctorRegisterForm() {
                 bgColor={teal[900]}
               />
             </Grid>
+
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                component="label"
+                id="image"
+                name="image"
+                onChange={handleChange}
+                sx={{ background: teal[900] }}
+              >
+                ELEGIR IMAGEN DE PERFIL
+                <input type="file" hidden />
+                {checkUpLoad ? (
+                  <CheckIcon sx={{ bgColor: teal[900] }} />
+                ) : (
+                  false
+                )}
+              </Button>
+            </Grid>
+
             <Grid item xs={12}>
               <Button
                 variant="contained"
