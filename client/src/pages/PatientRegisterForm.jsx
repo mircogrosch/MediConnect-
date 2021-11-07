@@ -20,12 +20,15 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import SimpleAppBar from "../components/AppBar/SimpleAppBar";
+import CheckIcon from "@mui/icons-material/Check";
 
 const PatientRegisterForm = () => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const [checkUpLoad, setCheckUpLoad] = useState(false);
+  const [imgPerfil, setImgPerfil] = useState(null);
   const [equal, setEqual] = useState(true);
   const [provinces, setProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState("");
@@ -53,6 +56,12 @@ const PatientRegisterForm = () => {
     provinceId && getTowns(provinceId);
   }, [provinceId]);
 
+  const handleChange = (event) => {
+    const file = event.target.files[0];
+    setImgPerfil(file);
+    setCheckUpLoad(true);
+  };
+
   const onSubmit = (data) => {
     setEqual(true);
 
@@ -68,7 +77,19 @@ const PatientRegisterForm = () => {
 
     console.log(data);
 
-    dispatch(postPatient(data, history));
+    const user = new FormData();
+    user.append("name", data.name);
+    user.append("lastname", data.lastname);
+    user.append("image", imgPerfil);
+    user.append("email", data.email);
+    user.append("password", data.password);
+    user.append("dni", data.dni);
+    user.append("num_member", data.num_member);
+    user.append("healthInsuranceId", data.healthInsuranceId);
+    user.append("address", data.address);
+    user.append("location", data.location);
+
+    dispatch(postPatient(user, history));
   };
 
   const getProvinces = async () => {
@@ -274,6 +295,26 @@ const PatientRegisterForm = () => {
                 ))}
               </Select>
             </Grid>
+
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                component="label"
+                id="image"
+                name="image"
+                onChange={handleChange}
+                sx={{ background: teal[900] }}
+              >
+                ELEGIR IMAGEN DE PERFIL
+                <input type="file" hidden />
+                {checkUpLoad ? (
+                  <CheckIcon sx={{ bgColor: teal[900] }} />
+                ) : (
+                  false
+                )}
+              </Button>
+            </Grid>
+
             <Grid item xs={12}>
               <Button
                 variant="contained"
