@@ -57,7 +57,7 @@ const ContactList = () => {
       }}
       subheader={<li />}
     >
-      {myList && myList.data.map((r) => (
+      {myList && myList.map((r) => (
         <li key={r.id}>
           <ul>
               <MenuItem>
