@@ -11,6 +11,11 @@ export const myPatients = (state = initialState, action) => {
         ...state,
         myPatients: action.payload.data,
       };
+    case types.FILTER_MY_PATIENTS_BY_NAME:
+      return {
+        ...state,
+        myPatients: action.payload.data,
+      };
     default:
       return state;
   }
