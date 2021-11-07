@@ -41,7 +41,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
         <Grid item md={4} sm={4} xs={5}>
           {user.user.rol === "Doctor" ? (
             <Link
-              to={`/prueba/doctor/my-patients/${user.rol.id}`}
+              to={`/account/doctor/patients/${user.rol.id}`}
               style={{ textDecoration: "none" }}
             >
               <Card
