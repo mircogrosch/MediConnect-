@@ -1,24 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMyPatients, getHealthInsurances } from "../actions";
-import { Box, Grid, InputBase, IconButton } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import { getMyPatients, filterMyPatientsByName } from "../actions";
+import { Box, Grid } from "@mui/material";
 import { teal } from "@mui/material/colors";
 import AppBar from "../components/Notification/AppBarNoti";
+import SearchBar from "../components/SearchBar/SearchBar";
 import PatientCard from "../components/MyPatients/PatientCard";
 
 function MyPatientsPage(props) {
   const dispatch = useDispatch();
-  const [input, setInput] = useState("");
 
   const id = props.match.params.id;
   const myPatients = useSelector((state) => state.myPatients.myPatients);
-  const healthInsurances = useSelector((state) => state.healthInsurances).names;
 
   useEffect(() => {
-    !healthInsurances && dispatch(getHealthInsurances());
     dispatch(getMyPatients(id));
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   return (
     <Box>
@@ -41,28 +38,13 @@ function MyPatientsPage(props) {
           }}
         >
           <Grid container justifyContent="flex-end">
-            <InputBase
-              variant="outlined"
-              placeholder="Buscar"
-              value={input}
-              //   className={classes.searchBar}
-              onChange={(e) => setInput(e.target.value)}
-              sx={{
-                width: "25vw",
-                height: "50px",
-                margin: "15px",
-                paddingLeft: "10px",
-                background: teal[800],
-                borderRadius: "5px",
-              }}
-              endAdornment={
-                <IconButton>
-                  <Search color="#bdbdbd" />
-                </IconButton>
-              }
-            ></InputBase>
+            <SearchBar
+              id={id}
+              filterName={filterMyPatientsByName}
+              bgColor={teal[800]}
+            />
           </Grid>
-          {myPatients ? (
+          {myPatients.length && (
             <Grid
               container
               rowSpacing={1}
@@ -89,10 +71,6 @@ function MyPatientsPage(props) {
                 );
               })}
             </Grid>
-          ) : (
-            <div>
-              <h1>NO HAY NADA</h1>
-            </div>
           )}
         </Box>
       </Box>
