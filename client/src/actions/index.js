@@ -19,6 +19,7 @@ export const getUser = (user) => {
     dispatch({ type: types.GET_USER_LOGIN, payload: response.data });
   };
 };
+
 export const postDoctor = (payload, history) => {
   return async function (dispatch) {
     try {
@@ -115,13 +116,24 @@ export const postMyDoctor = (payload, id_Doctor) => {
       const response = await axios.post(`${URL}/patient/doctors/${payload}`, {
         id_Doctor: id_Doctor,
       });
-      alert('Se acepto la solicitud')
+      alert("Se acepto la solicitud");
       return dispatch({
         type: types.POST_MY_DOCTOR,
         id_Doctor,
       });
     } catch (error) {
       alert(error); // CORREGIR! ----> EL MENSAJE A MOSTRAR TIENE QUE VENIR DEL BACK
+    }
+  };
+};
+
+export const getMyPatients = (id_doctor) => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(`${URL}/doctor/patients/${id_doctor}`);
+      dispatch({ type: types.GET_MY_PATIENTS, payload: response.data });
+    } catch (error) {
+      alert(error);
     }
   };
 };
@@ -189,37 +201,39 @@ export const deleteDoctor = (id, id_Doctor) => {
 };
 
 export const getNotifications = (idDoctor) => {
-  return async function(dispatch) {
+  return async function (dispatch) {
     try {
-      const notif = await axios.get(`${URL}/notifications?idDoctor=${idDoctor}`)
+      const notif = await axios.get(
+        `${URL}/notifications?idDoctor=${idDoctor}`
+      );
       return dispatch({
         type: types.GET_NOTIFICATIONS,
         payload: notif.data,
-      })
-    } catch(error) {
-      alert(error)
+      });
+    } catch (error) {
+      alert(error);
     }
-  }
-}
+  };
+};
 
 export const deleteNotifications = (id) => {
-  return ({
+  return {
     type: types.DELETE_NOTIFICATIONS,
-    payload: id
-  })
-}
+    payload: id,
+  };
+};
 
 export const rejectNotification = (id) => {
-  return async function (dispatch){
+  return async function (dispatch) {
     try {
-      await axios.put(`${URL}/notifications/reject`, {idPatient: id})
-      alert('Se rechazo la notificacion')
-      return({
+      await axios.put(`${URL}/notifications/reject`, { idPatient: id });
+      alert("Se rechazo la notificacion");
+      return {
         type: types.REJECT_NOTIFICATION,
-        payload: id
-      })
+        payload: id,
+      };
     } catch (error) {
-      alert(error)
+      alert(error);
     }
-  }
-}
+  };
+};
