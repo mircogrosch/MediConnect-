@@ -5,7 +5,7 @@ const {
   HealthInsurance,
   Speciality,
 } = require("../db");
-const { Op } = require("sequelize");
+const { Op, literal } = require("sequelize");
 const bcryptjs = require("bcryptjs");
 const cloudinary = require("cloudinary");
 const fs = require("fs-extra");
@@ -33,7 +33,7 @@ function concat_json(json, json_empty) {
 }
 
 const createPatient = async (req, res) => {
-  const result = null;
+  let result = null;
   const {
     dni,
     name,
@@ -45,7 +45,10 @@ const createPatient = async (req, res) => {
     healthInsuranceId,
   } = req.body;
   if (req.file.path) {
+    console.log("req.file ", req.file);
+    console.log("req.file.path ", req.file.path);
     result = await cloudinary.v2.uploader.upload(req.file.path);
+    console.log("result ", result);
   }
   const rol = "Patient";
   if (

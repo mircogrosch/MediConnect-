@@ -66,15 +66,12 @@ function DoctorRegisterForm() {
 
   const onSubmit = (data) => {
     setEqual(true);
-    console.log(data);
     data.location = provinces.find(
       (province) => province.id === provinceId
     ).nombre;
     data.address = towns.find((town) => town.id === data.address).nombre;
 
     if (data.password !== data.confirmPass) return setEqual(false);
-
-    // data.image = imgPerfil;
 
     const user = new FormData();
     user.append("name", data.name);
