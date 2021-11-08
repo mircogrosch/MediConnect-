@@ -1,8 +1,8 @@
 import React from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import FiltroSelect from "../FiltroSelect/FiltroSelect";
-import { Grid } from "@mui/material";
-import { Box } from "@mui/system";
+import { Grid} from "@mui/material";
+import { Box,styled  } from "@mui/system";
 import {
   filterSpecialitiesMyDoctors,
   filterMyDoctorsByName,
@@ -11,7 +11,6 @@ import ConteinerCard from "./ConteinerCard";
 import { useStyles } from "../../styles/doctors/add_doctor";
 import PrimarySearchAppBar from "../../components/Notification/AppBarNoti"; 
 import { useSelector } from "react-redux";
-import { filterMyDoctorsByName } from "../../actions";
 import { Link } from "react-router-dom";
 
 const MyGrid = styled(Grid)({
