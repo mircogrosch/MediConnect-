@@ -12,7 +12,7 @@ function MyPatientsPage(props) {
 
   const id = props.match.params.id;
   const myPatients = useSelector((state) => state.myPatients);
-
+  console.log("page myPatients", myPatients);
   useEffect(() => {
     dispatch(getMyPatients(id));
   }, [dispatch, id]);
