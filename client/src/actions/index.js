@@ -138,9 +138,26 @@ export const getMyPatients = (id_doctor) => {
   };
 };
 
+// VER, SI NO SE USA, BORRARLA
 export const filterSpecialities = (optionSelected) => {
   return {
     type: types.FILTER_SPECIALITIES,
+    payload: optionSelected,
+  };
+};
+
+// Filtra por especialidad en doctores asociados al paciente
+export const filterSpecialitiesMyDoctors = (optionSelected) => {
+  return {
+    type: types.FILTER_SPECIALITIES_MY_DOCTORS,
+    payload: optionSelected,
+  };
+};
+
+// Filtra por especialidad en doctores NO asociados al paciente
+export const filterSpecialitiesAllDoctors = (optionSelected) => {
+  return {
+    type: types.FILTER_SPECIALITIES_ALL_DOCTORS,
     payload: optionSelected,
   };
 };
