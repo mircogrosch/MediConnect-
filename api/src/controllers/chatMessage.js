@@ -10,7 +10,7 @@ const SOCKET_CHAT = (io) => {
       var listRooms = io.sockets.adapter.rooms;
       console.log("ESTAS DEL CHAT", listRooms);
       console.log(`msg: ${message}, sender: ${sender}, reciver: ${reciver}`);
-      io.to(sender).to(reciver).emit("reciveChat", message);
+      io.to(sender).to(reciver).emit("reciveChat", data);
     });
   });
 };

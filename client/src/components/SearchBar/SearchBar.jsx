@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useStyles } from "../../styles/doctors/add_doctor";
 import { IconButton, InputBase } from "@material-ui/core";
 import { Search } from "@mui/icons-material";
-import { filterDoctorsByName } from "../../actions/index";
 import { useDispatch } from "react-redux";
 
 const SearchBar = ({ idPatient, styles, filterName }) => {

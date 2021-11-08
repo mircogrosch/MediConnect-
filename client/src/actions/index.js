@@ -223,3 +223,25 @@ export const rejectNotification = (id) => {
     }
   }
 }
+
+export const getMyPatients = (idDoctor) => {
+  return async function (dispatch){
+    try {
+      const response = await axios.get(`${URL}/doctor/patients/${idDoctor}`)
+      return dispatch({
+        type:types.GET_MY_PATIENTS,
+        payload: response.data
+      })
+    } catch (error) {
+      alert(error)
+    }
+  }
+}
+
+export const getContact = (email, rol) => {
+  return({
+    type: types.GET_CONTACT,
+    payload: email,
+    rol 
+  })
+}

@@ -16,6 +16,8 @@ import PrimarySearchAppBar from "../components/Notification/AppBarNoti.jsx";
 import jwt from "jsonwebtoken";
 import { socket, socket_Connect } from "../components/Controlers/notifications";
 import {initiateSocketChat,socketChat} from '../components/Controlers/chatMessage'
+import { useDispatch } from "react-redux";
+import { getMyDoctors } from "../actions";
 const cardInfo = [
   {
     title: "Mis Turnos",
@@ -35,6 +37,7 @@ const cardInfo = [
 ];
 
 function HomePatientPage() {
+  const dispatch = useDispatch()
   const classes = useStyles();
   const user = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
@@ -43,6 +46,11 @@ function HomePatientPage() {
   useEffect(() => {
     socket_Connect(user.user, socket);
     initiateSocketChat(user.user.email,socketChat)
+  }, []);
+  
+  useEffect(() => {
+    // Dispara la accion para traer todos los doctores asociados al paciente
+    dispatch(getMyDoctors(user.rol.id));
   }, []);
 
   return (
