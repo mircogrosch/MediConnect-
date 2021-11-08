@@ -3,7 +3,7 @@ import { Box, Grid, Icon, Typography } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 
-function PatientCard({ name, lastname, address, email, dni }) {
+function PatientCard({ name, lastname, address, email, dni, img }) {
   const docName = `${name} ${lastname}`;
 
   return (
@@ -15,9 +15,22 @@ function PatientCard({ name, lastname, address, email, dni }) {
     >
       <Grid container style={{ height: "100%" }}>
         <Grid item xs={3}>
+        {img ? (
+            <img
+              src={img}
+              style={{
+                maxWidth: "80px",
+                maxHeight: "80px",
+                minWidth: "80px",
+                minHeight: "80px",
+                borderRadius: "50%",
+              }}
+            />
+        ) : (
           <Icon style={{ width: "100%", height: "100%", textAlign: "center" }}>
             <AccountCircle style={{ fontSize: "80px", color: teal[50] }} />
           </Icon>
+        )}
         </Grid>
         <Grid item xs={7}>
           <Typography
