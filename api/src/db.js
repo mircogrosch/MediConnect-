@@ -58,6 +58,8 @@ const {
   Conversation,
   Message,
   Allergy,
+  Prescription_drug,
+  Disease,
 } = sequelize.models;
 
 // Uno a muchos
@@ -103,6 +105,14 @@ Person.hasMany(Message);
 // Uno a Muchos
 Allergy.belongsTo(Patient);
 Patient.hasMany(Allergy);
+
+//Uno a Muchos
+Prescription_drug.belongsTo(Patient);
+Patient.hasMany(Prescription_drug);
+
+// Uno a Muchos
+Disease.belongsTo(Patient);
+Patient.hasMany(Disease);
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
