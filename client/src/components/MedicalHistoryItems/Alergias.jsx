@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, Grid } from "@material-ui/core";
 
 const alergiaInfo = [
@@ -12,13 +12,30 @@ const alergiaInfo = [
     title: "Hormigas",
   },
 ];
-function Alergias() {
+
+function Alergias({ getAllergy }) {
+  const [allergy, setAllergy] = useState([]);
+
+  useEffect(() => {
+    (async function () {
+      setAllergy(await getAllergy());
+    })();
+  }, []);
+
+  console.log("allergy ", allergy);
   return (
     <div>
-      <Box>
+      <Box
+        sx={{
+          height: "100%",
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
         <Typography variant="h4">Mis alergias</Typography>
         <Grid
-          item
           container
           display="flex"
           justifyContent="space-evenly"
@@ -26,13 +43,12 @@ function Alergias() {
           alignItem="center"
           rowSpacing={8}
         >
-          {alergiaInfo.map((elemento) => (
-            <Grid item md={8}>
-              {/* <Box border="solid"> */}
-              <Typography variant="body1">{`${elemento.title} descubierta el dia 27 de noviembre de 2020 `}</Typography>
-              {/* </Box> */}
-            </Grid>
-          ))}
+          {allergy.data &&
+            allergy.data.map((elemento) => (
+              <Grid item md={8}>
+                <Typography variant="body1">{`Nombre: ${elemento.name} | Peligrosidad: ${elemento.severity}  | Descripción: ${elemento.description}`}</Typography>
+              </Grid>
+            ))}
         </Grid>
       </Box>
     </div>
