@@ -18,9 +18,9 @@ const MyGrid = styled(Grid)({
   marginTop: "70px",
 });
 
+
 const MisProfesionales = (props) => {
-  let MyDoctors = useSelector((state) => state.myDoctors.names); // Guarda doctores asociados para renderizar en las cards
-const classes = useStyles();
+  const classes = useStyles();
 
   return (
     <Box>
@@ -34,7 +34,7 @@ const classes = useStyles();
             />
             <SearchBar
               filterName={filterMyDoctorsByName}
-              idPatient={props.match.params.id}
+              id={props.match.params.id}
               styles={classes}
             />
           </Grid>
