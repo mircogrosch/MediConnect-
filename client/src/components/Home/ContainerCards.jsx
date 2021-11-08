@@ -35,7 +35,12 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
               color={teal[50]}
             />
           ) : (
-            <Card title="Historial Medico" icon={cardInfo[0].icon} />
+            <Link
+              to={`/account/medicalhistory/${user.rol.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Card title="Historial Medico" icon={cardInfo[0].icon} />
+            </Link>
           )}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
@@ -85,14 +90,17 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
           )}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          {user.user.rol ==="Doctor" ? (
-             <Link to={`/mensajes/profesional`} style={{ textDecoration: "none" }}>
-            <Card
-              title="Mensajes"
-              icon={cardInfo[5].icon}
-              bgColor={teal[600]}
-              color={teal[50]}
-            />
+          {user.user.rol === "Doctor" ? (
+            <Link
+              to={`/mensajes/profesional`}
+              style={{ textDecoration: "none" }}
+            >
+              <Card
+                title="Mensajes"
+                icon={cardInfo[5].icon}
+                bgColor={teal[600]}
+                color={teal[50]}
+              />
             </Link>
           ) : (
             <Link to={`/mensajes/paciente`} style={{ textDecoration: "none" }}>

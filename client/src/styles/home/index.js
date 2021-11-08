@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles({
   root: {
-    height: "100vh",
+    minHeight: "100vh",
   },
   container: {
     height: "90vh",
