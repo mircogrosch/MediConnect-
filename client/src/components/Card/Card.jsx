@@ -1,61 +1,10 @@
-import { Box, Icon, Typography } from "@material-ui/core";
+import { Box, Icon, Typography, Grid } from "@material-ui/core";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { AccountCircle } from "@mui/icons-material";
 import { useSelector } from "react-redux";
-
+import { teal } from "@mui/material/colors";
 import ButtonRemove from "./ButtonRemove";
-
-const MyIcon = styled(Icon)({
-  display: "contents",
-});
-
-const MyType = styled(Typography)({
-  display: "inline",
-  maxWidth: "290px",
-});
-
-const MyType2 = styled(Typography)({
-  display: "inline",
-  maxWidth: "300px",
-});
-
-const MyBox = styled(Box)({
-  display: "inline-flex",
-  flexDirection: "column",
-  width: "450px",
-  height: "180px",
-  margin: "30px",
-  borderRadius: "10px",
-});
-
-const MyBox2 = styled(Box)({
-  color: "black",
-  display: "flex",
-  alignItems: "center",
-  flexDirection: "row",
-  width: "500px",
-  height: "200px",
-  borderRadius: "10px",
-});
-
-const MyBox3 = styled(Box)({
-  color: "#525752",
-  display: "inline-flex",
-  fontSize: "20px",
-  flexDirection: "column",
-  marginLeft: "120px",
-  marginTop: "-20px",
-  width: "500px",
-  height: "200px",
-  borderRadius: "10px",
-});
-
-const MyProfile = styled(AccountCircle)({
-  width: "90px",
-  height: "90px",
-  margin: "10px",
-});
 
 const Card = ({
   name,
@@ -64,30 +13,77 @@ const Card = ({
   idPatient,
   idDoctor,
   specialities,
+  image,
 }) => {
   let myDoctors = useSelector((state) => state.myDoctors);
   myDoctors = myDoctors.names.data;
 
   let docName = `Dr ${name} ${lastname}`;
   return (
-    <MyBox sx={{ backgroundColor: "#80cbc4" }}>
-      <MyBox2>
-        <MyIcon sx={{ color: "#676767" }}>
-          <MyProfile />
-        </MyIcon>
-        <MyType variant="h4" sx={{ color: "#676767" }}>
-          {docName}
-        </MyType>
-      </MyBox2>
-      <MyBox3>
-        <Box sx={{ marginBottom: "10px", maxWidth: "300px" }}></Box>
-        <MyType2 variant="body">
-          <b>Localidad:</b> {address}
-        </MyType2>
-        <strong>Especialidad:</strong> {specialities}
-      </MyBox3>
-      <ButtonRemove idPatient={idPatient} idDoctor={idDoctor} />
-    </MyBox>
+    <Box
+      bgcolor={teal[200]}
+      width={"80%"}
+      height={"130px"}
+      sx={{ borderRadius: "5px", padding: "1em" }}
+    >
+      <Grid container style={{ height: "100%" }}>
+        {image ? (
+          <Grid item xs={3}>
+            <img
+              src={image}
+              style={{
+                maxWidth: "80px",
+                maxHeight: "80px",
+                minWidth: "80px",
+                minHeight: "80px",
+                borderRadius: "50%",
+              }}
+            />
+          </Grid>
+        ) : (
+          <Grid item xs={3}>
+            <Icon
+              style={{ width: "100%", height: "100%", textAlign: "center" }}
+            >
+              <AccountCircle style={{ fontSize: "80px", color: "#676767" }} />
+            </Icon>
+          </Grid>
+        )}
+
+        <Grid item xs={7}>
+          <Typography
+            variant="h5"
+            style={{
+              fontWeight: "400",
+              color: "#676767",
+              marginBottom: "0.4em",
+            }}
+          >
+            {docName}
+          </Typography>
+          <Typography
+            variant="body1"
+            style={{ color: "#676767", marginBottom: "0.2em" }}
+          >
+            <strong>Especialidad:</strong> {specialities}
+          </Typography>
+          <Typography variant="body1" style={{ color: "#676767" }}>
+            <strong>Ubicación:</strong> {address}
+          </Typography>
+        </Grid>
+        <Grid
+          item
+          xs={2}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <ButtonRemove idPatient={idPatient} idDoctor={idDoctor} />
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 

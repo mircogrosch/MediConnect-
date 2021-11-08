@@ -14,10 +14,14 @@ const CardAdd = ({
   idPatient,
   idDoctor,
   email,
+  image,
   styles,
 }) => {
   //Global state
-  let userLog = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret");
+  let userLog = jwt.verify(
+    JSON.parse(sessionStorage.getItem("user"))?.token,
+    "secret"
+  );
 
   const handleClick = () => {
     let userReciver = {
@@ -43,11 +47,33 @@ const CardAdd = ({
       sx={{ borderRadius: "5px", padding: "1em" }}
     >
       <Grid container style={{ height: "100%" }}>
-        <Grid item xs={3}>
+        {image ? (
+          <Grid item xs={3}>
+            <img
+              src={image}
+              style={{
+                maxWidth: "80px",
+                maxHeight: "80px",
+                minWidth: "80px",
+                minHeight: "80px",
+                borderRadius: "50%",
+              }}
+            />
+          </Grid>
+        ) : (
+          <Grid item xs={3}>
+            <Icon
+              style={{ width: "100%", height: "100%", textAlign: "center" }}
+            >
+              <AccountCircle style={{ fontSize: "80px", color: "#676767" }} />
+            </Icon>
+          </Grid>
+        )}
+        {/* <Grid item xs={3}>
           <Icon style={{ width: "100%", height: "100%", textAlign: "center" }}>
             <AccountCircle style={{ fontSize: "80px", color: teal[50] }} />
           </Icon>
-        </Grid>
+        </Grid> */}
         <Grid item xs={7}>
           <Typography
             variant="h5"

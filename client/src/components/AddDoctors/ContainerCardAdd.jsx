@@ -4,7 +4,11 @@ import { Grid } from "@mui/material";
 import CardAdd from "./CardAdd";
 import { useDispatch, useSelector } from "react-redux";
 import { getDoctors } from "../../actions/index";
-import { send_Notifications, socket_Connect, socket } from "../Controlers/notifications";
+import {
+  send_Notifications,
+  socket_Connect,
+  socket,
+} from "../Controlers/notifications";
 import jwt from "jsonwebtoken";
 
 function ContainerCardAdd({ props }) {
@@ -47,6 +51,7 @@ function ContainerCardAdd({ props }) {
                 sendNotification={send_Notifications}
                 idPatient={props.match.params.id}
                 idDoctor={e.id}
+                image={e.imageProfile}
                 specialities={
                   e.specialities.length ? e.specialities[0].name : "Cardio"
                 }

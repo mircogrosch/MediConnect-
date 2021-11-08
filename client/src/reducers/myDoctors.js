@@ -13,13 +13,13 @@ export const myDoctors = (state = initialState, action) => {
         copyNames: action.payload.data,
       };
 
-    case types.FILTER_SPECIALITIES:
+    case types.FILTER_SPECIALITIES_MY_DOCTORS:
       let filtered;
       if (action.payload === "TODAS") {
         filtered = state.copyNames;
       } else {
         filtered = state.names.filter(
-          (doc) => doc.specialities[0].id === action.payload
+          (doc) => doc.specialities[0]?.id === action.payload
         );
       }
       return {

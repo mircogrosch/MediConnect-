@@ -10,18 +10,13 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import {
-  NotificationsOutlined,
-  MoreVert,
-} from "@mui/icons-material";
+import { NotificationsOutlined, MoreVert } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import logo from "../../img/mediconnect-logo.png";
-import {socket } from "../Controlers/notifications";
-import MenuPrueba from './MenuPrueba'
+import { socket } from "../Controlers/notifications";
+import MenuPrueba from "./MenuPrueba";
 import { getNotifications } from "../../actions";
 import jwt from "jsonwebtoken";
-
-
 
 export default function PrimarySearchAppBar(props) {
   //state global
@@ -32,20 +27,23 @@ export default function PrimarySearchAppBar(props) {
 
   const dispatch = useDispatch();
 
-  socket.on('reciveNotifications', request => {
-    dispatch({type:'SAVE_NOTIFICATION',payload:request})
-}) 
+  socket.on("reciveNotifications", (request) => {
+    dispatch({ type: "SAVE_NOTIFICATION", payload: request });
+  });
 
-  const user = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret");
+  const user = jwt.verify(
+    JSON.parse(sessionStorage.getItem("user"))?.token,
+    "secret"
+  );
 
   useEffect(() => {
     setNotification(notifications.length);
   }, [notifications]);
 
   useEffect(() => {
-    console.log(user.rol.id)
-    dispatch(getNotifications(user.rol.id))
-  }, [dispatch])
+    console.log(user.rol.id);
+    dispatch(getNotifications(user.rol.id));
+  }, [dispatch]);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -88,7 +86,11 @@ export default function PrimarySearchAppBar(props) {
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={numberNotification} color="error" overlap='circular'>
+          <Badge
+            badgeContent={numberNotification}
+            color="error"
+            overlap="circular"
+          >
             <NotificationsOutlined />
           </Badge>
         </IconButton>
@@ -98,7 +100,7 @@ export default function PrimarySearchAppBar(props) {
   );
 
   return (
-    <Box sx={{boxShadow: "-1px 4px 3px rgba(171,171,171,1)"}}>
+    <Box sx={{ boxShadow: "-1px 4px 3px rgba(171,171,171,1)" }}>
       <AppBar
         position="static"
         elevation={0}
@@ -109,9 +111,13 @@ export default function PrimarySearchAppBar(props) {
             <img src={logo} width="200px" alt="MediConnect+" />
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <Badge badgeContent={numberNotification} color="error" overlap='circular'>
-                <MenuPrueba/>
-              </Badge>
+            <Badge
+              badgeContent={numberNotification}
+              color="error"
+              overlap="circular"
+            >
+              <MenuPrueba />
+            </Badge>
             {/* </IconButton> */}
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

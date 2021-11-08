@@ -1,70 +1,59 @@
-import { Box, Icon, Typography } from "@material-ui/core";
+import { Box, Icon, Typography, Grid } from "@material-ui/core";
 import React from "react";
 import { styled } from "@mui/material/styles";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-
-const MyIcon = styled(Icon)({
-    display: 'contents'
-})
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { teal } from "@mui/material/colors";
 
 const MyType = styled(Typography)({
-    display: 'inline-flex',
-    h4:{
-        fontSize: '10px'
-    },
-})
-
-const MyBox = styled(Box)({
-    display: 'inline-flex',
-    flexDirection: 'column',
-    width: '450px',
-    height: '180px',
-    margin: '30px',
-    borderRadius: '10px',
-})
-
-const MyBox2 = styled(Box)({
-    color: 'black',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    flexDirection: 'row',
-    width: '400px',
-    height: '200px',
-    borderRadius: '10px',
-})
-const MyBox3 = styled(Box)({
-    color: '#525752',
-    display: 'inline-flex',
-    fontSize: '20px',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: '60px',
-    marginTop: '-10px',
-    width: '500px',
-    height: '200px',
-    borderRadius: '10px',
-})
+  display: "inline-flex",
+  h4: {
+    fontSize: "10px",
+  },
+});
 
 const MyAdd = styled(AddCircleOutlineIcon)({
-    width: '90px',
-    height: '90px',
-    margin: '10px'
-})
+  width: "60px",
+  height: "60px",
+  //   margin: "10px",
+});
 
-const Card = () => {
-    return(
-        <MyBox sx={{backgroundColor: '#C9C9C9'}}>
-            <MyBox2>
-                <MyBox3>
-                <MyType variant='h4'>Agregar nuevo</MyType>
-                <MyType variant='h4'>profesional</MyType>
-                </MyBox3>
-                <MyIcon><MyAdd sx={{color:'#525752'}}/></MyIcon>
-            </MyBox2>
-        </MyBox>
-    )
-}
+const AddProfesionals = () => {
+  return (
+    <Box
+      bgcolor={"#C9C9C9"}
+      width={"100%"}
+      height={"130px"}
+      sx={{ borderRadius: "5px", padding: "1em" }}
+    >
+      <Grid
+        item
+        xs={12}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          height: "100%",
+        }}
+      >
+        <Grid
+          item
+          xs={8}
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h4">Agregar nuevo profesional</Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <Icon style={{ width: "100%", height: "100%", textAlign: "center" }}>
+            <MyAdd style={{ fontSize: "80px", color: "676767" }} />
+          </Icon>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
 
-export default Card
+export default AddProfesionals;
