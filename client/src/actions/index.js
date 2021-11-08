@@ -297,6 +297,20 @@ export const getContact = (email, rol) => {
   return {
     type: types.GET_CONTACT,
     payload: email,
-    rol,
-  };
-};
+    rol 
+  })
+}
+
+export const getMessage = (dniSender, dniReciver) => {
+  return async function(dispatch){
+    try {
+      const response = await axios.get(`${URL}/chat?dniSender=${dniSender}&dniReciver=${dniReciver}`)
+      return dispatch({
+        type:types.GET_MESSAGE,
+        payload: response.data
+      })
+    } catch (error) {
+      alert(error)
+    }
+  }
+}
