@@ -1,6 +1,7 @@
 import axios from "axios";
 import types from "./types.js";
 import swal from "sweetalert";
+import { Alert } from "@mui/material";
 const URL = "http://localhost:3001";
 
 export const getDoctors = (id_patient) => {
@@ -116,7 +117,11 @@ export const postMyDoctor = (payload, id_Doctor) => {
       const response = await axios.post(`${URL}/patient/doctors/${payload}`, {
         id_Doctor: id_Doctor,
       });
-      alert("Se acepto la solicitud");
+      swal({
+        title: "Se acepto la solicitud",
+        icon: "success",
+        timer: 2000,
+      });
       return dispatch({
         type: types.POST_MY_DOCTOR,
         id_Doctor,
@@ -236,7 +241,11 @@ export const deleteDoctor = (id, id_Doctor) => {
         payload: response,
       });
     } catch (error) {
-      alert(error);
+      swal({
+        title: `${error}`,
+        icon: "info",
+        button: "Continuar",
+      });
     }
   };
 };
