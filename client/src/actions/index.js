@@ -77,7 +77,7 @@ export const postPatient = (payload, history) => {
         dangerMode: true,
         icon: "error",
         button: "Reintentar",
-      }).then(() => history.push("/register/pacient"));
+      }).then(() => history.push("/register/patient"));
     }
   };
 };
@@ -132,6 +132,30 @@ export const getMyPatients = (id_doctor) => {
     try {
       const response = await axios.get(`${URL}/doctor/patients/${id_doctor}`);
       dispatch({ type: types.GET_MY_PATIENTS, payload: response.data });
+    } catch (error) {
+      alert(error);
+    }
+  };
+};
+
+export const filterMyPatientsByName = (patientName, id_doctor) => {
+  return async function (dispatch) {
+    try {
+      const response = await axios.get(
+        `${URL}/doctor/patients/${id_doctor}?patient=${patientName}`
+      );
+      if (response.data.data.length) {
+        dispatch({
+          type: types.FILTER_MY_PATIENTS_BY_NAME,
+          payload: response.data,
+        });
+      } else {
+        swal({
+          title: "No tiene asociado un paciente con ese nombre",
+          icon: "info",
+          button: "Continuar",
+        });
+      }
     } catch (error) {
       alert(error);
     }
