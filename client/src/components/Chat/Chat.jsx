@@ -67,24 +67,42 @@ function Chat({user}) {
     const handleSubmit = () => {
         sendMessage(userSender.user, user.selectContact, message, socketChat)
         setMessage('')
+        console.log('hola',chat)
     }
     return (
         <MyGrid>
             <MyBox sx={{ whidth:700, height:75, marginBottom:'10px'}}>
-            <MyIcon/>
+            {user.selectContact ? (
+            <MyIcon/>&&<img
+              src={user.selectContact.imageProfile}
+              style={{
+                maxWidth: "50px",
+                maxHeight: "50px",
+                minWidth: "50px",
+                minHeight: "50px",
+                borderRadius: "50%",
+                marginRight:'5px',
+                marginLeft:'10px'
+              }}
+            />
+        ) : (
+            null
+        )}
                 <Typography variant='h5'>{user.selectContact ? `${user.selectContact.name} ${user.selectContact.lastname}`: ''}</Typography>
             </MyBox>
             <Box sx={{ width:'100%', height:500, maxHeight:500}}>
                     { chat.map((m,i) => 
                     <Box>
                         {(m.reciver !== user.selectContact.email) ?
-                        (<Box>
-                            <Box sx={{bgcolor: teal[400],padding:'3px',margin:'5px', width:'200px', height:'30px', borderRadius:'5px', display:'flex', flexDirection:'column', justifyContent:'center'}}>
+                        (<Box sx={{display:'flex', flexDirection:'column'}}>
+                            <Box sx={{bgcolor: teal[400],padding:'3px',margin:'5px', width:'200px', borderRadius:'5px', display:'flex', flexDirection:'column', justifyContent:'center'}}>
+                                <Typography variant='subtitle2'><b>{user.selectContact ? `${user.selectContact.name} ${user.selectContact.lastname}`: ''}</b></Typography>
                                 <Typography variant='subtitle1' key={i}>{m.message}</Typography>
                             </Box>
                         </Box>) : 
-                        (<Box sx={{display:'flex', justifyContent:'flex-end'}}>
-                            <Box sx={{bgcolor: 'white',padding:'3px',margin:'5px', width:'200px', height:'30px', borderRadius:'5px', display:'flex', flexDirection:'column', justifyContent:'center'}}>
+                        (<Box sx={{display:'flex', alignItems:'flex-end', flexDirection:'column'}}>                            
+                            <Box sx={{bgcolor: teal[200],padding:'3px',margin:'5px', width:'200px', borderRadius:'5px', display:'flex', flexDirection:'column', justifyContent:'center'}}>
+                                <Typography variant='subtitle2'><b>Tu</b></Typography>
                                 <Typography variant='subtitle1' key={i}>{m.message}</Typography>
                             </Box>
                         </Box>)}
@@ -103,7 +121,7 @@ function Chat({user}) {
             placeholder='Escriba su mensaje...'
             value={message}
             endAdornment={ 
-                <IconButton >
+                <IconButton onClick = {() => {handleSubmit()}}>
                     <Send color='primary'/>
                 </IconButton>
             }/>)}
