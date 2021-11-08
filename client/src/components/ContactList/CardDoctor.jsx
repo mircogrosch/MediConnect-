@@ -17,7 +17,7 @@ const MyIcon = styled(AccountCircle)({
     marginRight:'20px'
 })
 
-function CardDoctor({name, lastname, email, rol}) { 
+function CardDoctor({name, lastname, email, rol, img}) { 
     const dispatch = useDispatch()
     let docName = `${name} ${lastname}`
     const handleContact = () => {
@@ -25,7 +25,21 @@ function CardDoctor({name, lastname, email, rol}) {
     }
     return (
         <MyGrid onClick={(e) => handleContact(e)}>
+            {img ? (
+            <img
+              src={img}
+              style={{
+                maxWidth: "60px",
+                maxHeight: "60px",
+                minWidth: "60px",
+                minHeight: "60px",
+                borderRadius: "50%",
+                marginRight:'20px'
+              }}
+            />
+        ) : (
             <MyIcon/>
+        )}
             <Grid>
                 <Typography variant='h6'>{docName}</Typography>
                 <Typography variant='body'>Ultimo mensaje del chat o si no tiene msj nada</Typography>
