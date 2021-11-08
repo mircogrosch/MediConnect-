@@ -3,7 +3,9 @@ import { Grid, Typography } from '@mui/material'
 import React from 'react'
 import { styled } from '@mui/system'
 import { useDispatch } from 'react-redux'
-import { getContact } from '../../actions'
+import { getContact, getMessage } from '../../actions'
+import jwt from "jsonwebtoken";
+
 
 const MyGrid = styled(Grid)({
     display: 'flex',
@@ -17,11 +19,16 @@ const MyIcon = styled(AccountCircle)({
     marginRight:'20px'
 })
 
-function CardDoctor({name, lastname, email, rol, img}) { 
+function CardDoctor({name, lastname, email, rol, img, dni}) { 
+    const user = jwt.verify(
+        JSON.parse(sessionStorage.getItem("user"))?.token,
+        "secret"
+      );
     const dispatch = useDispatch()
     let docName = `${name} ${lastname}`
     const handleContact = () => {
         dispatch(getContact(email, rol))
+        dispatch(getMessage(user.user.dni, dni))
     }
     return (
         <MyGrid onClick={(e) => handleContact(e)}>

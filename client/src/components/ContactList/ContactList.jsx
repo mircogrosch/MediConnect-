@@ -60,7 +60,7 @@ const ContactList = ({user}) => {
         <li key={r.id}>
           <ul>
               <MenuItem>
-                <CardDoctor name={r.name} lastname={r.lastname} email={r.email} rol={r.rol} img={r.imageProfile}/>
+                <CardDoctor name={r.name} lastname={r.lastname} email={r.email} rol={r.rol} img={r.imageProfile} dni={r.dni}/>
               </MenuItem>
           </ul>
         </li>
