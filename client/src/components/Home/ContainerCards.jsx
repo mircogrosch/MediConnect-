@@ -41,7 +41,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
         <Grid item md={4} sm={4} xs={5}>
           {user.user.rol === "Doctor" ? (
             <Link
-              to={`/prueba/doctor/my-patients/${user.rol.id}`}
+              to={`/account/doctor/patients/${user.rol.id}`}
               style={{ textDecoration: "none" }}
             >
               <Card
@@ -85,15 +85,17 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
           )}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          {user.user.rol === "Doctor" ? (
+          {user.user.rol ==="Doctor" ? (
+             <Link to={`/mensajes/profesional`} style={{ textDecoration: "none" }}>
             <Card
               title="Mensajes"
               icon={cardInfo[5].icon}
               bgColor={teal[600]}
               color={teal[50]}
             />
+            </Link>
           ) : (
-            <Link to={`/mensajes`} style={{ textDecoration: "none" }}>
+            <Link to={`/mensajes/paciente`} style={{ textDecoration: "none" }}>
               <Card title="Mensajes" icon={cardInfo[5].icon} />
             </Link>
           )}

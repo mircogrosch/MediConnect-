@@ -9,10 +9,19 @@ import {
 } from "../../actions";
 import ConteinerCard from "./ConteinerCard";
 import { useStyles } from "../../styles/doctors/add_doctor";
-import PrimarySearchAppBar from "../../components/Notification/AppBarNoti";
+import PrimarySearchAppBar from "../../components/Notification/AppBarNoti"; 
+import { useSelector } from "react-redux";
+import { filterMyDoctorsByName } from "../../actions";
+import { Link } from "react-router-dom";
+
+const MyGrid = styled(Grid)({
+  display: "flex",
+  marginTop: "70px",
+});
 
 const MisProfesionales = (props) => {
-  const classes = useStyles();
+  let MyDoctors = useSelector((state) => state.myDoctors.names); // Guarda doctores asociados para renderizar en las cards
+const classes = useStyles();
 
   return (
     <Box>
