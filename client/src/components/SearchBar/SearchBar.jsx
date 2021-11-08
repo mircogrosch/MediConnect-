@@ -4,13 +4,13 @@ import { IconButton, InputBase } from "@material-ui/core";
 import { Search } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 
-const SearchBar = ({ idPatient, styles, filterName }) => {
+const SearchBar = ({ id, filterName }) => {
   const classes = useStyles();
   const [input, setInput] = useState(""); // El input es un nombre
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(filterName(input, idPatient));
+    dispatch(filterName(input, id));
     setInput("");
   };
 

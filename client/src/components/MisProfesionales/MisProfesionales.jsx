@@ -19,8 +19,6 @@ const MyGrid = styled(Grid)({
 const MisProfesionales = (props) => {
   let MyDoctors = useSelector((state) => state.myDoctors.names); // Guarda doctores asociados para renderizar en las cards
 
-  
-
   return (
     <Box
       sx={{ backgroundColor: "#b2dfdb", margin: "5px", borderRadius: "10px" }}

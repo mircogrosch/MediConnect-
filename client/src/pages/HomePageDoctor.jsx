@@ -14,7 +14,10 @@ import ShifsNotificator from "../components/Home/ShifsNotificator.jsx";
 import ContainerCards from "../components/Home/ContainerCards.jsx";
 import { useStyles } from "../styles/home";
 import { socket_Connect, socket } from "../components/Controlers/notifications";
-import {initiateSocketChat,socketChat} from '../components/Controlers/chatMessage'
+import {
+  initiateSocketChat,
+  socketChat,
+} from "../components/Controlers/chatMessage";
 import jwt from "jsonwebtoken";
 import { useDispatch } from "react-redux";
 import { getMyPatients } from "../actions/index.js";
@@ -38,7 +41,6 @@ const cardInfo = [
 ];
 
 function HomePageDoctor() {
-
   const dispatch = useDispatch()
   const user = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
@@ -48,13 +50,12 @@ function HomePageDoctor() {
   //conexion con socket
   useEffect(() => {
     socket_Connect(user.user, socket);
-    initiateSocketChat(user.user.email,socketChat)
+    initiateSocketChat(user.user.email, socketChat);
   }, []);
   useEffect(() => {
     // Dispara la accion para traer todos los doctores asociados al paciente
     dispatch(getMyPatients(user.rol.id));
   }, []);
-
 
   return (
     <Box className={classes.root} sx={{ background: teal[100] }}>
@@ -70,6 +71,7 @@ function HomePageDoctor() {
               lastname={user.user.lastname}
               dni={user.user.dni}
               address={user.user.address}
+              imagePerfil={user.user.imageProfile}
             />
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">

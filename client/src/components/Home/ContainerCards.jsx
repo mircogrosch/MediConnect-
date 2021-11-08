@@ -5,12 +5,17 @@ import { Link } from "react-router-dom";
 import { teal } from "@material-ui/core/colors";
 import jwt from "jsonwebtoken";
 function ContainerCards({ cardInfo, bgColor, infoColor }) {
-  const user = jwt.verify(JSON.parse(sessionStorage.getItem("user"))?.token, "secret");
+  const user = jwt.verify(
+    JSON.parse(sessionStorage.getItem("user"))?.token,
+    "secret"
+  );
+
+  console.log(user);
   return (
     <Box sx={{ marginTop: { md: "2em" } }}>
       <Grid container columnSpacing={3} rowSpacing={4}>
         <Grid item md={4} sm={4} xs={5}>
-          {user.user.rol ==="Doctor" ? (
+          {user.user.rol === "Doctor" ? (
             <Card
               title="Mis Turnos"
               icon={cardInfo[0].icon}
@@ -22,7 +27,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
           )}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          {user.user.rol ==="Doctor" ? (
+          {user.user.rol === "Doctor" ? (
             <Card
               title="Historial Medico"
               icon={cardInfo[1].icon}
@@ -34,13 +39,18 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
           )}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          {user.user.rol ==="Doctor" ? (
-            <Card
-              title="Mis Pacientes"
-              icon={cardInfo[2].icon}
-              bgColor={teal[600]}
-              color={teal[50]}
-            />
+          {user.user.rol === "Doctor" ? (
+            <Link
+              to={`/account/doctor/patients/${user.rol.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Card
+                title="Mis Pacientes"
+                icon={cardInfo[2].icon}
+                bgColor={teal[600]}
+                color={teal[50]}
+              />
+            </Link>
           ) : (
             <Link
               to={`/account/profesionales/${user.rol.id}`}
@@ -51,7 +61,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
           )}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          {user.user.rol ==="Doctor" ? (
+          {user.user.rol === "Doctor" ? (
             <Card
               title="Mis Recetas"
               icon={cardInfo[3].icon}
@@ -63,7 +73,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
           )}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
-          {user.user.rol ==="Doctor" ? (
+          {user.user.rol === "Doctor" ? (
             <Card
               title="Mis Órdenes"
               icon={cardInfo[4].icon}

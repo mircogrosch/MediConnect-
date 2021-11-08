@@ -12,6 +12,7 @@ export const useStyles = makeStyles({
     margin: "auto",
     width: 150,
     height: 150,
+    borderRadius: "50%",
   },
   cardInfo: {
     padding: "1em",

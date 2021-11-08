@@ -8,7 +8,7 @@ import users from "./users";
 import allDoctors from "./allDoctors";
 import { myDoctors } from "./myDoctors";
 import { postMyDoctor } from "./postMyDoctor";
-import {myPatients} from "./myPatients"
+import { myPatients } from "./myPatients";
 
 //import reducers here
 export default combineReducers({

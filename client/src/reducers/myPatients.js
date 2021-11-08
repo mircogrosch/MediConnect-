@@ -21,4 +21,4 @@ export const myPatients = (state = initialState, action) => {
         return state;
     }
 };
-  
+

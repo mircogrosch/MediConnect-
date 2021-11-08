@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { useStyles } from "../styles/home";
 import { Box, Grid } from "@mui/material";
 import { teal } from "@mui/material/colors";
@@ -15,9 +15,12 @@ import ContainerCards from "../components/Home/ContainerCards.jsx";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti.jsx";
 import jwt from "jsonwebtoken";
 import { socket, socket_Connect } from "../components/Controlers/notifications";
-import {initiateSocketChat,socketChat} from '../components/Controlers/chatMessage'
 import { useDispatch } from "react-redux";
 import { getMyDoctors } from "../actions";
+import {
+  initiateSocketChat,
+  socketChat,
+} from "../components/Controlers/chatMessage";
 const cardInfo = [
   {
     title: "Mis Turnos",
@@ -43,9 +46,10 @@ function HomePatientPage() {
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
   );
+  console.log("user.user.imageProfile ------> ", user.user.imageProfile);
   useEffect(() => {
     socket_Connect(user.user, socket);
-    initiateSocketChat(user.user.email,socketChat)
+    initiateSocketChat(user.user.email, socketChat);
   }, []);
   
   useEffect(() => {
@@ -64,6 +68,7 @@ function HomePatientPage() {
               lastname={user.user.lastname}
               dni={user.user.dni}
               address={user.user.address}
+              imagePerfil={user.user.imageProfile}
             />
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">
