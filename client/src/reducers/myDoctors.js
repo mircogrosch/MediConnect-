@@ -55,7 +55,11 @@ export const myDoctors = (state = initialState, action) => {
       let response = state.names.filter(
         (doc) => doc.id !== action.payload.data.data.id
       );
-      alert(action.payload.data.message);
+      swal({
+        title: `${action.payload.data.message}`,
+        icon: "success",
+        button: "Continuar",
+      });
       return {
         ...state,
         names: response,

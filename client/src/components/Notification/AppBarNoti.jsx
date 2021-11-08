@@ -17,6 +17,7 @@ import { socket } from "../Controlers/notifications";
 import MenuPrueba from "./MenuPrueba";
 import { getNotifications } from "../../actions";
 import jwt from "jsonwebtoken";
+import { Link } from "react-router-dom";
 
 export default function PrimarySearchAppBar(props) {
   //state global
@@ -108,7 +109,15 @@ export default function PrimarySearchAppBar(props) {
       >
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
-            <img src={logo} width="200px" alt="MediConnect+" />
+            <Link
+              to={
+                user.user.rol === "Patient"
+                  ? "/account/patient"
+                  : "/account/profesional"
+              }
+            >
+              <img src={logo} width="200px" alt="MediConnect+" />
+            </Link>
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Badge
