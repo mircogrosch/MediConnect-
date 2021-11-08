@@ -5,6 +5,7 @@ const {
   HealthInsurance,
   Speciality,
   Conversation,
+  Allergy,
 } = require("../db");
 const { Op, literal } = require("sequelize");
 const bcryptjs = require("bcryptjs");
@@ -279,7 +280,10 @@ const addDoctor = async (req, res) => {
     }
     await patient.addDoctor(doctor);
     const conversation = await Conversation.create();
-    await conversation.addPerson([patient.dataValues.personDni,doctor.dataValues.personDni]);
+    await conversation.addPerson([
+      patient.dataValues.personDni,
+      doctor.dataValues.personDni,
+    ]);
     deleteNotification(id); //borra la notificación
     res.json({
       data: patient,
@@ -321,6 +325,23 @@ const deleteDoctor = async (req, res) => {
   }
 };
 
+const getAllergies = async (req, res) => {
+  let { id } = req.params;
+  if (id) {
+    try{
+      let allergie = await Allergy.findOne({
+        where: {
+          patientId = id
+        }
+      })
+    }catch(e){
+      console.log("Error in Data Base: ", e);
+    }
+  } else {
+    res.send("The id is not recognized");
+  }
+};
+
 module.exports = {
   getDoctors,
   getPatient,
@@ -328,4 +349,5 @@ module.exports = {
   createPatient,
   addDoctor,
   deleteDoctor,
+  getAllergies,
 };
