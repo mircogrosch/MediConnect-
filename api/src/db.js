@@ -48,17 +48,27 @@ let capsEntries = entries.map((entry) => [
 sequelize.models = Object.fromEntries(capsEntries);
 // Aca vendrian las relaciones
 
-const { Person, Doctor, Patient, Speciality, HealthInsurance, Notification, Conversation, Message } = sequelize.models;
+const {
+  Person,
+  Doctor,
+  Patient,
+  Speciality,
+  HealthInsurance,
+  Notification,
+  Conversation,
+  Message,
+  Allergy,
+} = sequelize.models;
 
 // Uno a muchos
 Patient.belongsTo(Person); // crea tabla personDni dentro de la tabla Patient
 Person.hasMany(Patient);
 
 // Uno a muchos
- Notification.belongsTo(Person); // crea tabla personDni dentro de la tabla Notification
- Person.hasMany(Notification);  
+Notification.belongsTo(Person); // crea tabla personDni dentro de la tabla Notification
+Person.hasMany(Notification);
 
-// Uno a muchos 
+// Uno a muchos
 Doctor.belongsTo(Person);
 Person.hasMany(Doctor);
 
@@ -82,13 +92,17 @@ Patient.belongsToMany(Doctor, { through: "Doctor_Patient" });
 Message.belongsTo(Conversation);
 Conversation.hasMany(Message);
 
-//muchos a muchos 
-Conversation.belongsToMany(Person,{through: "Person_Conversation"});
-Person.belongsToMany(Conversation,{through: "Person_Conversation"});
+//muchos a muchos
+Conversation.belongsToMany(Person, { through: "Person_Conversation" });
+Person.belongsToMany(Conversation, { through: "Person_Conversation" });
 
-//Uno a muchos 
+//Uno a muchos
 Message.belongsTo(Person);
 Person.hasMany(Message);
+
+// Uno a Muchos
+Allergy.belongsTo(Patient);
+Patient.hasMany(Allergy);
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
