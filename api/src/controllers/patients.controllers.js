@@ -4,6 +4,7 @@ const {
   Doctor,
   HealthInsurance,
   Speciality,
+  Conversation,
 } = require("../db");
 const { Op, literal } = require("sequelize");
 const bcryptjs = require("bcryptjs");
@@ -277,6 +278,8 @@ const addDoctor = async (req, res) => {
       });
     }
     await patient.addDoctor(doctor);
+    const conversation = await Conversation.create();
+    await conversation.addPerson([patient.dataValues.personDni,doctor.dataValues.personDni]);
     deleteNotification(id); //borra la notificación
     res.json({
       data: patient,
