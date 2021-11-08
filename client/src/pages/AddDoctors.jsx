@@ -25,7 +25,7 @@ function AddDoctors(props) {
             />
             <SearchBar
               filterName={filterDoctorsByName}
-              idPatient={props.match.params.id}
+              id={props.match.params.id}
               styles={classes}
             />
           </Grid>

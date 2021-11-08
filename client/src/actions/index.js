@@ -127,16 +127,16 @@ export const postMyDoctor = (payload, id_Doctor) => {
   };
 };
 
-export const getMyPatients = (id_doctor) => {
-  return async function (dispatch) {
-    try {
-      const response = await axios.get(`${URL}/doctor/patients/${id_doctor}`);
-      dispatch({ type: types.GET_MY_PATIENTS, payload: response.data });
-    } catch (error) {
-      alert(error);
-    }
-  };
-};
+// export const getMyPatients = (id_doctor) => {
+//   return async function (dispatch) {
+//     try {
+//       const response = await axios.get(`${URL}/doctor/patients/${id_doctor}`);
+//       dispatch({ type: types.GET_MY_PATIENTS, payload: response.data });
+//     } catch (error) {
+//       alert(error);
+//     }
+//   };
+// };
 
 export const filterMyPatientsByName = (patientName, id_doctor) => {
   return async function (dispatch) {
@@ -276,28 +276,27 @@ export const rejectNotification = (id) => {
     } catch (error) {
       alert(error);
     }
-  }
-}
+  };
+};
 
 export const getMyPatients = (idDoctor) => {
-  return async function (dispatch){
+  return async function (dispatch) {
     try {
-      const response = await axios.get(`${URL}/doctor/patients/${idDoctor}`)
+      const response = await axios.get(`${URL}/doctor/patients/${idDoctor}`);
       return dispatch({
-        type:types.GET_MY_PATIENTS,
-        payload: response.data
-      })
+        type: types.GET_MY_PATIENTS,
+        payload: response.data,
+      });
     } catch (error) {
-      alert(error)
+      alert(error);
     }
-  }
-}
+  };
+};
 
 export const getContact = (email, rol) => {
-  return({
+  return {
     type: types.GET_CONTACT,
     payload: email,
-    rol 
-  })
-}
-
+    rol,
+  };
+};
