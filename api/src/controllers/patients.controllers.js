@@ -328,17 +328,40 @@ const deleteDoctor = async (req, res) => {
 const getAllergies = async (req, res) => {
   let { id } = req.params;
   if (id) {
-    try{
-      let allergie = await Allergy.findOne({
+    try {
+      let allergies = await Allergy.findAll({
         where: {
-          patientId = id
-        }
-      })
-    }catch(e){
+          patientId: id,
+        },
+      });
+      res.json({
+        data: allergies,
+        message: "Succes!",
+      });
+    } catch (e) {
       console.log("Error in Data Base: ", e);
     }
   } else {
     res.send("The id is not recognized");
+  }
+};
+
+const createAllergie = async (req, res) => {
+  let { id } = req.params;
+  let { name, severity, description } = req.body;
+  try {
+    let allergie = await Allergy.create({
+      name,
+      severity,
+      description,
+    });
+    await allergie.setPatient(id);
+    res.json({
+      data: allergie,
+      message: "Alergia creada!",
+    });
+  } catch (e) {
+    console.log("Error in the Data Base: ", e);
   }
 };
 
@@ -350,4 +373,5 @@ module.exports = {
   addDoctor,
   deleteDoctor,
   getAllergies,
+  createAllergie,
 };
