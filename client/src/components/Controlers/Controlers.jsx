@@ -1,4 +1,4 @@
-import { postPatient} from "../../actions";
+import { postPatient } from "../../actions";
 import swal from "sweetalert";
 import { filterSpecialities } from "../../actions/index";
 import jwt from "jsonwebtoken";
@@ -6,6 +6,7 @@ export const handleChange = (prop, state, set) => (event) => {
   set({ ...state, [prop]: event.target.value });
 };
 // Controla los cambios del componente "Select especialidad"
+// VER, SI NO SE USA, BORRARLA
 export const handleSelect = (e, state, set, dispatch) => {
   set(e.target.value);
   dispatch(filterSpecialities(e.target.value));

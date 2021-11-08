@@ -4,9 +4,9 @@ import { TextField } from "@mui/material";
 import { Box } from "@mui/system";
 // import { handleChangeSpecial } from "../Controlers/Controlers";
 import { useDispatch, useSelector } from "react-redux";
-import { getSpecialities, filterSpecialities } from "../../actions";
+import { getSpecialities } from "../../actions";
 
-const FiltroSelect = () => {
+const FiltroSelect = ({ filterSpecialities }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [special, setSpecial] = useState("");

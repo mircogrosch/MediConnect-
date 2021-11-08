@@ -15,13 +15,13 @@ export default function allDoctors(state = initialState, action) {
         copyAllDoctors: action.payload.data.unlinked,
       };
 
-    case types.FILTER_SPECIALITIES:
+    case types.FILTER_SPECIALITIES_ALL_DOCTORS:
       let filtered;
       if (action.payload === "TODAS") {
         filtered = state.copyAllDoctors;
       } else {
         filtered = state.allDoctors.filter(
-          (doc) => doc.specialities[0].id === action.payload
+          (doc) => doc.specialities[0]?.id === action.payload
         );
       }
       return {

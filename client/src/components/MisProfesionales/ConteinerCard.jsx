@@ -1,28 +1,20 @@
 import React, { useEffect } from "react";
 import { useStyles } from "../../styles/doctors/add_doctor";
 import { Grid } from "@mui/material";
-import CardAdd from "./CardAdd";
+import Card from "../Card/Card";
+import AddProfesionals from "../Card/AddProfesionals";
 import { useDispatch, useSelector } from "react-redux";
-import { getDoctors } from "../../actions/index";
-import {
-  send_Notifications,
-  socket_Connect,
-  socket,
-} from "../Controlers/notifications";
-import jwt from "jsonwebtoken";
+import { getMyDoctors } from "../../actions";
+import { Link } from "react-router-dom";
 
-function ContainerCardAdd({ props }) {
+function ContainerCard({ props }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  let allDoctors = useSelector((state) => state.allDoctors.allDoctors);
-  let userLog = jwt.verify(
-    JSON.parse(sessionStorage.getItem("user"))?.token,
-    "secret"
-  );
+  let MyDoctors = useSelector((state) => state.myDoctors.names); // Guarda doctores asociados para renderizar en las cards
 
   useEffect(() => {
-    dispatch(getDoctors(props.match.params.id));
-    socket_Connect(userLog.user, socket);
+    // Dispara la accion para traer todos los doctores asociados al paciente
+    dispatch(getMyDoctors(props.match.params.id));
   }, []);
 
   return (
@@ -32,8 +24,22 @@ function ContainerCardAdd({ props }) {
       className={classes.containerCards}
       sx={{ height: { sm: "70vh", xs: "65vh" } }}
     >
-      {allDoctors &&
-        allDoctors.map((e) => {
+      <Grid
+        item
+        xl={4}
+        md={6}
+        xs={12}
+        style={{ display: "flex", justifyContent: "center" }}
+      >
+        <Link
+          to={`/account/doctors/${props.match.params.id}`}
+          style={{ textDecoration: "none", color: "#676767" }}
+        >
+          <AddProfesionals />
+        </Link>
+      </Grid>
+      {MyDoctors &&
+        MyDoctors.map((e) => {
           return (
             <Grid
               item
@@ -42,18 +48,17 @@ function ContainerCardAdd({ props }) {
               xs={12}
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <CardAdd
+              <Card
                 key={e.id}
                 name={e.name}
                 lastname={e.lastname}
                 address={e.address}
                 email={e.email}
-                sendNotification={send_Notifications}
                 idPatient={props.match.params.id}
                 idDoctor={e.id}
                 image={e.imageProfile}
                 specialities={
-                  e.specialities.length ? e.specialities[0].name : "Cardio"
+                  e.specialities.length ? e.specialities[0].name : "CARDIOLOGIA"
                 }
               />
             </Grid>
@@ -63,4 +68,4 @@ function ContainerCardAdd({ props }) {
   );
 }
 
-export default ContainerCardAdd;
+export default ContainerCard;
