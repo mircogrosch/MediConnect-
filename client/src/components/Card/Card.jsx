@@ -13,6 +13,8 @@ const Card = ({
   idPatient,
   idDoctor,
   specialities,
+  aux,
+  setAux,
   image,
 }) => {
   let myDoctors = useSelector((state) => state.myDoctors);
@@ -80,7 +82,12 @@ const Card = ({
             justifyContent: "center",
           }}
         >
-          <ButtonRemove idPatient={idPatient} idDoctor={idDoctor} />
+          <ButtonRemove
+            setAux={setAux}
+            aux={aux}
+            idPatient={idPatient}
+            idDoctor={idDoctor}
+          />
         </Grid>
       </Grid>
     </Box>
