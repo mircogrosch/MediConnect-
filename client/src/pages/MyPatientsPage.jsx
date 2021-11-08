@@ -66,6 +66,7 @@ function MyPatientsPage(props) {
                       email={patient.email}
                       dni={patient.dni}
                       address={patient.address}
+                      img={patient.imageProfile}
                     />
                   </Grid>
                 );
