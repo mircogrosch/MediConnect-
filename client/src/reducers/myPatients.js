@@ -1,22 +1,24 @@
 import types from "../actions/types";
-
 const initialState = {
-  myPatients: [],
+  names: [],
+  copyNames: [], // Este estado sirve de soporte para que funcione bien el filtrado (siempre va a tener todos los doctores)
+  selectContact: null
 };
-
 export const myPatients = (state = initialState, action) => {
   switch (action.type) {
     case types.GET_MY_PATIENTS:
       return {
         ...state,
-        myPatients: action.payload.data,
+        names: action.payload.data,
+        copyNames: action.payload.data,
       };
-    case types.FILTER_MY_PATIENTS_BY_NAME:
-      return {
+    case types.GET_CONTACT:
+      return({
         ...state,
-        myPatients: action.payload.data,
-      };
+        selectContact: state.names.find(e => e.email === action.payload)
+      })
     default:
-      return state;
-  }
+        return state;
+    }
 };
+

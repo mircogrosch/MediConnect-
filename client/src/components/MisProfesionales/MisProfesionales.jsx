@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import FiltroSelect from "../FiltroSelect/FiltroSelect";
 import Card from "../Card/Card";
@@ -7,8 +7,8 @@ import { Grid } from "@mui/material";
 import SimpleAppBar from "../AppBar/SimpleAppBar";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
-import { useDispatch, useSelector } from "react-redux";
-import { getMyDoctors, filterMyDoctorsByName } from "../../actions";
+import { useSelector } from "react-redux";
+import { filterMyDoctorsByName } from "../../actions";
 import { Link } from "react-router-dom";
 
 const MyGrid = styled(Grid)({
@@ -17,13 +17,7 @@ const MyGrid = styled(Grid)({
 });
 
 const MisProfesionales = (props) => {
-  const dispatch = useDispatch();
   let MyDoctors = useSelector((state) => state.myDoctors.names); // Guarda doctores asociados para renderizar en las cards
-
-  useEffect(() => {
-    // Dispara la accion para traer todos los doctores asociados al paciente
-    dispatch(getMyDoctors(props.match.params.id));
-  }, [MyDoctors]);
 
   return (
     <Box

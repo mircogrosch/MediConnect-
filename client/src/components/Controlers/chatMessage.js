@@ -17,10 +17,10 @@ export const socketChat= io(URL,{ path: '/message'});
  * @param {*} room  room de destino
  * @param {*} message mensaje a enviar
  */
-export const sendMessage = (user, message,socket) => {
+export const sendMessage = (userSender, userReciver, message,socket) => {
   if (socket) socket.emit("chat", {
-    sender: user.email,
-    reciver:"m1rc0.mg95@gmail.com",
+    sender: userSender.email,
+    reciver: userReciver.email,
     message
    });
 };

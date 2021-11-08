@@ -19,6 +19,8 @@ import {
   socketChat,
 } from "../components/Controlers/chatMessage";
 import jwt from "jsonwebtoken";
+import { useDispatch } from "react-redux";
+import { getMyPatients } from "../actions/index.js";
 
 const cardInfo = [
   {
@@ -39,6 +41,7 @@ const cardInfo = [
 ];
 
 function HomePageDoctor() {
+  const dispatch = useDispatch()
   const user = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
@@ -48,6 +51,10 @@ function HomePageDoctor() {
   useEffect(() => {
     socket_Connect(user.user, socket);
     initiateSocketChat(user.user.email, socketChat);
+  }, []);
+  useEffect(() => {
+    // Dispara la accion para traer todos los doctores asociados al paciente
+    dispatch(getMyPatients(user.rol.id));
   }, []);
 
   return (

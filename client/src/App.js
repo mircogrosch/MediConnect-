@@ -8,8 +8,9 @@ import HomePatientPage from "./pages/HomePatientPage";
 import MisProfesionales from "./components/MisProfesionales/MisProfesionales";
 import AddDoctors from "./pages/AddDoctors";
 import HomePageDoctor from "./pages/HomePageDoctor";
-import Mensajes from "./pages/Mensajes";
-import PruebaChat from "./components/PruebaChat.jsx";
+import MensajesPaciente from './pages/MenssagesPatients'
+import PruebaChat from './components/PruebaChat.jsx'
+import MensajesDoctor from "./pages/MenssagesDoctor";
 import MyPatientsPage from "./pages/MyPatientsPage";
 
 function App() {
@@ -25,8 +26,8 @@ function App() {
       <Route path="/account/patient" component={HomePatientPage} />
       <Route path="/account/doctors/:id" component={AddDoctors} />
       <Route exact path="/" component={LandingPage} />
-      <Route path="/mensajes" component={Mensajes} />
-      <Route path="/prueba/mensajes" component={PruebaChat} />
+      <Route path='/mensajes/paciente' component={MensajesPaciente}/>
+      <Route path='/mensajes/profesional' component={MensajesDoctor}/>
     </div>
   );
 }

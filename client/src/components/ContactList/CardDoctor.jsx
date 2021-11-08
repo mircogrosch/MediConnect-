@@ -2,6 +2,8 @@ import { AccountCircle } from '@mui/icons-material'
 import { Grid, Typography } from '@mui/material'
 import React from 'react'
 import { styled } from '@mui/system'
+import { useDispatch } from 'react-redux'
+import { getContact } from '../../actions'
 
 const MyGrid = styled(Grid)({
     display: 'flex',
@@ -15,10 +17,14 @@ const MyIcon = styled(AccountCircle)({
     marginRight:'20px'
 })
 
-function CardDoctor({name, lastname}) { 
+function CardDoctor({name, lastname, email, rol}) { 
+    const dispatch = useDispatch()
     let docName = `${name} ${lastname}`
+    const handleContact = () => {
+        dispatch(getContact(email, rol))
+    }
     return (
-        <MyGrid>
+        <MyGrid onClick={(e) => handleContact(e)}>
             <MyIcon/>
             <Grid>
                 <Typography variant='h6'>{docName}</Typography>
