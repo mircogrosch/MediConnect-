@@ -7,6 +7,8 @@ const {
   getDoctors,
   addDoctor,
   deleteDoctor,
+  getAllergies,
+  createAllergie,
 } = require("../controllers/patients.controllers");
 
 router.route("/").get(getPatients);
@@ -48,5 +50,14 @@ ej: localhost:3001/patient/doctors/:id_paciente?id_Doctor=Mauricio
 router.route("/doctors/:id").delete(deleteDoctor);
 
 router.route("/:id").get(getPatient);
+
+//Ruta para traer las alergias vinculadas con un paciente
+//y sus detalles, recibe el id del paciente por params
+router.route("/allergy/:id").get(getAllergies);
+
+//Ruta para crear una alergia vinculada a un paciente
+//recibe el id del paciente a vincular por params
+//recibe los datos de la alergia por body
+router.route("/allergy/:id").post(createAllergie);
 
 module.exports = router;

@@ -14,6 +14,7 @@ const specialitiesRouter = require("./routes/specialities");
 const healthinsuranceRouter = require("./routes/healthinsurance");
 const flash = require("connect-flash");
 const notification = require("./routes/notifications");
+const chatMessage = require("./routes/chatMessage");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
@@ -214,7 +215,7 @@ server.use("/doctor", doctorRouter);
 server.use("/specialities", specialitiesRouter);
 server.use("/healthinsurance", healthinsuranceRouter);
 server.use("/notifications", notification);
-
+server.use("/chat", chatMessage);
 // Error catching endware.
 server.use((err, req, res, next) => {
   // eslint-disable-line no-unused-vars

@@ -11,7 +11,7 @@ function MyPatientsPage(props) {
   const dispatch = useDispatch();
 
   const id = props.match.params.id;
-  const myPatients = useSelector((state) => state.myPatients.myPatients);
+  const myPatients = useSelector((state) => state.myPatients);
 
   useEffect(() => {
     dispatch(getMyPatients(id));
@@ -44,13 +44,13 @@ function MyPatientsPage(props) {
               bgColor={teal[800]}
             />
           </Grid>
-          {myPatients.length && (
+          {myPatients.names && (
             <Grid
               container
               rowSpacing={1}
               sx={{ height: "70vh", overflowY: "scroll" }}
             >
-              {myPatients.map((patient) => {
+              {myPatients.names.map((patient) => {
                 return (
                   <Grid
                     item
@@ -66,6 +66,7 @@ function MyPatientsPage(props) {
                       email={patient.email}
                       dni={patient.dni}
                       address={patient.address}
+                      img={patient.imageProfile}
                     />
                   </Grid>
                 );
