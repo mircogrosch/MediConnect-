@@ -9,6 +9,7 @@ import { teal } from '@material-ui/core/colors'
 import jwt from "jsonwebtoken";
 import {initiateSocketChat,
     sendMessage,socketChat} from '../Controlers/chatMessage'
+import { useSelector } from 'react-redux'
 
 const MyBox = styled(Box)({
     backgroundColor: teal[200],
@@ -50,6 +51,8 @@ function Chat({user}) {
         "secret"
       );
 
+      const chats = useSelector((state) => state.messages.chat.data)
+
       const [chat, setChat] = useState([]);
       const [message, setMessage] = useState("");
 
@@ -90,7 +93,50 @@ function Chat({user}) {
         )}
                 <Typography variant='h5'>{user.selectContact ? `${user.selectContact.name} ${user.selectContact.lastname}`: ''}</Typography>
             </MyBox>
-            <Box sx={{ width:'100%', height:500, maxHeight:500}}>
+            <Box sx={{ width:'100%', height:500, maxHeight:500,
+                        overflowY: "scroll",
+                        margin: 0,
+                        padding: 0,
+                        listStyle: "none",
+                        height: "100%",
+                        '&::-webkit-scrollbar': {
+                            width: '10px',
+                            
+                        },
+                        '&::-webkit-scrollbar-track': {
+                            boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+                            webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)'
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: 'teal',
+                            borderRadius: '50px',
+                            width:'3px'
+                        },
+                        minWidth: '50%',
+                        bgcolor: 'transparent',
+                        position: 'relative',
+                        overflow: 'auto',
+                        maxHeight: '62vh',
+                        minHeight:'62vh',
+                        // marginTop: '11vh',
+                        '& ul': { padding: 0 },
+                    }}>
+                    {chats?.map((r, i) => 
+                    <Box>
+                        {(r.personDni !== user.selectContact.dni) ?
+                        (<Box sx={{display:'flex', flexDirection:'column'}}>
+                            <Box sx={{bgcolor: teal[400],padding:'3px',margin:'5px', width:'200px', borderRadius:'5px', display:'flex', flexDirection:'column', justifyContent:'center'}}>
+                                <Typography variant='subtitle2'><b>{user.selectContact ? `${user.selectContact.name} ${user.selectContact.lastname}`: ''}</b></Typography>
+                                <Typography variant='subtitle1' key={i}>{r.text}</Typography>
+                            </Box>
+                        </Box>) : 
+                        (<Box sx={{display:'flex', alignItems:'flex-end', flexDirection:'column'}}>                            
+                            <Box sx={{bgcolor: teal[200],padding:'3px',margin:'5px', width:'200px', borderRadius:'5px', display:'flex', flexDirection:'column', justifyContent:'center'}}>
+                                <Typography variant='subtitle2'><b>Tu</b></Typography>
+                                <Typography variant='subtitle1' key={i}>{r.text}</Typography>
+                            </Box>
+                        </Box>)}
+                    </Box>)}
                     { chat.map((m,i) => 
                     <Box>
                         {(m.reciver !== user.selectContact.email) ?
