@@ -7,15 +7,20 @@ const { Notification, Doctor } = require("../db.js");
  */
 
 const getNotificationById = async (req,res)=> { 
-     const {idDoctor} = req.query; 
-     console.log(idDoctor)
-     const notifications = await Notification.findAll({
-       where:{
-        idDoctor: idDoctor
-       },
-      //  attributes: ['id', 'idDoctor', 'idPatient', 'description', 'personDni']
-     }); 
-     res.send(notifications)
+     const {idDoctor,type} = req.query; 
+     try{ 
+      const notifications = await Notification.findAll({
+        where:{
+         idDoctor: idDoctor,
+         type: type
+        },
+       //  attributes: ['id', 'idDoctor', 'idPatient', 'description', 'personDni']
+      }); 
+      res.send(notifications)
+     }catch{
+       res.status(400).send("NOT FOUND")
+     }
+    
 }
 
 /**
@@ -45,6 +50,7 @@ const saveNotification = async (notification) => {
       description: notification.message,
       idDoctor: notification.idReciver,
       idPatient: notification.id_patient,
+      type: notification.type
     },
     {
       fields: ["description", "idDoctor", "idPatient"],

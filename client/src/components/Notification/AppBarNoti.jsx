@@ -10,40 +10,61 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { NotificationsOutlined, MoreVert } from "@mui/icons-material";
+import {
+  NotificationsOutlined,
+  MoreVert,
+  MailOutline,
+} from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import logo from "../../img/mediconnect-logo.png";
 import { socket } from "../Controlers/notifications";
 import MenuPrueba from "./MenuPrueba";
-import { getNotifications } from "../../actions";
+import { getNotifications, getNotificationsMessage } from "../../actions";
 import jwt from "jsonwebtoken";
 import { Link } from "react-router-dom";
+import { socketChat } from "../Controlers/chatMessage";
 
 export default function PrimarySearchAppBar(props) {
   //state global
+
   const notifications = useSelector(
     (state) => state.notification.notifications
   );
   const [numberNotification, setNotification] = useState(0);
 
-  const dispatch = useDispatch();
+  const notificationsChat = useSelector(
+    (state) => state.messages.notificationChat
+  );
+  const [numberNotificationChat, setNotificationChat] = useState(0);
 
-  socket.on("reciveNotifications", (request) => {
-    dispatch({ type: "SAVE_NOTIFICATION", payload: request });
-  });
+  const dispatch = useDispatch();
 
   const user = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
   );
 
+  socketChat.on("reciveNotificationChat", (data) => {
+    console.log("data", data);
+    dispatch({ type: "SAVE_NOTIFICATION_CHAT", payload: data });
+  });
+
+  socket.on("reciveNotifications", (request) => {
+    dispatch({ type: "SAVE_NOTIFICATION", payload: request });
+  });
+
   useEffect(() => {
     setNotification(notifications.length);
   }, [notifications]);
 
   useEffect(() => {
+    setNotificationChat(notificationsChat.length);
+  }, [notificationsChat]);
+
+  useEffect(() => {
     console.log(user.rol.id);
     dispatch(getNotifications(user.rol.id));
+    dispatch(getNotificationsMessage(user.user.dni));
   }, [dispatch]);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -117,6 +138,25 @@ export default function PrimarySearchAppBar(props) {
               }
             >
               <img src={logo} width="200px" alt="MediConnect+" />
+            </Link>
+          </Box>
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Link
+              to={
+                user.user.rol === "Patient"
+                  ? "/mensajes/paciente"
+                  : "/mensajes/profesional"
+              }
+            >
+              <Badge
+                badgeContent={numberNotificationChat}
+                color="error"
+                overlap="circular"
+              >
+                <IconButton>
+                  <MailOutline sx={{ fontSize: "1em", color: teal[900] }} />
+                </IconButton>
+              </Badge>
             </Link>
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>

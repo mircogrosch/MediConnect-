@@ -14,6 +14,7 @@ import MensajesDoctor from "./pages/MenssagesDoctor";
 import MyPatientsPage from "./pages/MyPatientsPage";
 import MedicalHistoryDoctor from "./pages/MedicalHistoryDoctor";
 import MyPatientsHistory from "./components/MedicalHistoryDoctor/MyPatientsHistory";
+import ScheduleDoctor from "./pages/ScheduleDoctor";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
       <Route path="/account/profesional" component={HomePageDoctor} />
       <Route path="/account/patient" component={HomePatientPage} />
       <Route path="/account/doctors/:id" component={AddDoctors} />
+      <Route path="/account/schedule/:id" component={ScheduleDoctor} />
       <Route exact path="/" component={LandingPage} />
       <Route path="/mensajes/paciente" component={MensajesPaciente} />
       <Route path="/mensajes/profesional" component={MensajesDoctor} />

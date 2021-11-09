@@ -2,19 +2,10 @@ import { Box, Icon, Typography, Grid } from "@material-ui/core";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { teal } from "@mui/material/colors";
-
-const MyType = styled(Typography)({
-  display: "inline-flex",
-  h4: {
-    fontSize: "10px",
-  },
-});
 
 const MyAdd = styled(AddCircleOutlineIcon)({
   width: "60px",
   height: "60px",
-  //   margin: "10px",
 });
 
 const AddProfesionals = () => {

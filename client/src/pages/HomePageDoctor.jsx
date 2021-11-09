@@ -41,7 +41,7 @@ const cardInfo = [
 ];
 
 function HomePageDoctor() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const user = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"

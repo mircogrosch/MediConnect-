@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    "notification",
+    "appointment",
     {
       id: {
         type: DataTypes.UUID,
@@ -10,22 +10,14 @@ module.exports = (sequelize) => {
         allowNull: false,
         primaryKey: true,
       },
-      idDoctor:{
-        type: DataTypes.STRING,
-        allowNull:false
-      },
-      idPatient:{
-        type:DataTypes.STRING,
-        allowNull:false
-      },
-      description: {
-        type: DataTypes.TEXT,
+      date: {
+        type: DataTypes.DATE,
         allowNull: false,
       },
-      type:{
-        type:DataTypes.STRING,
-        allowNull: false
-      }
+      payment_status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
     },
     {
       timestamps: false,

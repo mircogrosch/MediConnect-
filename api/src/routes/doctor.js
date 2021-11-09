@@ -6,6 +6,8 @@ const {
   getDoctors,
   getPatient,
   getPatients,
+  createAppointment,
+  getAppointment,
 } = require("../controllers/doctor.controllers");
 
 router.route("/").get(getDoctors);
@@ -34,6 +36,24 @@ Especificaciones:
     }
 */
 router.route("/patients/:id").get(getPatients);
+
+/*
+  Devuelve todos los turnos pendientes de un Doctor
+  fecha - hora - estado de pago - datos paciente
+  Se envia id_doctor por params
+  ej:  localhost:3001/doctor/appointment/id_doctor
+*/
+router.route("/appointment/:id").get(getAppointment);
+
+/*
+  RUTA DESDE PACIENTE
+  Crea un TURNO
+  fecha - hora - estado de pago - datos paciente
+  Se envia id_doctor por params
+  ej:  localhost:3001/doctor/appointment/id_doctor?patient=Id_patient
+*/
+router.route("/appointment/:id").post(createAppointment);
+
 
 router.route("/:id").get(getDoctor);
 

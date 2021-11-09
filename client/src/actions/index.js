@@ -244,7 +244,7 @@ export const getNotifications = (idDoctor) => {
   return async function (dispatch) {
     try {
       const notif = await axios.get(
-        `${URL}/notifications?idDoctor=${idDoctor}`
+        `${URL}/notifications?idDoctor=${idDoctor}&type=solicitud`
       );
       return dispatch({
         type: types.GET_NOTIFICATIONS,
@@ -315,3 +315,13 @@ export const getMessage = (dniSender, dniReciver) => {
     }
   };
 };
+
+export const getNotificationsMessage = (dniReciver) => {
+  return async function (dispatch) {
+    const response = await axios.get(`${URL}/chat/notifications?dniReciver=${dniReciver}&type=message`)
+    return dispatch({
+      type: types.GET_NOTIFICATIONS_MESSAGE,
+      payload: response.data
+    })
+  } 
+}
