@@ -4,15 +4,19 @@ import swal from "sweetalert";
 import { deleteDoctor } from "../../actions/index";
 import { useDispatch } from "react-redux";
 
-const ButtonRemove = ({ idPatient, idDoctor }) => {
+const ButtonRemove = ({ idPatient, idDoctor, aux, setAux }) => {
   const dispatch = useDispatch();
+
   const handleClick = () => {
     swal(" ¿Estás seguro? ", {
       dangerMode: true,
       buttons: { cancel: true, confirm: "Continuar" },
-    }).then((res) =>
-      res ? dispatch(deleteDoctor(idPatient, idDoctor)) : false
-    );
+    })
+      .then((res) =>
+        res ? dispatch(deleteDoctor(idPatient, idDoctor)) : false
+      )
+      .then((ok) => (ok ? setAux(aux + 1) : false));
+    // .catch((error) => console.log("________________", error));
   };
   return (
     <>

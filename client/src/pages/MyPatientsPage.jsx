@@ -12,7 +12,7 @@ function MyPatientsPage(props) {
 
   const id = props.match.params.id;
   const myPatients = useSelector((state) => state.myPatients);
-
+  console.log("page myPatients", myPatients);
   useEffect(() => {
     dispatch(getMyPatients(id));
   }, [dispatch, id]);
@@ -50,27 +50,28 @@ function MyPatientsPage(props) {
               rowSpacing={1}
               sx={{ height: "70vh", overflowY: "scroll" }}
             >
-              {myPatients.names.map((patient) => {
-                return (
-                  <Grid
-                    item
-                    key={patient.id}
-                    xl={4}
-                    md={6}
-                    xs={12}
-                    style={{ display: "flex", justifyContent: "center" }}
-                  >
-                    <PatientCard
-                      name={patient.name}
-                      lastname={patient.lastname}
-                      email={patient.email}
-                      dni={patient.dni}
-                      address={patient.address}
-                      img={patient.imageProfile}
-                    />
-                  </Grid>
-                );
-              })}
+              {myPatients.names &&
+                myPatients.names.map((patient) => {
+                  return (
+                    <Grid
+                      item
+                      key={patient.id}
+                      xl={4}
+                      md={6}
+                      xs={12}
+                      style={{ display: "flex", justifyContent: "center" }}
+                    >
+                      <PatientCard
+                        name={patient.name}
+                        lastname={patient.lastname}
+                        email={patient.email}
+                        dni={patient.dni}
+                        address={patient.address}
+                        img={patient.imageProfile}
+                      />
+                    </Grid>
+                  );
+                })}
             </Grid>
           )}
         </Box>

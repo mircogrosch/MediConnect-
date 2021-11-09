@@ -5,6 +5,7 @@ const {
   HealthInsurance,
   Speciality,
   Conversation,
+  Allergy,
 } = require("../db");
 const { Op, literal } = require("sequelize");
 const bcryptjs = require("bcryptjs");
@@ -46,10 +47,7 @@ const createPatient = async (req, res) => {
     healthInsuranceId,
   } = req.body;
   if (req.file.path) {
-    console.log("req.file ", req.file);
-    console.log("req.file.path ", req.file.path);
     result = await cloudinary.v2.uploader.upload(req.file.path);
-    console.log("result ", result);
   }
   const rol = "Patient";
   if (
@@ -279,7 +277,10 @@ const addDoctor = async (req, res) => {
     }
     await patient.addDoctor(doctor);
     const conversation = await Conversation.create();
-    await conversation.addPerson([patient.dataValues.personDni,doctor.dataValues.personDni]);
+    await conversation.addPerson([
+      patient.dataValues.personDni,
+      doctor.dataValues.personDni,
+    ]);
     deleteNotification(id); //borra la notificación
     res.json({
       data: patient,
@@ -321,6 +322,46 @@ const deleteDoctor = async (req, res) => {
   }
 };
 
+const getAllergies = async (req, res) => {
+  let { id } = req.params;
+  if (id) {
+    try {
+      let allergies = await Allergy.findAll({
+        where: {
+          patientId: id,
+        },
+      });
+      res.json({
+        data: allergies,
+        message: "Succes!",
+      });
+    } catch (e) {
+      console.log("Error in Data Base: ", e);
+    }
+  } else {
+    res.send("The id is not recognized");
+  }
+};
+
+const createAllergie = async (req, res) => {
+  let { id } = req.params;
+  let { name, severity, description } = req.body;
+  try {
+    let allergie = await Allergy.create({
+      name,
+      severity,
+      description,
+    });
+    await allergie.setPatient(id);
+    res.json({
+      data: allergie,
+      message: "Alergia creada!",
+    });
+  } catch (e) {
+    console.log("Error in the Data Base: ", e);
+  }
+};
+
 module.exports = {
   getDoctors,
   getPatient,
@@ -328,4 +369,6 @@ module.exports = {
   createPatient,
   addDoctor,
   deleteDoctor,
+  getAllergies,
+  createAllergie,
 };

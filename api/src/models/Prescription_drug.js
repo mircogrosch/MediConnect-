@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    "allergy",
+    "prescription_drug",
     {
       id: {
         type: DataTypes.UUID,
@@ -14,13 +14,9 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      severity: {
-        type: DataTypes.INTEGER,
+      posology: {
+        type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          max: 5,
-          min: 1,
-        },
       },
       description: {
         type: DataTypes.TEXT,
