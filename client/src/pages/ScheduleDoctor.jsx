@@ -1,71 +1,76 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
 import MaterialTable from "material-table";
-import { Typography, Button } from "@mui/material";
-import { teal } from "@mui/material/colors";
-import { useStyles } from "../styles/registerForms/patient.js";
-// import { makeStyles } from "@material-ui/core/styles";
+import { Typography, Button, Grid } from "@mui/material";
+import { teal, grey } from "@mui/material/colors";
+import axios from "axios";
 
 const columnas = [
-  { title: "Fecha", field: "fecha" },
-  { title: "Hora", field: "hora" },
-  { title: "Paciente", field: "paciente" },
-  { title: "Estado de pago", field: "estado" },
-  //     type: "numeric"
-];
-const data = [
-  {
-    fecha: "Vi 9 Nov",
-    hora: "08:00",
-    paciente: "Jorge Lanata",
-    estado: "Abonado",
-  },
-  {
-    fecha: "Ju 18 Nov",
-    hora: "08:30",
-    paciente: "Alberto Olmedo",
-    estado: "Pendiente",
-  },
-  {
-    fecha: "Vi 19 Nov",
-    hora: "11:00",
-    paciente: "Sebastian Mendoza",
-    estado: "Abonado",
-  },
-  {
-    fecha: "Lu 3 Dic",
-    hora: "14:30",
-    paciente: "Elisa Lopez",
-    estado: "Abonado",
-  },
+  { title: "Fecha y hora", field: "date" },
+  { title: "Nombre", field: "patient.person.name" },
+  { title: "Apellido", field: "patient.person.lastname" },
+  { title: "Estado de pago", field: "payment_status" },
 ];
 
-const ScheduleDoctor = () => {
-  const classes = useStyles();
+const ScheduleDoctor = (props) => {
+  const [data, setData] = useState([]);
+
+  const getAppointments = async () => {
+    const URL = "http://localhost:3001";
+    const response = await axios.get(
+      `${URL}/doctor/appointment/${props.match.params.id}`
+    );
+    setData(response.data.data);
+    console.log(response.data.data);
+  };
+
+  useEffect(() => {
+    getAppointments();
+  }, []);
+
   return (
     <>
-      <PrimarySearchAppBar />
-      <Typography variant="h4">Turnos pendientes</Typography>
-      <MaterialTable
-        columns={columnas}
-        data={data}
-        title={""}
-        style={{ maxWidth: "80%" }}
-        components={{
-          Pagination: "disabled",
-        }}
-      />
-      <Button
-        variant="contained"
-        className={classes.button}
-        sx={{
-          marginTop: "1em",
-          fontSize: "14px",
-          background: teal[900],
+      <Grid>
+        <PrimarySearchAppBar />
+      </Grid>
+      <Grid
+        container
+        height="100vh"
+        rowSpacing={1}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        Configurar agenda
-      </Button>
+        <Typography align={"center"} variant="h5" style={{ color: grey[700] }}>
+          Lista de turnos pendientes
+        </Typography>
+        <MaterialTable
+          columns={columnas}
+          data={data}
+          title={""}
+          style={{
+            maxWidth: "80%",
+            background: teal[50],
+          }}
+          components={{
+            Pagination: "disabled",
+          }}
+        />
+        <Button
+          variant="contained"
+          sx={{
+            marginTop: "1em",
+            fontSize: "14px",
+            width: "80%",
+            height: "50px",
+            background: teal[900],
+          }}
+        >
+          Configurar agenda
+        </Button>
+      </Grid>
     </>
   );
 };
