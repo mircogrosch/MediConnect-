@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Grid, InputLabel, TextField, MenuItem, Button } from "@mui/material";
 import { teal } from "@mui/material/colors";
@@ -11,15 +12,14 @@ function DiseaseForm({ patientId, doctorId }) {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    // await axios.post(
-    //   `http://localhost:3001/patient/disease/${patientId}`,
-    //   data
-    // );
-    // const response = await axios.get(
-    //   `http://localhost:3001/patient/disease/${patientId}`
-    // );
-    // console.log(response.data);
+    await axios.post(
+      `http://localhost:3001/patient/disease/${patientId}`,
+      data
+    );
+    const response = await axios.get(
+      `http://localhost:3001/patient/disease/${patientId}`
+    );
+    console.log(response.data);
   };
 
   return (
@@ -37,16 +37,11 @@ function DiseaseForm({ patientId, doctorId }) {
         <InputLabel sx={{ marginLeft: "5px" }}>Fecha de Diagnóstico</InputLabel>
         <TextField
           variant="standard"
-          select
           defaultValue=""
           error={errors.diagnosis_date ? true : false}
           sx={{ width: "100%" }}
           {...register("diagnosis_date", { required: "true" })}
-        >
-          <MenuItem>Baja</MenuItem>
-          <MenuItem>Media</MenuItem>
-          <MenuItem>Alta</MenuItem>
-        </TextField>
+        />
       </Grid>
       <Grid item xs={12} marginY="1em">
         <InputLabel sx={{ marginLeft: "5px" }}>Descripción</InputLabel>
