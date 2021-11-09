@@ -348,19 +348,27 @@ const getAllergies = async (req, res) => {
 const createAllergie = async (req, res) => {
   let { id } = req.params;
   let { name, severity, description } = req.body;
-  try {
-    let allergie = await Allergy.create({
-      name,
-      severity,
-      description,
-    });
-    await allergie.setPatient(id);
-    res.json({
-      data: allergie,
-      message: "Alergia creada!",
-    });
-  } catch (e) {
-    console.log("Error in the Data Base: ", e);
+  if (id) {
+    if (name && severity && description) {
+      try {
+        let allergie = await Allergy.create({
+          name,
+          severity,
+          description,
+        });
+        await allergie.setPatient(id);
+        res.json({
+          data: allergie,
+          message: "Alergia creada!",
+        });
+      } catch (e) {
+        console.log("Error in the Data Base: ", e);
+      }
+    } else {
+      res.send("There are empty fields!");
+    }
+  } else {
+    res.send("The id is not recognized!");
   }
 };
 
@@ -368,19 +376,23 @@ const createDisease = async (req, res) => {
   let { id } = req.params;
   let { name, diagnosis_date, description } = req.body;
   if (id) {
-    try {
-      let disease = await Disease.create({
-        name,
-        diagnosis_date,
-        description,
-      });
-      await disease.setPatient(id);
-      res.json({
-        data: disease,
-        message: "Enfermedad creada!",
-      });
-    } catch (error) {
-      console.log("Error in the Data Base: ", error);
+    if (name && diagnosis_date && description) {
+      try {
+        let disease = await Disease.create({
+          name,
+          diagnosis_date,
+          description,
+        });
+        await disease.setPatient(id);
+        res.json({
+          data: disease,
+          message: "Enfermedad creada!",
+        });
+      } catch (error) {
+        console.log("Error in the Data Base: ", error);
+      }
+    } else {
+      res.send("There are empty fields!");
     }
   } else {
     res.send("The id is not recognized!");
@@ -412,16 +424,20 @@ const createPrescription_drug = async (req, res) => {
   let { id } = req.params;
   let { name, posology, description } = req.body;
   if (id) {
-    let prescription_drug = await Prescription_drug.create({
-      name,
-      posology,
-      description,
-    });
-    await prescription_drug.setPatient(id);
-    res.json({
-      data: prescription_drug,
-      message: "Medicación creada!",
-    });
+    if (name && posology && description) {
+      let prescription_drug = await Prescription_drug.create({
+        name,
+        posology,
+        description,
+      });
+      await prescription_drug.setPatient(id);
+      res.json({
+        data: prescription_drug,
+        message: "Medicación creada!",
+      });
+    } else {
+      res.send("There are empty fields!");
+    }
   } else {
     res.send("The id si not recognized!");
   }
