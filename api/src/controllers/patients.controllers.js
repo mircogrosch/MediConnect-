@@ -367,20 +367,23 @@ const createAllergie = async (req, res) => {
 const createDisease = async (req, res) => {
   let { id } = req.params;
   let { name, diagnosis_date, description } = req.body;
-
-  try {
-    let disease = await Disease.create({
-      name,
-      diagnosis_date,
-      description,
-    });
-    await disease.setPatient(id);
-    res.json({
-      data: disease,
-      message: "Enfermedad creada!",
-    });
-  } catch (error) {
-    console.log("Error in the Data Base: ", error);
+  if (id) {
+    try {
+      let disease = await Disease.create({
+        name,
+        diagnosis_date,
+        description,
+      });
+      await disease.setPatient(id);
+      res.json({
+        data: disease,
+        message: "Enfermedad creada!",
+      });
+    } catch (error) {
+      console.log("Error in the Data Base: ", error);
+    }
+  } else {
+    res.send("The id is not recognized!");
   }
 };
 
@@ -405,6 +408,45 @@ const getDiseases = async (req, res) => {
   }
 };
 
+const createPrescription_drug = async (req, res) => {
+  let { id } = req.params;
+  let { name, posology, description } = req.body;
+  if (id) {
+    let prescription_drug = await Prescription_drug.create({
+      name,
+      posology,
+      description,
+    });
+    await prescription_drug.setPatient(id);
+    res.json({
+      data: prescription_drug,
+      message: "Medicación creada!",
+    });
+  } else {
+    res.send("The id si not recognized!");
+  }
+};
+
+const getPrescription_drugs = async (req, res) => {
+  let { id } = req.params;
+  if (id) {
+    try {
+      let prescription_drugs = await Prescription_drug.findAll({
+        where: {
+          patientId: id,
+        },
+      });
+      res.json({
+        data: prescription_drugs,
+        message: "Succes!",
+      });
+    } catch (error) {
+      console.log("Error in the Data Base: ", error);
+    }
+  } else {
+    res.send("The id is not recognized!");
+  }
+};
 module.exports = {
   getDoctors,
   getPatient,
@@ -416,4 +458,6 @@ module.exports = {
   createAllergie,
   createDisease,
   getDiseases,
+  createPrescription_drug,
+  getPrescription_drugs,
 };
