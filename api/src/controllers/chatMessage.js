@@ -20,6 +20,7 @@ const { Message, Person, Conversation,Notification } = require("../db.js");
 
 
 const saveNotificationChat = async (notification)=> { 
+  console.log('notif',notification)
   const new_Notification = await Notification.create(
     {
       description: notification.message,
@@ -28,12 +29,12 @@ const saveNotificationChat = async (notification)=> {
       type: notification.type
     },
     {
-      fields: ["description", "idDoctor", "idPatient"],
+      fields: ["description", "idDoctor", "idPatient", "type"],
     }
   );
   //busco la persona 
   const person = await Person.findOne({
-    where: { id: notification.dniReciver },
+    where: { dni: notification.dniReciver },
   });
   new_Notification.setPerson(person.dataValues.dni);
 
@@ -122,6 +123,7 @@ const SOCKET_CHAT = (io) => {
         type: data.type,
         dniReciver: data.dniReciver
       }
+      console.log(data)
       io.to(reciver).emit("reciveNotificationChat",newNotificationChat);
       saveNotificationChat(newNotificationChat)
       io.to(sender).to(reciver).emit("reciveChat", data);

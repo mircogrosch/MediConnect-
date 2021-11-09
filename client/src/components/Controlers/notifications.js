@@ -35,7 +35,7 @@ export const send_Notifications= (userReciver,userSender,socket) => {
         idReciver:userReciver.id,
         idSender:userSender.user.dni,
         id_patient:userSender.rol.id,
-        senderImg:userSender.user.imageProfile
+        type:'solicitud'
     })
 }
 

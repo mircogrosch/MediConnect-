@@ -20,8 +20,12 @@ export const socketChat= io(URL,{ path: '/message'});
 export const sendMessage = (userSender, userReciver, message,socket) => {
   console.log('userSender:', userSender, 'userReciver:',userReciver)
   if (socket) socket.emit("chat", {
-    sender: userSender.email,
+    sender: userSender.user.email,
     reciver: userReciver.email,
-    message
+    message,
+    dniReciver: userReciver.dni,
+    id_patient: userSender.rol.id,
+    idReciver: userReciver.id,
+    type:'message'
    });
 };

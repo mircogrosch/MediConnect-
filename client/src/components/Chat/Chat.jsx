@@ -70,7 +70,7 @@ function Chat({ user }) {
   console.log("sender", chat);
 
   const handleSubmit = () => {
-    sendMessage(userSender.user, user.selectContact, message, socketChat);
+    sendMessage(userSender, user.selectContact, message, socketChat);
     setMessage("");
   };
   return (
