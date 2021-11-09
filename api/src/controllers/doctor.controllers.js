@@ -4,6 +4,7 @@ const {
   Patient,
   Speciality,
   HealthInsurance,
+  Appointment,
 } = require("../db");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
@@ -330,10 +331,72 @@ const getPatients = async (req, res) => {
   }
 };
 
+const createAppointment = async (req, res) => {
+  const { id } = req.params; // id de doctor
+  const { patient } = req.query; // id de paciente
+  const { date } = req.body; // fecha de turno
+  const payment_status = false;
+  try {
+    const appointment = await Appointment.create({
+      date: date,
+      payment_status: payment_status,
+    });
+    appointment.setPatient(patient);
+    appointment.setDoctor(id);
+    res.json({
+      data: appointment,
+      message: "Turno creado satisfactoriamente",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
+const getAppointment = async (req, res) => {
+  const { id } = req.params; // id de doctor
+  try {
+    const appointments = await Appointment.findAll({
+      where: {
+        doctorId: id,
+      },
+      include: [
+        {
+          model: Patient,
+          include: {
+            model: Person,
+          },
+        },
+        {
+          model: Doctor,
+          include: {
+            model: Person,
+          },
+        },
+      ],
+    });
+    res.json({
+      data: appointments,
+      message: "Turnos pendientes del Doctor",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
 module.exports = {
   createDoctor,
   getDoctor,
   getDoctors,
   getPatient,
   getPatients,
+  createAppointment,
+  getAppointment,
 };
