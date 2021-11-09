@@ -1,9 +1,21 @@
 import React from "react";
-import { Box, Grid, Icon, Typography } from "@mui/material";
-import { AccountCircle } from "@mui/icons-material";
+import { useHistory } from "react-router-dom";
+import { Box, Grid, Icon, Typography, IconButton } from "@mui/material";
+import { AccountCircle, ListAltOutlined } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 
-function PatientCard({ name, lastname, address, email, dni, img }) {
+function PatientCard({
+  id,
+  idDoctor,
+  name,
+  lastname,
+  address,
+  email,
+  dni,
+  img,
+  historial,
+}) {
+  const history = useHistory();
   const docName = `${name} ${lastname}`;
 
   return (
@@ -15,9 +27,10 @@ function PatientCard({ name, lastname, address, email, dni, img }) {
     >
       <Grid container style={{ height: "100%" }}>
         <Grid item xs={3}>
-        {img ? (
+          {img ? (
             <img
               src={img}
+              alt={`${name}_${dni}`}
               style={{
                 maxWidth: "80px",
                 maxHeight: "80px",
@@ -26,11 +39,13 @@ function PatientCard({ name, lastname, address, email, dni, img }) {
                 borderRadius: "50%",
               }}
             />
-        ) : (
-          <Icon style={{ width: "100%", height: "100%", textAlign: "center" }}>
-            <AccountCircle style={{ fontSize: "80px", color: teal[50] }} />
-          </Icon>
-        )}
+          ) : (
+            <Icon
+              style={{ width: "100%", height: "100%", textAlign: "center" }}
+            >
+              <AccountCircle style={{ fontSize: "80px", color: teal[50] }} />
+            </Icon>
+          )}
         </Grid>
         <Grid item xs={7}>
           <Typography
@@ -68,9 +83,17 @@ function PatientCard({ name, lastname, address, email, dni, img }) {
             justifyContent: "center",
           }}
         >
-          {/* <IconButton onClick={() => handleClick()}>
-            <ControlPoint style={{ fontSize: "60px", color: teal[50] }} />
-          </IconButton> */}
+          {historial && (
+            <IconButton
+              onClick={() =>
+                history.push(
+                  `/doctor/medical-history/${idDoctor}?patient=${id}`
+                )
+              }
+            >
+              <ListAltOutlined style={{ fontSize: "60px", color: teal[50] }} />
+            </IconButton>
+          )}
         </Grid>
       </Grid>
     </Box>
