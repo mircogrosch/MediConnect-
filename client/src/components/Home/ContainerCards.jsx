@@ -84,7 +84,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
             <Card title="Mis Ordenes" icon={cardInfo[3].icon} />
           )}
         </Grid>
-        <Grid item md={4} sm={4} xs={5}>
+        {/* <Grid item md={4} sm={4} xs={5}>
           {user.user.rol ==="Doctor" ? (
              <Link to={`/mensajes/profesional`} style={{ textDecoration: "none" }}>
             <Card
@@ -99,7 +99,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
               <Card title="Mensajes" icon={cardInfo[5].icon} />
             </Link>
           )}
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
   );

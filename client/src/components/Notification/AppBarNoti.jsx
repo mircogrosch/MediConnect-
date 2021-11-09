@@ -10,7 +10,11 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { NotificationsOutlined, MoreVert } from "@mui/icons-material";
+import {
+  NotificationsOutlined,
+  MoreVert,
+  MailOutline,
+} from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import logo from "../../img/mediconnect-logo.png";
 import { socket } from "../Controlers/notifications";
@@ -117,6 +121,25 @@ export default function PrimarySearchAppBar(props) {
               }
             >
               <img src={logo} width="200px" alt="MediConnect+" />
+            </Link>
+          </Box>
+          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Link
+              to={
+                user.user.rol === "Patient"
+                  ? "/mensajes/paciente"
+                  : "/mensajes/profesional"
+              }
+            >
+              <Badge
+                badgeContent={numberNotification}
+                color="error"
+                overlap="circular"
+              >
+                <IconButton>
+                  <MailOutline sx={{ fontSize: "1em", color: teal[900] }} />
+                </IconButton>
+              </Badge>
             </Link>
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
