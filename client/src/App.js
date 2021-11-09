@@ -12,7 +12,8 @@ import MensajesPaciente from "./pages/MenssagesPatients";
 import PruebaChat from "./components/PruebaChat.jsx";
 import MensajesDoctor from "./pages/MenssagesDoctor";
 import MyPatientsPage from "./pages/MyPatientsPage";
-import MedicalHistory from "./pages/MedicalHistory";
+import MedicalHistoryDoctor from "./pages/MedicalHistoryDoctor";
+import MyPatientsHistory from "./components/MedicalHistoryDoctor/MyPatientsHistory";
 
 function App() {
   return (
@@ -26,10 +27,17 @@ function App() {
       <Route path="/account/profesional" component={HomePageDoctor} />
       <Route path="/account/patient" component={HomePatientPage} />
       <Route path="/account/doctors/:id" component={AddDoctors} />
-      <Route path="/account/medicalhistory/:id" component={MedicalHistory} />
       <Route exact path="/" component={LandingPage} />
       <Route path="/mensajes/paciente" component={MensajesPaciente} />
       <Route path="/mensajes/profesional" component={MensajesDoctor} />
+      <Route
+        path="/doctor/patients/medical-historial/:id"
+        component={MyPatientsHistory}
+      />
+      <Route
+        path="/doctor/medical-history/:id"
+        component={MedicalHistoryDoctor}
+      />
     </div>
   );
 }
