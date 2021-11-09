@@ -9,6 +9,8 @@ const {
   deleteDoctor,
   getAllergies,
   createAllergie,
+  createDisease,
+  getDiseases,
 } = require("../controllers/patients.controllers");
 
 router.route("/").get(getPatients);
@@ -59,5 +61,14 @@ router.route("/allergy/:id").get(getAllergies);
 //recibe el id del paciente a vincular por params
 //recibe los datos de la alergia por body
 router.route("/allergy/:id").post(createAllergie);
+
+//Ruta para traer las enfermedades vincualdas a un paciente
+//y sus detalles, recibe el id del pacente por params
+router.route("/disease/:id").get(getDiseases);
+
+//Ruta para crear una enfermedad vinculada a un paciente
+//recibe el id del paciente a vincular por params
+//recibe los datos de la enfermedad por body
+router.route("/disease/:id").post(createDisease);
 
 module.exports = router;

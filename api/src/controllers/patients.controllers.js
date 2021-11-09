@@ -6,6 +6,8 @@ const {
   Speciality,
   Conversation,
   Allergy,
+  Disease,
+  Prescription_drug,
 } = require("../db");
 const { Op, literal } = require("sequelize");
 const bcryptjs = require("bcryptjs");
@@ -362,6 +364,47 @@ const createAllergie = async (req, res) => {
   }
 };
 
+const createDisease = async (req, res) => {
+  let { id } = req.params;
+  let { name, diagnosis_date, description } = req.body;
+
+  try {
+    let disease = await Disease.create({
+      name,
+      diagnosis_date,
+      description,
+    });
+    await disease.setPatient(id);
+    res.json({
+      data: disease,
+      message: "Enfermedad creada!",
+    });
+  } catch (error) {
+    console.log("Error in the Data Base: ", error);
+  }
+};
+
+const getDiseases = async (req, res) => {
+  let { id } = req.params;
+  if (id) {
+    try {
+      let diseases = await Disease.findAll({
+        where: {
+          patientId: id,
+        },
+      });
+      res.json({
+        data: diseases,
+        message: "Succes!!!",
+      });
+    } catch (error) {
+      console.log("Error in the Data Base: ", error);
+    }
+  } else {
+    res.send("The id is not recognized");
+  }
+};
+
 module.exports = {
   getDoctors,
   getPatient,
@@ -371,4 +414,6 @@ module.exports = {
   deleteDoctor,
   getAllergies,
   createAllergie,
+  createDisease,
+  getDiseases,
 };
