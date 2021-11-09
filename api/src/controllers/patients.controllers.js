@@ -6,6 +6,8 @@ const {
   Speciality,
   Conversation,
   Allergy,
+  Disease,
+  Prescription_drug,
 } = require("../db");
 const { Op, literal } = require("sequelize");
 const bcryptjs = require("bcryptjs");
@@ -346,22 +348,167 @@ const getAllergies = async (req, res) => {
 const createAllergie = async (req, res) => {
   let { id } = req.params;
   let { name, severity, description } = req.body;
-  try {
-    let allergie = await Allergy.create({
-      name,
-      severity,
-      description,
-    });
-    await allergie.setPatient(id);
-    res.json({
-      data: allergie,
-      message: "Alergia creada!",
-    });
-  } catch (e) {
-    console.log("Error in the Data Base: ", e);
+  if (id) {
+    if (name && severity && description) {
+      try {
+        let verif = await Allergy.findOne({
+          where: {
+            patientId: id,
+            name: name,
+          },
+        });
+        if (verif) {
+          try {
+            let allergie = await Allergy.create({
+              name,
+              severity,
+              description,
+            });
+            await allergie.setPatient(id);
+            res.json({
+              data: allergie,
+              message: "Alergia creada!",
+            });
+          } catch (e) {
+            console.log("Error in the Data Base: ", e);
+          }
+        } else {
+          res.send("This allergy already exists!");
+        }
+      } catch (error) {
+        console.log("Error en Verif!", error);
+      }
+    } else {
+      res.send("There are empty fields!");
+    }
+  } else {
+    res.send("The id is not recognized!");
   }
 };
 
+const createDisease = async (req, res) => {
+  let { id } = req.params;
+  let { name, diagnosis_date, description } = req.body;
+  if (id) {
+    if (name && diagnosis_date && description) {
+      try {
+        let verif = await Disease.findOne({
+          where: {
+            patientId: id,
+            name: name,
+          },
+        });
+        if (verif) {
+          try {
+            let disease = await Disease.create({
+              name,
+              diagnosis_date,
+              description,
+            });
+            await disease.setPatient(id);
+            res.json({
+              data: disease,
+              message: "Enfermedad creada!",
+            });
+          } catch (error) {
+            console.log("Error in the Data Base: ", error);
+          }
+        } else {
+          res.send("This disease already exists!");
+        }
+      } catch (error) {
+        console.log("Error en VERIF!", error);
+      }
+    } else {
+      res.send("There are empty fields!");
+    }
+  } else {
+    res.send("The id is not recognized!");
+  }
+};
+
+const getDiseases = async (req, res) => {
+  let { id } = req.params;
+  if (id) {
+    try {
+      let diseases = await Disease.findAll({
+        where: {
+          patientId: id,
+        },
+      });
+      res.json({
+        data: diseases,
+        message: "Succes!!!",
+      });
+    } catch (error) {
+      console.log("Error in the Data Base: ", error);
+    }
+  } else {
+    res.send("The id is not recognized");
+  }
+};
+
+const createPrescription_drug = async (req, res) => {
+  let { id } = req.params;
+  let { name, posology, description } = req.body;
+  if (id) {
+    if (name && posology && description) {
+      try {
+        let verif = await Prescription_drug.findOne({
+          where: {
+            patientId: id,
+            name: name,
+          },
+        });
+        if (!verif) {
+          try {
+            let prescription_drug = await Prescription_drug.create({
+              name,
+              posology,
+              description,
+            });
+            await prescription_drug.setPatient(id);
+            res.json({
+              data: prescription_drug,
+              message: "Medicación creada!",
+            });
+          } catch (error) {
+            console.log("Error in the Data Base: ", error);
+          }
+        } else {
+          res.send("This prescription drug already exists!");
+        }
+      } catch (error) {
+        console.log("Error en VERIF!", error);
+      }
+    } else {
+      res.send("There are empty fields!");
+    }
+  } else {
+    res.send("The id si not recognized!");
+  }
+};
+
+const getPrescription_drugs = async (req, res) => {
+  let { id } = req.params;
+  if (id) {
+    try {
+      let prescription_drugs = await Prescription_drug.findAll({
+        where: {
+          patientId: id,
+        },
+      });
+      res.json({
+        data: prescription_drugs,
+        message: "Succes!",
+      });
+    } catch (error) {
+      console.log("Error in the Data Base: ", error);
+    }
+  } else {
+    res.send("The id is not recognized!");
+  }
+};
 module.exports = {
   getDoctors,
   getPatient,
@@ -371,4 +518,8 @@ module.exports = {
   deleteDoctor,
   getAllergies,
   createAllergie,
+  createDisease,
+  getDiseases,
+  createPrescription_drug,
+  getPrescription_drugs,
 };

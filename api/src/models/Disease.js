@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       diagnosis_date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       description: {
