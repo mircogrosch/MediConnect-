@@ -13,6 +13,7 @@ import PruebaChat from "./components/PruebaChat.jsx";
 import MensajesDoctor from "./pages/MenssagesDoctor";
 import MyPatientsPage from "./pages/MyPatientsPage";
 import MedicalHistory from "./pages/MedicalHistory";
+import ScheduleDoctor from "./pages/ScheduleDoctor";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
       <Route path="/account/patient" component={HomePatientPage} />
       <Route path="/account/doctors/:id" component={AddDoctors} />
       <Route path="/account/medicalhistory/:id" component={MedicalHistory} />
+      <Route path="/account/schedule/:id" component={ScheduleDoctor} />
       <Route exact path="/" component={LandingPage} />
       <Route path="/mensajes/paciente" component={MensajesPaciente} />
       <Route path="/mensajes/profesional" component={MensajesDoctor} />
