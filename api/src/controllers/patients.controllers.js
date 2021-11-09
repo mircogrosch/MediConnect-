@@ -47,10 +47,7 @@ const createPatient = async (req, res) => {
     healthInsuranceId,
   } = req.body;
   if (req.file.path) {
-    console.log("req.file ", req.file);
-    console.log("req.file.path ", req.file.path);
     result = await cloudinary.v2.uploader.upload(req.file.path);
-    console.log("result ", result);
   }
   const rol = "Patient";
   if (

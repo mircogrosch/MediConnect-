@@ -132,25 +132,15 @@ export const postMyDoctor = (payload, id_Doctor) => {
   };
 };
 
-// export const getMyPatients = (id_doctor) => {
-//   return async function (dispatch) {
-//     try {
-//       const response = await axios.get(`${URL}/doctor/patients/${id_doctor}`);
-//       dispatch({ type: types.GET_MY_PATIENTS, payload: response.data });
-//     } catch (error) {
-//       alert(error);
-//     }
-//   };
-// };
-
 export const filterMyPatientsByName = (patientName, id_doctor) => {
   return async function (dispatch) {
     try {
       const response = await axios.get(
         `${URL}/doctor/patients/${id_doctor}?patient=${patientName}`
       );
+      // console.log("action filterMyPatient", response);
       if (response.data.data.length) {
-        dispatch({
+        return dispatch({
           type: types.FILTER_MY_PATIENTS_BY_NAME,
           payload: response.data,
         });
