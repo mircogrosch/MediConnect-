@@ -1,5 +1,5 @@
 import React from "react";
-// import axios from "axios";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Grid, InputLabel, TextField, MenuItem, Button } from "@mui/material";
 import { teal } from "@mui/material/colors";
@@ -12,15 +12,14 @@ function PrescriptionForm({ patientId, doctorId }) {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    // await axios.post(
-    //   `http://localhost:3001/patient/prescription_drug/${patientId}`,
-    //   data
-    // );
-    // const response = await axios.get(
-    //   `http://localhost:3001/patient/prescription_drug/${patientId}`
-    // );
-    // console.log(response.data);
+    await axios.post(
+      `http://localhost:3001/patient/prescription_drug/${patientId}`,
+      data
+    );
+    const response = await axios.get(
+      `http://localhost:3001/patient/prescription_drug/${patientId}`
+    );
+    console.log(response.data);
   };
 
   return (
