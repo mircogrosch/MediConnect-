@@ -28,12 +28,17 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
           {user.user.rol === "Doctor" ? (
-            <Card
-              title="Historial Medico"
-              icon={cardInfo[1].icon}
-              bgColor={teal[600]}
-              color={teal[50]}
-            />
+            <Link
+              to={`/doctor/patients/medical-historial/${user.rol.id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Card
+                title="Historial Medico"
+                icon={cardInfo[1].icon}
+                bgColor={teal[600]}
+                color={teal[50]}
+              />
+            </Link>
           ) : (
             <Link
               to={`/account/medicalhistory/${user.rol.id}`}
