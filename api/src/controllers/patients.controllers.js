@@ -351,18 +351,32 @@ const createAllergie = async (req, res) => {
   if (id) {
     if (name && severity && description) {
       try {
-        let allergie = await Allergy.create({
-          name,
-          severity,
-          description,
+        let verif = await Allergy.findOne({
+          where: {
+            patientId: id,
+            name: name,
+          },
         });
-        await allergie.setPatient(id);
-        res.json({
-          data: allergie,
-          message: "Alergia creada!",
-        });
-      } catch (e) {
-        console.log("Error in the Data Base: ", e);
+        if (verif) {
+          try {
+            let allergie = await Allergy.create({
+              name,
+              severity,
+              description,
+            });
+            await allergie.setPatient(id);
+            res.json({
+              data: allergie,
+              message: "Alergia creada!",
+            });
+          } catch (e) {
+            console.log("Error in the Data Base: ", e);
+          }
+        } else {
+          res.send("This allergy already exists!");
+        }
+      } catch (error) {
+        console.log("Error en Verif!", error);
       }
     } else {
       res.send("There are empty fields!");
@@ -378,18 +392,32 @@ const createDisease = async (req, res) => {
   if (id) {
     if (name && diagnosis_date && description) {
       try {
-        let disease = await Disease.create({
-          name,
-          diagnosis_date,
-          description,
+        let verif = await Disease.findOne({
+          where: {
+            patientId: id,
+            name: name,
+          },
         });
-        await disease.setPatient(id);
-        res.json({
-          data: disease,
-          message: "Enfermedad creada!",
-        });
+        if (verif) {
+          try {
+            let disease = await Disease.create({
+              name,
+              diagnosis_date,
+              description,
+            });
+            await disease.setPatient(id);
+            res.json({
+              data: disease,
+              message: "Enfermedad creada!",
+            });
+          } catch (error) {
+            console.log("Error in the Data Base: ", error);
+          }
+        } else {
+          res.send("This disease already exists!");
+        }
       } catch (error) {
-        console.log("Error in the Data Base: ", error);
+        console.log("Error en VERIF!", error);
       }
     } else {
       res.send("There are empty fields!");
@@ -425,16 +453,34 @@ const createPrescription_drug = async (req, res) => {
   let { name, posology, description } = req.body;
   if (id) {
     if (name && posology && description) {
-      let prescription_drug = await Prescription_drug.create({
-        name,
-        posology,
-        description,
-      });
-      await prescription_drug.setPatient(id);
-      res.json({
-        data: prescription_drug,
-        message: "Medicación creada!",
-      });
+      try {
+        let verif = await Prescription_drug.findOne({
+          where: {
+            patientId: id,
+            name: name,
+          },
+        });
+        if (!verif) {
+          try {
+            let prescription_drug = await Prescription_drug.create({
+              name,
+              posology,
+              description,
+            });
+            await prescription_drug.setPatient(id);
+            res.json({
+              data: prescription_drug,
+              message: "Medicación creada!",
+            });
+          } catch (error) {
+            console.log("Error in the Data Base: ", error);
+          }
+        } else {
+          res.send("This prescription drug already exists!");
+        }
+      } catch (error) {
+        console.log("Error en VERIF!", error);
+      }
     } else {
       res.send("There are empty fields!");
     }
