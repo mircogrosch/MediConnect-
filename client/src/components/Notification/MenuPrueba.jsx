@@ -81,11 +81,11 @@ export default function CustomizedMenus() {
         variant="contained"
         disableElevation
         onClick={handleClick}
-        size="large"
+        size="small"
         aria-label="show 17 new notifications"
         color="inherit"
       >
-        <NotificationsOutlined fontSize="large" sx={{ color: teal[900] }} />
+        <NotificationsOutlined sx={{ fontSize: "1.6em", color: teal[900] }} />
       </IconButton>
       <StyledMenu
         id="demo-customized-menu"

@@ -89,25 +89,22 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
             <Card title="Mis Ordenes" icon={cardInfo[3].icon} />
           )}
         </Grid>
-        <Grid item md={4} sm={4} xs={5}>
-          {user.user.rol === "Doctor" ? (
-            <Link
-              to={`/mensajes/profesional`}
-              style={{ textDecoration: "none" }}
-            >
-              <Card
-                title="Mensajes"
-                icon={cardInfo[5].icon}
-                bgColor={teal[600]}
-                color={teal[50]}
-              />
+        {/* <Grid item md={4} sm={4} xs={5}>
+          {user.user.rol ==="Doctor" ? (
+             <Link to={`/mensajes/profesional`} style={{ textDecoration: "none" }}>
+            <Card
+              title="Mensajes"
+              icon={cardInfo[5].icon}
+              bgColor={teal[600]}
+              color={teal[50]}
+            />
             </Link>
           ) : (
             <Link to={`/mensajes/paciente`} style={{ textDecoration: "none" }}>
               <Card title="Mensajes" icon={cardInfo[5].icon} />
             </Link>
           )}
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
   );
