@@ -41,7 +41,7 @@ const cardInfo = [
 ];
 
 function HomePageDoctor() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const user = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
@@ -56,11 +56,7 @@ function HomePageDoctor() {
     // Dispara la accion para traer todos los doctores asociados al paciente
     dispatch(getMyPatients(user.rol.id));
   }, []);
-  socketChat.on("reciveNotificationChat",(data)=>{
-    /**
-     * ACA DISPARA UNA ACCION A UN NUEVO ESTADO GLOBAL, LUEGO PARA MOSTRARLA TENES QUE AVERIGUAR EL LENGTH
-     */
-  })
+
   return (
     <Box className={classes.root} sx={{ background: teal[100] }}>
       <PrimarySearchAppBar bgColor={teal[500]} color={teal[50]} />
