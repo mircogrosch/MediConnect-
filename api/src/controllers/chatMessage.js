@@ -1,7 +1,29 @@
 const { Message, Person, Conversation,Notification } = require("../db.js");
 
 
+const deleteNotificationChat = async (req,res)=>{ 
+  const {personDni,type} = req.query;
+  try{ 
+    const notificationToRemove =  await Notification.findOne({
+      where:{
+        personDni:personDni,
+        type: type
+      }
+    })
+    await notificationToRemove.destroy()
+    res.status(200)
+  } catch { 
+      res.status(400)
+  }
+ 
+ 
+}
 
+/**
+ * DEVUELVE LAS NOTIFICACIONES DE ALGUIEN EN PARTICULAR 
+ * @param {*} req request de express
+ * @param {*} res response de express
+ */
  const getNotificationChat = async (req, res)=> { 
       const {dniReciver,type} = req.query
   try{ 
@@ -9,15 +31,17 @@ const { Message, Person, Conversation,Notification } = require("../db.js");
       where:{
        personDni: dniReciver,
        type: type
-      },
-     //  attributes: ['id', 'idDoctor', 'idPatient', 'description', 'personDni']
+      }
     }); 
     res.send(notifications)
    }catch{
      res.status(400).send("NOT FOUND")
    }
  }
-
+/**
+ * GUARDA LAS NOTIFICACIONES EN LA DB
+ * @param {*} notification recibe una notificacion socket
+ */
 
 const saveNotificationChat = async (notification)=> { 
   console.log('notif',notification)
@@ -39,6 +63,12 @@ const saveNotificationChat = async (notification)=> {
   new_Notification.setPerson(person.dataValues.dni);
 
 }
+
+/**
+ * Devuelve los mensajes de una conversacion en particular
+ * @param {*} req request de express
+ * @param {*} res response de express
+ */
 const getMessage = async (req, res) => {
   const { dniSender, dniReciver } = req.query;
   try {
@@ -58,8 +88,9 @@ const getMessage = async (req, res) => {
         },
       ],
     });
-    const messages = await conversation.getMessages();
-
+    const messages = await conversation.getMessages({});
+    console.log("ESTA ES LA CONVERSACION",conversation);
+    console.log("ESTOS SON LOS MENSAJES", messages)
     res.json({
       data: messages,
       status: 200,
@@ -68,6 +99,11 @@ const getMessage = async (req, res) => {
       res.status(400).send(error)
   }
 };
+
+/**
+ * GUARDA LOS MENSAJES EN LA DB
+ * @param {*} dataMessage recibe un mensaje enviado por socket
+ */
 const saveMessage = async (dataMessage) => {
   const newMessage = await Message.create({
     text: dataMessage.message,
@@ -93,7 +129,7 @@ const saveMessage = async (dataMessage) => {
       },
       {
         model: Person,
-        where: {
+        where: { 
           dni: personReciver.dataValues.dni,
         },
       },
@@ -134,5 +170,6 @@ const SOCKET_CHAT = (io) => {
 module.exports = {
   SOCKET_CHAT,
   getMessage,
-  getNotificationChat
+  getNotificationChat,
+  deleteNotificationChat
 };
