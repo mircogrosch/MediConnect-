@@ -29,13 +29,11 @@ const getNotificationById = async (req,res)=> {
  */
 
 const deleteNotification = async (idPatient)=> { 
-      console.log(idPatient)
       const notificationToRemove =  await Notification.findOne({
         where:{
           idPatient:idPatient
         }
       })
-      console.log(notificationToRemove)
       await notificationToRemove.destroy()
 
 }
@@ -53,7 +51,7 @@ const saveNotification = async (notification) => {
       type: notification.type
     },
     {
-      fields: ["description", "idDoctor", "idPatient"],
+      fields: ["description", "idDoctor", "idPatient","type"],
     }
   );
   //busco el personDni del Doctor
