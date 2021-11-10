@@ -625,30 +625,59 @@ const modifAllergy = async (req, res) => {
   let { name, severity, description } = req.body;
   let { id } = req.params;
   if (id) {
-    let allergy = await Allergy.findOne({
-      where: {
-        id: id,
-      },
-    });
-    if (allergy) {
-      allergy.name = name;
-      allergy.severity = severity;
-      allergy.description = description;
-      res.json({
-        data: allergy,
-        message: "Edit success!",
+    try {
+      let allergy = await Allergy.findOne({
+        where: {
+          id: id,
+        },
       });
-    } else {
-      res.send("The allergy id is not recognized!");
+      if (allergy) {
+        allergy.name = name;
+        allergy.severity = severity;
+        allergy.description = description;
+        res.json({
+          data: allergy,
+          message: "Edit success!",
+        });
+      } else {
+        res.send("The allergy id is not recognized!");
+      }
+    } catch (error) {
+      console.log("Error in the DATA BASE!", error);
     }
   } else {
     res.send("The allergy id cannot by null");
   }
 };
 
-const modifDisease = (req, res) =>{
-  let {}
-}
+const modifDisease = async (req, res) => {
+  let { id } = req.params;
+  let { name, diagnosis_date, description } = req.body;
+  if (id) {
+    try {
+      let disease = await Disease.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (disease) {
+        disease.name = name;
+        disease.diagnosis_date = diagnosis_date;
+        disease.description = description;
+        res.json({
+          data: disease,
+          message: "Edit success!",
+        });
+      } else {
+        res.send("The disease id is not recognized!");
+      }
+    } catch (error) {
+      console.log("Error in the DATA BASE!", error);
+    }
+  } else {
+    res.send("The disease id cannot by null");
+  }
+};
 
 module.exports = {
   getDoctors,
@@ -667,4 +696,5 @@ module.exports = {
   deleteDisease,
   deletePrescription_drug,
   modifAllergy,
+  modifDisease,
 };
