@@ -13,10 +13,13 @@ export const messages = (state=initialState, action) => {
                 chat: action.payload
             }
         case 'SAVE_NOTIFICATION_CHAT':
+            if(state.notificationChat.find(e => e.dniReciver === action.payload.dniReciver && e.personDni === action.payload.personDni)){
+                return {...state}
+            } else {
             return{
                 ...state,
                 notificationChat: [...state.notificationChat, action.payload]
-            }
+            }}
         case types.GET_NOTIFICATIONS_MESSAGE:
             return{
                 ...state,
