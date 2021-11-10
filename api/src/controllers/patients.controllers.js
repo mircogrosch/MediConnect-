@@ -625,29 +625,25 @@ const modifAllergy = async (req, res) => {
   let { name, severity, description } = req.body;
   let { id } = req.params;
   if (id) {
-    if (name && severity && description) {
-      try {
-        let allergy = await Allergy.findOne({
-          where: {
-            id: id,
-          },
+    try {
+      let allergy = await Allergy.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (allergy) {
+        allergy.name = name;
+        allergy.severity = severity;
+        allergy.description = description;
+        res.json({
+          data: allergy,
+          message: "Edit success!",
         });
-        if (allergy) {
-          allergy.name = name;
-          allergy.severity = severity;
-          allergy.description = description;
-          res.json({
-            data: allergy,
-            message: "Edit success!",
-          });
-        } else {
-          res.send("The allergy id is not recognized!");
-        }
-      } catch (error) {
-        console.log("Error in the DATA BASE!", error);
+      } else {
+        res.send("The allergy id is not recognized!");
       }
-    } else {
-      res.status(400).send("Fields cannot by null!");
+    } catch (error) {
+      console.log("Error in the DATA BASE!", error);
     }
   } else {
     res.send("The allergy id cannot by null");
@@ -658,29 +654,25 @@ const modifDisease = async (req, res) => {
   let { id } = req.params;
   let { name, diagnosis_date, description } = req.body;
   if (id) {
-    if (name && diagnosis_date && description) {
-      try {
-        let disease = await Disease.findOne({
-          where: {
-            id: id,
-          },
+    try {
+      let disease = await Disease.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (disease) {
+        disease.name = name;
+        disease.diagnosis_date = diagnosis_date;
+        disease.description = description;
+        res.json({
+          data: disease,
+          message: "Edit success!",
         });
-        if (disease) {
-          disease.name = name;
-          disease.diagnosis_date = diagnosis_date;
-          disease.description = description;
-          res.json({
-            data: disease,
-            message: "Edit success!",
-          });
-        } else {
-          res.status(400).send("The disease id is not recognized!");
-        }
-      } catch (error) {
-        console.log("Error in the DATA BASE!", error);
+      } else {
+        res.status(400).send("The disease id is not recognized!");
       }
-    } else {
-      res.status(400).send("Fields cannot by null!");
+    } catch (error) {
+      console.log("Error in the DATA BASE!", error);
     }
   } else {
     res.status(400).send("The disease id cannot by null");
@@ -691,29 +683,25 @@ const modifPrescription_drug = async (req, res) => {
   let { id } = req.params;
   let { name, posology, description } = req.body;
   if (id) {
-    if (name && posology && description) {
-      try {
-        let prescription_drug = await Prescription_drug.findOne({
-          where: {
-            id: id,
-          },
+    try {
+      let prescription_drug = await Prescription_drug.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (prescription_drug) {
+        prescription_drug.name = name;
+        prescription_drug.posology = posology;
+        prescription_drug.description = description;
+        res.json({
+          data: prescription_drug,
+          message: "Edit success!",
         });
-        if (prescription_drug) {
-          prescription_drug.name = name;
-          prescription_drug.posology = posology;
-          prescription_drug.description = description;
-          res.json({
-            data: prescription_drug,
-            message: "Edit success!",
-          });
-        } else {
-          res.status(400).send("The prescription_drug id is not recognized!");
-        }
-      } catch (error) {
-        console.log("Error in the DATA BASE!", error);
+      } else {
+        res.status(400).send("The prescription_drug id is not recognized!");
       }
-    } else {
-      res.status(400).send("The fields cannot by null");
+    } catch (error) {
+      console.log("Error in the DATA BASE!", error);
     }
   } else {
     res.status(400).send("The prescrption_drug id cannot by null");
