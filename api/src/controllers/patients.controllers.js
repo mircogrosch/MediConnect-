@@ -620,6 +620,36 @@ const deletePrescription_drug = async (req, res) => {
     res.send("The prescription_drug id is not recognized!");
   }
 };
+
+const modifAllergy = async (req, res) => {
+  let { name, severity, description } = req.body;
+  let { id } = req.params;
+  if (id) {
+    let allergy = await Allergy.findOne({
+      where: {
+        id: id,
+      },
+    });
+    if (allergy) {
+      allergy.name = name;
+      allergy.severity = severity;
+      allergy.description = description;
+      res.json({
+        data: allergy,
+        message: "Edit success!",
+      });
+    } else {
+      res.send("The allergy id is not recognized!");
+    }
+  } else {
+    res.send("The allergy id cannot by null");
+  }
+};
+
+const modifDisease = (req, res) =>{
+  let {}
+}
+
 module.exports = {
   getDoctors,
   getPatient,
@@ -636,4 +666,5 @@ module.exports = {
   deleteAllergie,
   deleteDisease,
   deletePrescription_drug,
+  modifAllergy,
 };
