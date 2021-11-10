@@ -335,7 +335,7 @@ const getAllergies = async (req, res) => {
       });
       res.json({
         data: allergies,
-        message: "Succes!",
+        message: "Success!",
       });
     } catch (e) {
       console.log("Error in Data Base: ", e);
@@ -367,7 +367,7 @@ const createAllergie = async (req, res) => {
             await allergie.setPatient(id);
             res.json({
               data: allergie,
-              message: "Alergia creada!",
+              message: "ALLery created!",
             });
           } catch (e) {
             console.log("Error in the Data Base: ", e);
@@ -408,7 +408,7 @@ const createDisease = async (req, res) => {
             await disease.setPatient(id);
             res.json({
               data: disease,
-              message: "Enfermedad creada!",
+              message: "Diseased created!",
             });
           } catch (error) {
             console.log("Error in the Data Base: ", error);
@@ -438,7 +438,7 @@ const getDiseases = async (req, res) => {
       });
       res.json({
         data: diseases,
-        message: "Succes!!!",
+        message: "Success!!!",
       });
     } catch (error) {
       console.log("Error in the Data Base: ", error);
@@ -470,7 +470,7 @@ const createPrescription_drug = async (req, res) => {
             await prescription_drug.setPatient(id);
             res.json({
               data: prescription_drug,
-              message: "Medicación creada!",
+              message: "Prescription Drug created!",
             });
           } catch (error) {
             console.log("Error in the Data Base: ", error);
@@ -500,7 +500,7 @@ const getPrescription_drugs = async (req, res) => {
       });
       res.json({
         data: prescription_drugs,
-        message: "Succes!",
+        message: "Success!",
       });
     } catch (error) {
       console.log("Error in the Data Base: ", error);
@@ -513,7 +513,6 @@ const getPrescription_drugs = async (req, res) => {
 const deleteAllergie = async (req, res) => {
   let { idAllergy } = req.query;
   let { idPatient } = req.params;
-  console.log("IDDDDSSSSSS PATIENT", idPatient);
   if (idAllergy) {
     if (idPatient) {
       try {
@@ -541,10 +540,84 @@ const deleteAllergie = async (req, res) => {
         console.log("Error in the Data Base: ", error);
       }
     } else {
-      res.send("The id of Patient is not recognized!");
+      res.send("The patient id is not recognized!");
     }
   } else {
-    res.send("The id of Allergy is not recognized!");
+    res.send("The allergy id is not recognized!");
+  }
+};
+
+const deleteDisease = async (req, res) => {
+  let { idDisease } = req.query;
+  let { idPatient } = req.params;
+  if (idDisease) {
+    if (idPatient) {
+      try {
+        let disease = await Disease.findOne({
+          where: {
+            id: idDisease,
+          },
+        });
+        let patient = await Patient.findOne({
+          where: {
+            id: idPatient,
+          },
+        });
+        if (disease && patient) {
+          await Disease.destroy({
+            where: {
+              id: idDisease,
+            },
+          });
+          res.send("Delete success!");
+        } else {
+          res.send("Error with the patient id or the disease id!");
+        }
+      } catch (error) {
+        console.log("Error in the DATA BASE!", error);
+      }
+    } else {
+      res.send("The patient id is not recognized!");
+    }
+  } else {
+    res.send("The disease id is not recognized!");
+  }
+};
+
+const deletePrescription_drug = async (req, res) => {
+  let { idPrescription_drug } = req.query;
+  let { idPatient } = req.params;
+  if (idPrescription_drug) {
+    if (idPatient) {
+      try {
+        let prescription_drug = await Prescription_drug.findOne({
+          where: {
+            id: idPrescription_drug,
+          },
+        });
+        let patient = await Patient.findOne({
+          where: {
+            id: idPatient,
+          },
+        });
+        if (prescription_drug && patient) {
+          await Prescription_drug.destroy({
+            where: {
+              id: idPrescription_drug,
+            },
+          });
+          res.send("Delete success!");
+        } else {
+          res.send("Error with the patient id or the prescription_drug id");
+        }
+      } catch (error) {
+        console.log("Error in the DATA BASE!", error);
+      }
+    } else {
+      res.send("The patient id is not recognized!");
+    }
+  } else {
+    res.send("The prescription_drug id is not recognized!");
   }
 };
 module.exports = {
@@ -561,4 +634,6 @@ module.exports = {
   createPrescription_drug,
   getPrescription_drugs,
   deleteAllergie,
+  deleteDisease,
+  deletePrescription_drug,
 };
