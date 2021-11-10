@@ -328,7 +328,7 @@ export const getNotificationsMessage = (dniReciver) => {
 
 export const deleteNotificationChat = (personDni) => {
   return async function (dispatch) {
-    await axios.delete(`${URL}/notifications/delete?personDni=${personDni}&type=message`)
+    await axios.delete(`${URL}/chat/notifications/delete?personDni=${personDni}&type=message`)
     return dispatch({
       type: types.DELETE_NOTIFICATION_CHAT
     })

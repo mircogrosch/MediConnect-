@@ -10,6 +10,7 @@ const deleteNotificationChat = async (req,res)=>{
         type: type
       }
     })
+    console.log("NOTI REMOVE", notificationToRemove)
     await notificationToRemove.destroy()
     res.status(200)
   } catch { 
@@ -44,7 +45,6 @@ const deleteNotificationChat = async (req,res)=>{
  */
 
 const saveNotificationChat = async (notification)=> { 
-  console.log('notif',notification)
   const new_Notification = await Notification.create(
     {
       description: notification.message,
@@ -88,9 +88,7 @@ const getMessage = async (req, res) => {
         },
       ],
     });
-    const messages = await conversation.getMessages({});
-    console.log("ESTA ES LA CONVERSACION",conversation);
-    console.log("ESTOS SON LOS MENSAJES", messages)
+    const messages = await conversation.getMessages();
     res.json({
       data: messages,
       status: 200,
@@ -159,7 +157,6 @@ const SOCKET_CHAT = (io) => {
         type: data.type,
         dniReciver: data.dniReciver
       }
-      console.log(data)
       io.to(reciver).emit("reciveNotificationChat",newNotificationChat);
       saveNotificationChat(newNotificationChat)
       io.to(sender).to(reciver).emit("reciveChat", data);

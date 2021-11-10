@@ -3,7 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/system";
 import { useDispatch } from "react-redux";
-import { getContact, getMessage, deleteNotificationChat } from "../../actions";
+import { getContact, getMessage, deleteNotificationChat,getNotificationsMessage } from "../../actions";
 import jwt from "jsonwebtoken";
 
 const MyGrid = styled(Grid)({
@@ -28,7 +28,8 @@ function CardDoctor({ name, lastname, email, rol, img, dni }) {
   const handleContact = () => {
     dispatch(getContact(email, rol));
     dispatch(getMessage(user.user.dni, dni));
-    dispatch(deleteNotificationChat(dni));
+    dispatch(deleteNotificationChat(user.user.dni));
+    dispatch(getNotificationsMessage(user.user.dni))
   };
   return (
     <MyGrid onClick={(e) => handleContact(e)}>
