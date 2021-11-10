@@ -32,6 +32,28 @@ function concat_json(json, json_empty) {
   }
 }
 
+function day_name_by_number(day_number) {
+  switch (day_number) {
+    case 1:
+      return "Lu";
+    case 2:
+      return "Ma";
+    case 3:
+      return "Mi";
+    case 4:
+      return "Ju";
+    case 5:
+      return "Vi";
+    case 6:
+      return "Sa";
+    case 7:
+      return "Do";
+    default:
+      "Lu";
+      break;
+  }
+}
+
 const createDoctor = async (req, res) => {
   let result;
   const {
@@ -335,10 +357,17 @@ const createAppointment = async (req, res) => {
   const { id } = req.params; // id de doctor
   const { patient } = req.query; // id de paciente
   const { date } = req.body; // fecha de turno
-  const payment_status = false;
+  const payment_status = "Pendiente";
   try {
+    newDate = new Date(date);
     const appointment = await Appointment.create({
       date: date,
+      day: newDate.getDate(),
+      day_name: day_name_by_number(newDate.getDay()),
+      month: newDate.getMonth(),
+      year: newDate.getFullYear(),
+      hour: newDate.getHours(),
+      minutes: newDate.getMinutes(),
       payment_status: payment_status,
     });
     appointment.setPatient(patient);
