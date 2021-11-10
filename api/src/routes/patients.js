@@ -13,6 +13,7 @@ const {
   getDiseases,
   createPrescription_drug,
   getPrescription_drugs,
+  deleteAllergie,
 } = require("../controllers/patients.controllers");
 
 router.route("/").get(getPatients);
@@ -81,5 +82,10 @@ router.route("/prescription_drug/:id").get(getPrescription_drugs);
 //recibe el id del paciente a vincular por params
 //recibe los datos del medicamento por body
 router.route("/prescription_drug/:id").post(createPrescription_drug);
+
+//Ruta para borrar una alergia vinculada a un paciente
+//recibe el id del paciente por params
+//recibe el id de la alergia por query
+router.route("/allergy/:idPatient").delete(deleteAllergie);
 
 module.exports = router;

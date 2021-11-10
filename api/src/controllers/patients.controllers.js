@@ -357,7 +357,7 @@ const createAllergie = async (req, res) => {
             name: name,
           },
         });
-        if (verif) {
+        if (!verif) {
           try {
             let allergie = await Allergy.create({
               name,
@@ -398,7 +398,7 @@ const createDisease = async (req, res) => {
             name: name,
           },
         });
-        if (verif) {
+        if (!verif) {
           try {
             let disease = await Disease.create({
               name,
@@ -509,6 +509,44 @@ const getPrescription_drugs = async (req, res) => {
     res.send("The id is not recognized!");
   }
 };
+
+const deleteAllergie = async (req, res) => {
+  let { idAllergy } = req.query;
+  let { idPatient } = req.params;
+  console.log("IDDDDSSSSSS PATIENT", idPatient);
+  if (idAllergy) {
+    if (idPatient) {
+      try {
+        let allergy = await Allergy.findOne({
+          where: {
+            id: idAllergy,
+          },
+        });
+        let patient = await Patient.findOne({
+          where: {
+            id: idPatient,
+          },
+        });
+        if (allergy && patient) {
+          await Allergy.destroy({
+            where: {
+              id: idAllergy,
+            },
+          });
+          res.send("Delete succes!");
+        } else {
+          res.send("Error with the patient id or allergy id");
+        }
+      } catch (error) {
+        console.log("Error in the Data Base: ", error);
+      }
+    } else {
+      res.send("The id of Patient is not recognized!");
+    }
+  } else {
+    res.send("The id of Allergy is not recognized!");
+  }
+};
 module.exports = {
   getDoctors,
   getPatient,
@@ -522,4 +560,5 @@ module.exports = {
   getDiseases,
   createPrescription_drug,
   getPrescription_drugs,
+  deleteAllergie,
 };
