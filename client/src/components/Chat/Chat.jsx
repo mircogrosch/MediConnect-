@@ -62,6 +62,10 @@ function Chat({ user }) {
     initiateSocketChat(userSender.user, socketChat);
   }, []);
 
+  useEffect(() => {
+    return setChat([]);
+  }, [chats]);
+
   socketChat.on("reciveChat", (data) => {
     console.log(data);
     setChat([...chat, data]);
