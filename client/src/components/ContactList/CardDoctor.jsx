@@ -1,9 +1,9 @@
 import { AccountCircle } from "@mui/icons-material";
 import { Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "@mui/system";
 import { useDispatch } from "react-redux";
-import { getContact, getMessage } from "../../actions";
+import { getContact, getMessage, deleteNotificationChat } from "../../actions";
 import jwt from "jsonwebtoken";
 
 const MyGrid = styled(Grid)({
@@ -24,10 +24,11 @@ function CardDoctor({ name, lastname, email, rol, img, dni }) {
     "secret"
   );
   const dispatch = useDispatch();
-  let docName = `${name} ${lastname}`;
+  let userName = `${name} ${lastname}`;
   const handleContact = () => {
     dispatch(getContact(email, rol));
     dispatch(getMessage(user.user.dni, dni));
+    dispatch(deleteNotificationChat(dni));
   };
   return (
     <MyGrid onClick={(e) => handleContact(e)}>
@@ -47,8 +48,8 @@ function CardDoctor({ name, lastname, email, rol, img, dni }) {
         <MyIcon />
       )}
       <Grid>
-        <Typography variant="h6">{docName}</Typography>
-        <Typography variant="body"></Typography>
+        <Typography variant="h6">{userName}</Typography>
+        <Typography variant="body">Ingrese al chat con {userName}</Typography>
       </Grid>
     </MyGrid>
   );
