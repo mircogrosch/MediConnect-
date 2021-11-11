@@ -79,7 +79,7 @@ export default function CustomizedMenus() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         variant="contained"
-        disableElevation
+        // disableElevation
         onClick={handleClick}
         size="small"
         aria-label="show 17 new notifications"

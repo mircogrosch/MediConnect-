@@ -1,10 +1,11 @@
 import React from "react";
 import axios from "axios";
+import swal from "sweetalert";
 import { useForm } from "react-hook-form";
-import { Grid, InputLabel, TextField, MenuItem, Button } from "@mui/material";
+import { Grid, InputLabel, TextField, Button } from "@mui/material";
 import { teal } from "@mui/material/colors";
 
-function PrescriptionForm({ patientId, doctorId }) {
+function PrescriptionForm({ patientId, setDisplayed }) {
   const {
     register,
     handleSubmit,
@@ -12,14 +13,36 @@ function PrescriptionForm({ patientId, doctorId }) {
   } = useForm();
 
   const onSubmit = async (data) => {
-    await axios.post(
-      `http://localhost:3001/patient/prescription_drug/${patientId}`,
-      data
-    );
-    const response = await axios.get(
-      `http://localhost:3001/patient/prescription_drug/${patientId}`
-    );
-    console.log(response.data);
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/patient/prescription_drug/${patientId}`,
+        data
+      );
+
+      if (response.data.message === "Medicación creada!") {
+        swal({
+          icon: "success",
+          title: "Datos guardados exitosamente",
+          timer: 1500,
+        });
+      } else {
+        swal({
+          icon: "error",
+          title: "Ha ocurrido un error",
+          text: "Intente de nuevo",
+        });
+      }
+      setDisplayed((state) => ({
+        ...state,
+        prescription: false,
+      }));
+    } catch (error) {
+      alert(error);
+      swal({
+        icon: "error",
+        title: "Server Error",
+      });
+    }
   };
 
   return (
@@ -29,24 +52,20 @@ function PrescriptionForm({ patientId, doctorId }) {
         <TextField
           variant="standard"
           error={errors.name ? true : false}
-          sx={{ width: "50%" }}
+          sx={{ width: "100%" }}
           {...register("name", { required: true })}
         />
       </Grid>
       <Grid item xs={12} marginY="1em">
         <InputLabel sx={{ marginLeft: "5px" }}>Indicaciones</InputLabel>
         <TextField
-          variant="outlined"
-          multiline
-          rows={2}
+          variant="standard"
+          // multiline
+          // rows={2}
           error={errors.posology ? true : false}
           sx={{ width: "100%" }}
           {...register("posology", { required: true })}
-        >
-          <MenuItem>Baja</MenuItem>
-          <MenuItem>Media</MenuItem>
-          <MenuItem>Alta</MenuItem>
-        </TextField>
+        ></TextField>
       </Grid>
       <Grid item xs={12} marginY="1em">
         <InputLabel sx={{ marginLeft: "5px" }}>Descripción</InputLabel>
@@ -62,9 +81,15 @@ function PrescriptionForm({ patientId, doctorId }) {
       <Grid item xs={12} justifyContent="space-around" display="flex">
         <Button
           variant="contained"
+          onClick={() =>
+            setDisplayed((state) => ({
+              ...state,
+              prescription: false,
+            }))
+          }
           sx={{ width: "40%", height: "50px", marginY: "1em" }}
         >
-          Limpiar
+          Cancelar
         </Button>
         <Button
           variant="contained"
