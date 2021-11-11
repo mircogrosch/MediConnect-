@@ -96,14 +96,12 @@ router.route("/allergy/:idPatient").delete(deleteAllergie);
 //Ruta para borrar una enfermedad vinculada a un paciente
 //recibe el id del paciente por params
 //recibe el id de la enfermdedad por query
-router.route("/disease/:idDisease").delete(deleteDisease);
+router.route("/disease/:idPatient").delete(deleteDisease);
 
 //Ruta para borrar un medicamento vinculado a un paciente
 //recibe el id del paciente por params
 //recibe el id del medicamento por query
-router
-  .route("/prescription_drug/:idPrescription_drug")
-  .delete(deletePrescription_drug);
+router.route("/prescription_drug/:idPatient").delete(deletePrescription_drug);
 
 //Ruta para modificar campos de una alergia ya creada
 //recibe el id de la alergia por params

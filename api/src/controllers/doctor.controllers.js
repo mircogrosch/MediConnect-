@@ -423,15 +423,14 @@ const getAppointment = async (req, res) => {
 
 const createWorkDay = async (req, res) => {
   const { id } = req.params;
-  const { day, init, end } = req.body;
+  const { week } = req.body;
   try {
-    const newWorkDay = await Work_day.create({
-      day: day,
-      init: init,
-      end: end,
-      attributes: ["id", "day", "init", "end"],
+    const newWorkDay = await Work_day.bulkCreate(week, {
+      fields: ["id", "day", "init", "end"],
     });
-    newWorkDay.setDoctor(id);
+    newWorkDay.forEach((workday) => {
+      workday.setDoctor(id);
+    });
     res.json({
       data: newWorkDay,
       message: "Jornada creada",

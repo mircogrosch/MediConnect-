@@ -19,7 +19,7 @@ function AllergyForm({ patientId, setDisplayed }) {
         data
       );
 
-      if (response.data.message === "Alergia creada!") {
+      if (response.data.data) {
         swal({
           icon: "success",
           title: "Datos guardados exitosamente",
