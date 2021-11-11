@@ -5,6 +5,7 @@ const {
   Speciality,
   HealthInsurance,
   Appointment,
+  Work_day,
 } = require("../db");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
@@ -420,6 +421,51 @@ const getAppointment = async (req, res) => {
   }
 };
 
+const createWorkDay = async (req, res) => {
+  const { id } = req.params;
+  const { day, init, end } = req.body;
+  try {
+    const newWorkDay = await Work_day.create({
+      day: day,
+      init: init,
+      end: end,
+      attributes: ["id", "day", "init", "end"],
+    });
+    newWorkDay.setDoctor(id);
+    res.json({
+      data: newWorkDay,
+      message: "Jornada creada",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
+const getWorkDays = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const workDays = await Work_day.findAll({
+      where: {
+        doctorId: id,
+      },
+    });
+    res.json({
+      data: workDays,
+      message: "Jornadas laborales de Doctor",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
 module.exports = {
   createDoctor,
   getDoctor,
@@ -428,4 +474,6 @@ module.exports = {
   getPatients,
   createAppointment,
   getAppointment,
+  createWorkDay,
+  getWorkDays,
 };
