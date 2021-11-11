@@ -19,7 +19,7 @@ function PrescriptionForm({ patientId, setDisplayed }) {
         data
       );
 
-      if (response.data.message === "Medicación creada!") {
+      if (response.data.data) {
         swal({
           icon: "success",
           title: "Datos guardados exitosamente",
