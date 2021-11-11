@@ -13,6 +13,12 @@ const {
   getDiseases,
   createPrescription_drug,
   getPrescription_drugs,
+  deleteAllergie,
+  deleteDisease,
+  deletePrescription_drug,
+  modifAllergy,
+  modifDisease,
+  modifPrescription_drug,
 } = require("../controllers/patients.controllers");
 
 router.route("/").get(getPatients);
@@ -81,5 +87,37 @@ router.route("/prescription_drug/:id").get(getPrescription_drugs);
 //recibe el id del paciente a vincular por params
 //recibe los datos del medicamento por body
 router.route("/prescription_drug/:id").post(createPrescription_drug);
+
+//Ruta para borrar una alergia vinculada a un paciente
+//recibe el id del paciente por params
+//recibe el id de la alergia por query
+router.route("/allergy/:idPatient").delete(deleteAllergie);
+
+//Ruta para borrar una enfermedad vinculada a un paciente
+//recibe el id del paciente por params
+//recibe el id de la enfermdedad por query
+router.route("/disease/:idDisease").delete(deleteDisease);
+
+//Ruta para borrar un medicamento vinculado a un paciente
+//recibe el id del paciente por params
+//recibe el id del medicamento por query
+router
+  .route("/prescription_drug/:idPrescription_drug")
+  .delete(deletePrescription_drug);
+
+//Ruta para modificar campos de una alergia ya creada
+//recibe el id de la alergia por params
+//recibe los campos a modificar por body
+router.route("/allergy/:id").put(modifAllergy);
+
+//Ruta para modificar campos de una enfermedad ya creada
+//recibe el id de la enfermedad por params
+//recibe los campos a modificar por body
+router.route("/disease/:id").put(modifDisease);
+
+//Ruta para modificar campos de un medicamento ya creado
+//recibe el id del medicamento por params
+//recibe los campos a modificar por body
+router.route("/prescription_drug/:id").put(modifPrescription_drug);
 
 module.exports = router;
