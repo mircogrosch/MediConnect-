@@ -71,7 +71,7 @@ const saveNotificationChat = async (notification)=> {
  */
 const getMessage = async (req, res) => {
   const { dniSender, dniReciver } = req.query;
-  console.log("DNI SENDER",dniSender,"DNI RECIVER",dniReciver);
+  console.log("SENDER",dniSender,"RECIVER",dniReciver)
   try {
      const personSender = await Person.findOne({
           where: {
@@ -86,10 +86,8 @@ const getMessage = async (req, res) => {
      const conversationSender = await personSender.getConversations()
      const conversationReciver = await personReciver.getConversations()
      let idConversationMatch= null; 
-     console.log("HASTA ACA ENTRO",conversationSender.length)
     for(let i=0; i<conversationSender.length; i++){ 
         for(let j=0; j<conversationReciver.length;j++){
-            console.log(conversationReciver[j].dataValues.id)
           if(conversationSender[i].dataValues.id === conversationReciver[j].dataValues.id){ 
              idConversationMatch = conversationSender[i].dataValues.id; 
           } 
@@ -102,8 +100,9 @@ const getMessage = async (req, res) => {
         id: idConversationMatch
       }
     })
+    console.log("ESTA ES LA CONVERSACION", conversationMatch)
     const messages = await conversationMatch.getMessages();
-    console.log("ESTOS SON MESANJES",messages)
+    console.log("ESTOS SON LOS MENSAJES", messages)
     res.json({
       data: messages,
       status: 200,
@@ -132,24 +131,25 @@ const saveMessage = async (dataMessage) => {
       email: dataMessage.reciver,
     },
   });
-  const conversation = await Conversation.findOne({
-    include: [
-      {
-        model: Person,
-        where: {
-          dni: personSender.dataValues.dni,
-        },
-      },
-      {
-        model: Person,
-        where: { 
-          dni: personReciver.dataValues.dni,
-        },
-      },
-    ],
-  });
-  await newMessage.setConversation(conversation);
-  await newMessage.setPerson([personSender.dataValues.dni])
+  const conversationSender = await personSender.getConversations()
+  const conversationReciver = await personReciver.getConversations()
+  let idConversationMatch= null; 
+ for(let i=0; i<conversationSender.length; i++){ 
+     for(let j=0; j<conversationReciver.length;j++){
+       if(conversationSender[i].dataValues.id === conversationReciver[j].dataValues.id){ 
+          idConversationMatch = conversationSender[i].dataValues.id; 
+       } 
+     }
+ }
+
+ //buscar todas las conversaciones con el dni de la persona. 
+const conversationMatch = await Conversation.findOne({
+   where:{ 
+     id: idConversationMatch
+   }
+ })
+  await newMessage.setConversation(conversationMatch);
+  await newMessage.setPerson([personSender.dataValues.dni]);
 };
 
 /**

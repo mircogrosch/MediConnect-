@@ -27,8 +27,10 @@ function CardDoctor({ name, lastname, email, rol, img, dni, id }) {
   let userName = `${name} ${lastname}`;
   const handleContact = () => {
     dispatch(getContact(email, rol));
-    dispatch(getMessage(user.user.dni, dni));
     dispatch(deleteNotificationChat(user.user.dni));
+    dispatch(getNotificationsMessage(user.user.dni))
+    dispatch(getMessage(user.user.dni, dni));
+
   };
 
   const contactNoti = useSelector((state) => state.messages.notificationChat);
