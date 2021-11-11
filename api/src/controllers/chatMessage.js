@@ -1,5 +1,5 @@
 const { Message, Person, Conversation,Notification } = require("../db.js");
-
+const {conn} = require("../db.js");
 
 const deleteNotificationChat = async (req,res)=>{ 
   const {personDni,type} = req.query;
@@ -71,24 +71,38 @@ const saveNotificationChat = async (notification)=> {
  */
 const getMessage = async (req, res) => {
   const { dniSender, dniReciver } = req.query;
+  console.log("SENDER",dniSender,"RECIVER",dniReciver)
   try {
-    const conversation = await Conversation.findOne({
-      include: [
-        {
-          model: Person,
+     const personSender = await Person.findOne({
           where: {
-            dni: dniSender,
-          },
-        },
-        {
-          model: Person,
-          where: {
-            dni: dniReciver,
-          },
-        },
-      ],
-    });
-    const messages = await conversation.getMessages();
+             dni: dniSender
+          }
+     });
+     const personReciver= await Person.findOne({
+       where: { 
+         dni: dniReciver
+       }
+     }) 
+     const conversationSender = await personSender.getConversations()
+     const conversationReciver = await personReciver.getConversations()
+     let idConversationMatch= null; 
+    for(let i=0; i<conversationSender.length; i++){ 
+        for(let j=0; j<conversationReciver.length;j++){
+          if(conversationSender[i].dataValues.id === conversationReciver[j].dataValues.id){ 
+             idConversationMatch = conversationSender[i].dataValues.id; 
+          } 
+        }
+    }
+
+    //buscar todas las conversaciones con el dni de la persona. 
+   const conversationMatch = await Conversation.findOne({
+      where:{ 
+        id: idConversationMatch
+      }
+    })
+    console.log("ESTA ES LA CONVERSACION", conversationMatch)
+    const messages = await conversationMatch.getMessages();
+    console.log("ESTOS SON LOS MENSAJES", messages)
     res.json({
       data: messages,
       status: 200,
@@ -117,24 +131,25 @@ const saveMessage = async (dataMessage) => {
       email: dataMessage.reciver,
     },
   });
-  const conversation = await Conversation.findOne({
-    include: [
-      {
-        model: Person,
-        where: {
-          dni: personSender.dataValues.dni,
-        },
-      },
-      {
-        model: Person,
-        where: { 
-          dni: personReciver.dataValues.dni,
-        },
-      },
-    ],
-  });
-  await newMessage.setConversation(conversation);
-  await newMessage.setPerson([personSender.dataValues.dni])
+  const conversationSender = await personSender.getConversations()
+  const conversationReciver = await personReciver.getConversations()
+  let idConversationMatch= null; 
+ for(let i=0; i<conversationSender.length; i++){ 
+     for(let j=0; j<conversationReciver.length;j++){
+       if(conversationSender[i].dataValues.id === conversationReciver[j].dataValues.id){ 
+          idConversationMatch = conversationSender[i].dataValues.id; 
+       } 
+     }
+ }
+
+ //buscar todas las conversaciones con el dni de la persona. 
+const conversationMatch = await Conversation.findOne({
+   where:{ 
+     id: idConversationMatch
+   }
+ })
+  await newMessage.setConversation(conversationMatch);
+  await newMessage.setPerson([personSender.dataValues.dni]);
 };
 
 /**

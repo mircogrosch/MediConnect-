@@ -1,9 +1,11 @@
 import React from "react";
 import axios from "axios";
+import swal from "sweetalert";
 import { useForm } from "react-hook-form";
 import { Grid, InputLabel, TextField, MenuItem, Button } from "@mui/material";
+import { teal } from "@mui/material/colors";
 
-function AllergyForm({ patientId, doctorId }) {
+function AllergyForm({ patientId, setDisplayed }) {
   const {
     register,
     handleSubmit,
@@ -11,28 +13,50 @@ function AllergyForm({ patientId, doctorId }) {
   } = useForm();
 
   const onSubmit = async (data) => {
-    await axios.post(
-      `http://localhost:3001/patient/allergy/${patientId}`,
-      data
-    );
-    const response = await axios.get(
-      `http://localhost:3001/patient/allergy/${patientId}`
-    );
-    console.log(response.data);
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/patient/allergy/${patientId}`,
+        data
+      );
+
+      if (response.data.message === "Alergia creada!") {
+        swal({
+          icon: "success",
+          title: "Datos guardados exitosamente",
+          timer: 1500,
+        });
+      } else {
+        swal({
+          icon: "error",
+          title: "Ha ocurrido un error",
+          text: "Intente de nuevo",
+        });
+      }
+      setDisplayed((state) => ({
+        ...state,
+        allergy: false,
+      }));
+    } catch (error) {
+      alert(error);
+      swal({
+        icon: "error",
+        title: "Server Error",
+      });
+    }
   };
 
   return (
     <Grid container justifyContent="center" sx={{ marginBottom: "2em" }}>
-      <Grid item xs={8} marginY="1em">
+      <Grid item xs={12} marginY="1em">
         <InputLabel sx={{ marginLeft: "5px" }}>Nombre</InputLabel>
         <TextField
           variant="standard"
           error={errors.name ? true : false}
-          sx={{ width: "90%" }}
+          sx={{ width: "100%" }}
           {...register("name", { required: true })}
         />
       </Grid>
-      <Grid item xs={4} marginY="1em">
+      <Grid item xs={12} marginY="1em">
         <InputLabel sx={{ marginLeft: "5px" }}>Gravedad</InputLabel>
         <TextField
           variant="standard"
@@ -61,13 +85,19 @@ function AllergyForm({ patientId, doctorId }) {
       <Grid item xs={12} justifyContent="space-around" display="flex">
         <Button
           variant="contained"
+          onClick={() =>
+            setDisplayed((state) => ({
+              ...state,
+              allergy: false,
+            }))
+          }
           sx={{
             width: "40%",
             height: "50px",
             marginY: "1em",
           }}
         >
-          Limpiar
+          Cancelar
         </Button>
         <Button
           variant="contained"
@@ -76,6 +106,7 @@ function AllergyForm({ patientId, doctorId }) {
             width: "40%",
             height: "50px",
             marginY: "1em",
+            bgcolor: teal[900],
           }}
         >
           Guardar
