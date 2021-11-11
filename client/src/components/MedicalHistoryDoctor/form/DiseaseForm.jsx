@@ -19,7 +19,7 @@ function DiseaseForm({ patientId, setDisplayed }) {
         data
       );
 
-      if (response.data.message === "Enfermedad creada!") {
+      if (response.data.data) {
         swal({
           icon: "success",
           title: "Datos guardados exitosamente",
