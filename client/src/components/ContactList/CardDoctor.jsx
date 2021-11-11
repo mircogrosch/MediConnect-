@@ -27,9 +27,9 @@ function CardDoctor({ name, lastname, email, rol, img, dni }) {
   let userName = `${name} ${lastname}`;
   const handleContact = () => {
     dispatch(getContact(email, rol));
-    dispatch(getMessage(user.user.dni, dni));
     dispatch(deleteNotificationChat(user.user.dni));
     dispatch(getNotificationsMessage(user.user.dni))
+    dispatch(getMessage(user.user.dni, dni));
   };
   return (
     <MyGrid onClick={(e) => handleContact(e)}>
