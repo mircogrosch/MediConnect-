@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define(
-    "message",
+    "work_day",
     {
       id: {
         type: DataTypes.UUID,
@@ -10,9 +10,17 @@ module.exports = (sequelize) => {
         allowNull: false,
         primaryKey: true,
       },
-      text: {
-        type: DataTypes.TEXT,
+      day: {
+        type: DataTypes.INTEGER, // 1 Lunes 2 Martes 5 Viernes
         allowNull: false,
+      },
+      init: {
+        type: DataTypes.JSONB, // { hora: 8 , minutes: 30 }
+        defaultValue: {},
+      },
+      end: {
+        type: DataTypes.JSONB, // { hora: 12, minutes: 30 } 
+        defaultValue: {}, 
       },
     },
     {

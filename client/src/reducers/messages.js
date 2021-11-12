@@ -25,6 +25,8 @@ export const messages = (state=initialState, action) => {
                 ...state,
                 notificationChat: action.payload
             }
+        case types.DELETE_NOTIFICATION_CHAT:
+            return{...state}
         default:
             return state
     }

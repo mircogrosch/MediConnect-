@@ -1,7 +1,30 @@
 const { Message, Person, Conversation,Notification } = require("../db.js");
+const {conn} = require("../db.js");
 
+const deleteNotificationChat = async (req,res)=>{ 
+  const {personDni,type} = req.query;
+  try{ 
+    const notificationToRemove =  await Notification.findOne({
+      where:{
+        personDni:personDni,
+        type: type
+      }
+    })
+    console.log("NOTI REMOVE", notificationToRemove)
+    await notificationToRemove.destroy()
+    res.status(200)
+  } catch { 
+      res.status(400)
+  }
+ 
+ 
+}
 
-
+/**
+ * DEVUELVE LAS NOTIFICACIONES DE ALGUIEN EN PARTICULAR 
+ * @param {*} req request de express
+ * @param {*} res response de express
+ */
  const getNotificationChat = async (req, res)=> { 
       const {dniReciver,type} = req.query
   try{ 
@@ -9,18 +32,19 @@ const { Message, Person, Conversation,Notification } = require("../db.js");
       where:{
        personDni: dniReciver,
        type: type
-      },
-     //  attributes: ['id', 'idDoctor', 'idPatient', 'description', 'personDni']
+      }
     }); 
     res.send(notifications)
    }catch{
      res.status(400).send("NOT FOUND")
    }
  }
-
+/**
+ * GUARDA LAS NOTIFICACIONES EN LA DB
+ * @param {*} notification recibe una notificacion socket
+ */
 
 const saveNotificationChat = async (notification)=> { 
-  console.log('notif',notification)
   const new_Notification = await Notification.create(
     {
       description: notification.message,
@@ -39,27 +63,46 @@ const saveNotificationChat = async (notification)=> {
   new_Notification.setPerson(person.dataValues.dni);
 
 }
+
+/**
+ * Devuelve los mensajes de una conversacion en particular
+ * @param {*} req request de express
+ * @param {*} res response de express
+ */
 const getMessage = async (req, res) => {
   const { dniSender, dniReciver } = req.query;
+  console.log("SENDER",dniSender,"RECIVER",dniReciver)
   try {
-    const conversation = await Conversation.findOne({
-      include: [
-        {
-          model: Person,
+     const personSender = await Person.findOne({
           where: {
-            dni: dniSender,
-          },
-        },
-        {
-          model: Person,
-          where: {
-            dni: dniReciver,
-          },
-        },
-      ],
-    });
-    const messages = await conversation.getMessages();
+             dni: dniSender
+          }
+     });
+     const personReciver= await Person.findOne({
+       where: { 
+         dni: dniReciver
+       }
+     }) 
+     const conversationSender = await personSender.getConversations()
+     const conversationReciver = await personReciver.getConversations()
+     let idConversationMatch= null; 
+    for(let i=0; i<conversationSender.length; i++){ 
+        for(let j=0; j<conversationReciver.length;j++){
+          if(conversationSender[i].dataValues.id === conversationReciver[j].dataValues.id){ 
+             idConversationMatch = conversationSender[i].dataValues.id; 
+          } 
+        }
+    }
 
+    //buscar todas las conversaciones con el dni de la persona. 
+   const conversationMatch = await Conversation.findOne({
+      where:{ 
+        id: idConversationMatch
+      }
+    })
+    console.log("ESTA ES LA CONVERSACION", conversationMatch)
+    const messages = await conversationMatch.getMessages();
+    console.log("ESTOS SON LOS MENSAJES", messages)
     res.json({
       data: messages,
       status: 200,
@@ -68,6 +111,11 @@ const getMessage = async (req, res) => {
       res.status(400).send(error)
   }
 };
+
+/**
+ * GUARDA LOS MENSAJES EN LA DB
+ * @param {*} dataMessage recibe un mensaje enviado por socket
+ */
 const saveMessage = async (dataMessage) => {
   const newMessage = await Message.create({
     text: dataMessage.message,
@@ -83,24 +131,25 @@ const saveMessage = async (dataMessage) => {
       email: dataMessage.reciver,
     },
   });
-  const conversation = await Conversation.findOne({
-    include: [
-      {
-        model: Person,
-        where: {
-          dni: personSender.dataValues.dni,
-        },
-      },
-      {
-        model: Person,
-        where: {
-          dni: personReciver.dataValues.dni,
-        },
-      },
-    ],
-  });
-  await newMessage.setConversation(conversation);
-  await newMessage.setPerson([personSender.dataValues.dni])
+  const conversationSender = await personSender.getConversations()
+  const conversationReciver = await personReciver.getConversations()
+  let idConversationMatch= null; 
+ for(let i=0; i<conversationSender.length; i++){ 
+     for(let j=0; j<conversationReciver.length;j++){
+       if(conversationSender[i].dataValues.id === conversationReciver[j].dataValues.id){ 
+          idConversationMatch = conversationSender[i].dataValues.id; 
+       } 
+     }
+ }
+
+ //buscar todas las conversaciones con el dni de la persona. 
+const conversationMatch = await Conversation.findOne({
+   where:{ 
+     id: idConversationMatch
+   }
+ })
+  await newMessage.setConversation(conversationMatch);
+  await newMessage.setPerson([personSender.dataValues.dni]);
 };
 
 /**
@@ -123,7 +172,6 @@ const SOCKET_CHAT = (io) => {
         type: data.type,
         dniReciver: data.dniReciver
       }
-      console.log(data)
       io.to(reciver).emit("reciveNotificationChat",newNotificationChat);
       saveNotificationChat(newNotificationChat)
       io.to(sender).to(reciver).emit("reciveChat", data);
@@ -134,5 +182,6 @@ const SOCKET_CHAT = (io) => {
 module.exports = {
   SOCKET_CHAT,
   getMessage,
-  getNotificationChat
+  getNotificationChat,
+  deleteNotificationChat
 };

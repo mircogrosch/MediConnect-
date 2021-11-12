@@ -62,6 +62,10 @@ function Chat({ user }) {
     initiateSocketChat(userSender.user, socketChat);
   }, []);
 
+  useEffect(() => {
+    return setChat([]);
+  }, [chats]);
+
   socketChat.on("reciveChat", (data) => {
     console.log(data);
     setChat([...chat, data]);
@@ -191,7 +195,9 @@ function Chat({ user }) {
         ))}
         {chat.map((m, i) => (
           <Box>
-            {m.reciver !== user.selectContact.email ? (
+            
+            {(m.reciver === userSender.user.email || userSender.user.email === m.sender) && (m.sender === user.selectContact.email || m.reciver === user.selectContact.email) ? 
+            m.reciver !== user.selectContact.email ? (
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Box
                   sx={{
@@ -245,7 +251,7 @@ function Chat({ user }) {
                   </Typography>
                 </Box>
               </Box>
-            )}
+            ):false}
           </Box>
         ))}
       </Box>

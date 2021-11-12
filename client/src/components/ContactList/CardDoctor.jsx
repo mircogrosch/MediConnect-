@@ -1,9 +1,14 @@
 import { AccountCircle } from "@mui/icons-material";
 import { Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "@mui/system";
-import { useDispatch } from "react-redux";
-import { getContact, getMessage } from "../../actions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getContact,
+  getMessage,
+  deleteNotificationChat,
+  getNotificationsMessage,
+} from "../../actions";
 import jwt from "jsonwebtoken";
 
 const MyGrid = styled(Grid)({
@@ -18,17 +23,21 @@ const MyIcon = styled(AccountCircle)({
   marginRight: "20px",
 });
 
-function CardDoctor({ name, lastname, email, rol, img, dni }) {
+function CardDoctor({ name, lastname, email, rol, img, dni, id }) {
   const user = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
   );
   const dispatch = useDispatch();
-  let docName = `${name} ${lastname}`;
+  let userName = `${name} ${lastname}`;
   const handleContact = () => {
     dispatch(getContact(email, rol));
+    dispatch(deleteNotificationChat(user.user.dni));
+    dispatch(getNotificationsMessage(user.user.dni));
     dispatch(getMessage(user.user.dni, dni));
   };
+
+  const contactNoti = useSelector((state) => state.messages.notificationChat);
   return (
     <MyGrid onClick={(e) => handleContact(e)}>
       {img ? (
@@ -47,8 +56,11 @@ function CardDoctor({ name, lastname, email, rol, img, dni }) {
         <MyIcon />
       )}
       <Grid>
-        <Typography variant="h6">{docName}</Typography>
-        <Typography variant="body"></Typography>
+        <Typography variant="h6">{userName}</Typography>
+        <Typography variant="body">Ingrese al chat con {userName}</Typography>
+        {contactNoti.find((e) => e.idPatient === id) && (
+          <Typography variant="body">1</Typography>
+        )}
       </Grid>
     </MyGrid>
   );

@@ -16,6 +16,8 @@ import MedicalHistoryDoctor from "./pages/MedicalHistoryDoctor";
 import MyPatientsHistory from "./components/MedicalHistoryDoctor/MyPatientsHistory";
 import ScheduleDoctor from "./pages/ScheduleDoctor";
 import AppointmentConfig from "./pages/AppointmentConfig";
+import CrearReceta from "./pages/CrearReceta";
+import CrearOrden from "./pages/CrearOrden";
 
 function App() {
   return (
@@ -45,6 +47,8 @@ function App() {
         path="/doctor/medical-history/:id"
         component={MedicalHistoryDoctor}
       />
+      <Route path='/doctor/recipes' component={CrearReceta}/>
+      <Route path="/doctor/orders" component={CrearOrden}/>
     </div>
   );
 }
