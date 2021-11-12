@@ -57,6 +57,14 @@ function day_name_by_number(day_number) {
 
 const createDoctor = async (req, res) => {
   let result;
+  try {
+    if (req.file != undefined) {
+      result = await cloudinary.v2.uploader.upload(req.file.path);
+      result = result.url;
+    }
+  } catch (error) {
+    console.log("Error con cloudinary:", error);
+  }
   const {
     dni,
     name,
@@ -68,12 +76,6 @@ const createDoctor = async (req, res) => {
     location,
     specialities, // tiene que ser un arreglo de id de specialties o un arreglo vacio
   } = req.body;
-  if (req.file.path) {
-    console.log("req.file ", req.file);
-    console.log("req.file.path ", req.file.path);
-    result = await cloudinary.v2.uploader.upload(req.file.path);
-    console.log("result ", result);
-  }
   const rol = "Doctor";
   if (
     dni &&
@@ -93,7 +95,7 @@ const createDoctor = async (req, res) => {
           name,
           lastname,
           address,
-          imageProfile: result.url,
+          imageProfile: result,
           email,
           password: encryptPassword(password),
           rol,
@@ -111,7 +113,13 @@ const createDoctor = async (req, res) => {
           ],
         }
       );
-      await fs.unlink(req.file.path); // Elimina la imagen guardada en api/src/public/uploads
+      try {
+        if (req.file != undefined) {
+          await fs.unlink(req.file.path); // Elimina la imagen guardada en api/src/public/uploads
+        }
+      } catch (error) {
+        console.log("Error eliminando la imagen guardada", error);
+      }
       let newDoctor = await Doctor.create(
         {
           enrollment,
@@ -214,7 +222,6 @@ const getDoctor = async (req, res) => {
       });
       if (doctor) {
         let json = {};
-        console.log(doctor.dataValues.doctors);
         concat_json(doctor.dataValues, json);
         concat_json(doctor.dataValues.doctors[0].dataValues, json);
         json["specialities"] =
@@ -354,35 +361,86 @@ const getPatients = async (req, res) => {
   }
 };
 
+const validateAppointment = async (date, id_doctor) => {
+  let appointment;
+  const newDate = new Date(date);
+  const doctor = await Doctor.findOne({
+    where: {
+      id: id_doctor,
+    },
+    include: {
+      model: Work_day,
+    },
+  });
+  const workDays = await doctor.getWork_days();
+  workDays.forEach(async (workday) => {
+    if (workday.dataValues.day === newDate.getDay()) {
+      if (
+        workday.init.hour <= newDate.getHours() &&
+        newDate.getHours() <= workday.end.hour
+      ) {
+        appointment = true;
+      }
+    }
+  });
+  if (appointment) {
+    return (appointment = await Appointment.findOne({
+      where: {
+        doctorId: id_doctor,
+        day: newDate.getDate(),
+        month: newDate.getMonth(),
+        year: newDate.getFullYear(),
+        hour: newDate.getHours(),
+        minutes: newDate.getMinutes(),
+      },
+    }));
+  } else {
+    return false;
+  }
+};
+
 const createAppointment = async (req, res) => {
   const { id } = req.params; // id de doctor
   const { patient } = req.query; // id de paciente
   const { date } = req.body; // fecha de turno
   const payment_status = "Pendiente";
-  try {
-    newDate = new Date(date);
-    const appointment = await Appointment.create({
-      date: date,
-      day: newDate.getDate(),
-      day_name: day_name_by_number(newDate.getDay()),
-      month: newDate.getMonth(),
-      year: newDate.getFullYear(),
-      hour: newDate.getHours(),
-      minutes: newDate.getMinutes(),
-      payment_status: payment_status,
-    });
-    appointment.setPatient(patient);
-    appointment.setDoctor(id);
+  const newDate = new Date(date);
+  const appointment = await validateAppointment(newDate, id);
+  if (appointment) {
     res.json({
-      data: appointment,
-      message: "Turno creado satisfactoriamente",
+      data: null,
+      message: "Ya existe turno con esa fecha",
     });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      data: error,
-      message: "something goes wrong",
+  } else if (appointment === false) {
+    res.json({
+      data: null,
+      message: "El turno no corresponde a la jornada laboral del Doctor",
     });
+  } else {
+    try {
+      const appointment = await Appointment.create({
+        date: date,
+        day: newDate.getDate(),
+        day_name: day_name_by_number(newDate.getDay()),
+        month: newDate.getMonth(),
+        year: newDate.getFullYear(),
+        hour: newDate.getHours(),
+        minutes: newDate.getMinutes(),
+        payment_status: payment_status,
+      });
+      appointment.setPatient(patient);
+      appointment.setDoctor(id);
+      res.json({
+        data: appointment,
+        message: "Turno creado satisfactoriamente",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        data: error,
+        message: "something goes wrong",
+      });
+    }
   }
 };
 
