@@ -1,12 +1,13 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
-import { IconButton } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { NotificationsOutlined } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import CardNotification from "./CardNotification";
 import { useSelector } from "react-redux";
+import { Box } from "@mui/system";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -45,7 +46,6 @@ const StyledMenu = styled((props) => (
     margin: 0,
     padding: 0,
     listStyle: "none",
-    height: "100%",
     "&::-webkit-scrollbar": {
       width: "8px",
     },
@@ -97,6 +97,11 @@ export default function CustomizedMenus() {
         onClose={handleClose}
       >
         {notifications.notifications &&
+        notifications.notifications.length === 0 ? (
+          <Box sx={{ marginLeft: "20px" }}>
+            <Typography variant="h5">No tienes notificaciones</Typography>
+          </Box>
+        ) : (
           notifications.notifications.map((e) => (
             <MenuItem onClick={handleClose} disableRipple>
               {e.description ? (
@@ -114,7 +119,8 @@ export default function CustomizedMenus() {
                 />
               )}
             </MenuItem>
-          ))}
+          ))
+        )}
       </StyledMenu>
     </div>
   );
