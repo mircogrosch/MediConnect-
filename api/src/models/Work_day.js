@@ -11,16 +11,16 @@ module.exports = (sequelize) => {
         primaryKey: true,
       },
       day: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER, // 1 Lunes 2 Martes 5 Viernes
         allowNull: false,
       },
       init: {
-        type: DataTypes.JSONB,
+        type: DataTypes.JSONB, // { hora: 8 , minutes: 30 }
         defaultValue: {},
       },
       end: {
-        type: DataTypes.JSONB,
-        defaultValue: {},
+        type: DataTypes.JSONB, // { hora: 12, minutes: 30 } 
+        defaultValue: {}, 
       },
     },
     {

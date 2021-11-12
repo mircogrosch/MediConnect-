@@ -57,6 +57,14 @@ function day_name_by_number(day_number) {
 
 const createDoctor = async (req, res) => {
   let result;
+  try {
+    if (req.file != undefined) {
+      result = await cloudinary.v2.uploader.upload(req.file.path);
+      result = result.url;
+    }
+  } catch (error) {
+    console.log("Error con cloudinary:", error);
+  }
   const {
     dni,
     name,
@@ -68,12 +76,6 @@ const createDoctor = async (req, res) => {
     location,
     specialities, // tiene que ser un arreglo de id de specialties o un arreglo vacio
   } = req.body;
-  if (req.file.path) {
-    console.log("req.file ", req.file);
-    console.log("req.file.path ", req.file.path);
-    result = await cloudinary.v2.uploader.upload(req.file.path);
-    console.log("result ", result);
-  }
   const rol = "Doctor";
   if (
     dni &&
@@ -93,7 +95,7 @@ const createDoctor = async (req, res) => {
           name,
           lastname,
           address,
-          imageProfile: result.url,
+          imageProfile: result,
           email,
           password: encryptPassword(password),
           rol,
@@ -111,7 +113,13 @@ const createDoctor = async (req, res) => {
           ],
         }
       );
-      await fs.unlink(req.file.path); // Elimina la imagen guardada en api/src/public/uploads
+      try {
+        if (req.file != undefined) {
+          await fs.unlink(req.file.path); // Elimina la imagen guardada en api/src/public/uploads
+        }
+      } catch (error) {
+        console.log("Error eliminando la imagen guardada", error);
+      }
       let newDoctor = await Doctor.create(
         {
           enrollment,
@@ -423,15 +431,14 @@ const getAppointment = async (req, res) => {
 
 const createWorkDay = async (req, res) => {
   const { id } = req.params;
-  const { day, init, end } = req.body;
+  const { week } = req.body;
   try {
-    const newWorkDay = await Work_day.create({
-      day: day,
-      init: init,
-      end: end,
-      attributes: ["id", "day", "init", "end"],
+    const newWorkDay = await Work_day.bulkCreate(week, {
+      fields: ["id", "day", "init", "end"],
     });
-    newWorkDay.setDoctor(id);
+    newWorkDay.forEach((workday) => {
+      workday.setDoctor(id);
+    });
     res.json({
       data: newWorkDay,
       message: "Jornada creada",
