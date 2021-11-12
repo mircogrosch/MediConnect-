@@ -15,6 +15,7 @@ import MyPatientsPage from "./pages/MyPatientsPage";
 import MedicalHistoryDoctor from "./pages/MedicalHistoryDoctor";
 import MyPatientsHistory from "./components/MedicalHistoryDoctor/MyPatientsHistory";
 import ScheduleDoctor from "./pages/ScheduleDoctor";
+import AppointmentConfig from "./pages/AppointmentConfig";
 import CrearReceta from "./pages/CrearReceta";
 import CrearOrden from "./pages/CrearOrden";
 
@@ -30,6 +31,10 @@ function App() {
       <Route path="/account/profesional" component={HomePageDoctor} />
       <Route path="/account/patient" component={HomePatientPage} />
       <Route path="/account/doctors/:id" component={AddDoctors} />
+      <Route
+        path="/account/appointment-config/:id"
+        component={AppointmentConfig}
+      />
       <Route path="/account/schedule/:id" component={ScheduleDoctor} />
       <Route exact path="/" component={LandingPage} />
       <Route path="/mensajes/paciente" component={MensajesPaciente} />
