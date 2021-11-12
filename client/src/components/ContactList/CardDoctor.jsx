@@ -3,7 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { styled } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
-import { getContact, getMessage, deleteNotificationChat } from "../../actions";
+import { getContact, getMessage, deleteNotificationChat,getNotificationsMessage } from "../../actions";
 import jwt from "jsonwebtoken";
 
 const MyGrid = styled(Grid)({
