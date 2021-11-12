@@ -46,7 +46,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
             </Link>
           ) : (
             <Link
-              to={`/account/medicalhistory/${user.rol.id}`}
+              to={`/account/patient/medical-history/${user.rol.id}`}
               style={{ textDecoration: "none" }}
             >
               <Card title="Historial Medico" icon={cardInfo[0].icon} />
