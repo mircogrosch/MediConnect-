@@ -133,10 +133,10 @@ function MedicalHistoryPatient(props) {
                       {prescription.name}
                     </Typography>
                     <Typography variant="body1" color={grey[800]}>
-                      Gravedad: {prescription.posology}
+                      <strong>Gravedad:</strong> {prescription.posology}
                     </Typography>
                     <Typography variant="body1" color={grey[800]}>
-                      Descripción: {prescription.description}
+                      <strong>Descripción:</strong> {prescription.description}
                     </Typography>
                   </Box>
                 ))
