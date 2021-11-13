@@ -7,6 +7,7 @@ const {
   getDoctors,
   addDoctor,
   deleteDoctor,
+  getAppointment,
   getAllergies,
   createAllergie,
   createDisease,
@@ -58,6 +59,14 @@ Y se envia por query el id del Doctor
 ej: localhost:3001/patient/doctors/:id_paciente?id_Doctor=Mauricio
 */
 router.route("/doctors/:id").delete(deleteDoctor);
+
+/*
+  Devuelve todos los turnos pendientes de un Paciente
+  fecha - hora - estado de pago - datos paciente
+  Se envia id_paciente por params
+  ej:  localhost:3001/patient/appointment/id_paciente
+*/
+router.route("/appointment/:id").get(getAppointment);
 
 router.route("/:id").get(getPatient);
 
