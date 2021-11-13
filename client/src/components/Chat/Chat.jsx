@@ -73,7 +73,6 @@ function Chat({ user }) {
 
   //SOCKET
   socketChat.on("reciveChat", (data) => {
-    console.log(data);
     setChat([...chat, data]);
   });
 
