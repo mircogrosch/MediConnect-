@@ -6,6 +6,7 @@ const routes = require("./routes/index.js");
 const loginRouter = require("./routes/login");
 const patientRouter = require("./routes/patients");
 const doctorRouter = require("./routes/doctor");
+const prescriptionRouter = require("./routes/prescription");
 const { Person, Patient, Doctor } = require("./db");
 const passport = require("passport");
 const Strategy = require("passport-local").Strategy;
@@ -15,7 +16,7 @@ const healthinsuranceRouter = require("./routes/healthinsurance");
 const flash = require("connect-flash");
 const notification = require("./routes/notifications");
 const chatMessage = require("./routes/chatMessage");
-const payments = require("./routes/mercadopago")
+const payments = require("./routes/mercadopago");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
@@ -216,6 +217,7 @@ server.use("/doctor", doctorRouter);
 server.use("/specialities", specialitiesRouter);
 server.use("/healthinsurance", healthinsuranceRouter);
 server.use("/notifications", notification);
+server.use("/prescription", prescriptionRouter);
 server.use("/chat", chatMessage);
 server.use("/checkout", payments);
 // Error catching endware.

@@ -62,6 +62,7 @@ const {
   Disease,
   Appointment,
   Work_day,
+  Prescription,
 } = sequelize.models;
 
 // Uno a muchos
@@ -125,6 +126,12 @@ Doctor.hasMany(Appointment);
 // Uno a Muchos
 Work_day.belongsTo(Doctor);
 Doctor.hasMany(Work_day);
+
+// Uno a Muchos
+Prescription.belongsTo(Doctor);
+Prescription.belongsTo(Patient);
+Doctor.hasMany(Prescription);
+Patient.hasMany(Prescription);
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
