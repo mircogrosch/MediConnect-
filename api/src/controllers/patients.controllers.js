@@ -7,6 +7,7 @@ const {
   Conversation,
   Allergy,
   Disease,
+  Appointment,
   Prescription_drug,
 } = require("../db");
 const { Op, literal } = require("sequelize");
@@ -333,6 +334,41 @@ const deleteDoctor = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send(error);
+  }
+};
+
+const getAppointment = async (req, res) => {
+  const { id } = req.params; // id de paciente
+  try {
+    const appointments = await Appointment.findAll({
+      where: {
+        patientId: id,
+      },
+      include: [
+        {
+          model: Patient,
+          include: {
+            model: Person,
+          },
+        },
+        {
+          model: Doctor,
+          include: {
+            model: Person,
+          },
+        },
+      ],
+    });
+    res.json({
+      data: appointments,
+      message: "Turnos pendientes del Paciente",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
   }
 };
 
@@ -727,6 +763,7 @@ module.exports = {
   createPatient,
   addDoctor,
   deleteDoctor,
+  getAppointment,
   getAllergies,
   createAllergie,
   createDisease,
