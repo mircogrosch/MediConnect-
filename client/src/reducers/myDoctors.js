@@ -3,8 +3,11 @@ import swal from "sweetalert";
 const initialState = {
   names: [],
   copyNames: [], // Este estado sirve de soporte para que funcione bien el filtrado (siempre va a tener todos los doctores)
-  selectContact: null
+  selectContact: null,
 };
+/*
+ Este estado guarda todos los doctores asociados a un paciente
+ */
 export const myDoctors = (state = initialState, action) => {
   switch (action.type) {
     case types.GET_MY_DOCTORS:
@@ -14,10 +17,10 @@ export const myDoctors = (state = initialState, action) => {
         copyNames: action.payload.data,
       };
     case types.GET_CONTACT:
-      return({
+      return {
         ...state,
-        selectContact: state.names.find(e => e.email === action.payload)
-      })
+        selectContact: state.names.find((e) => e.email === action.payload),
+      };
 
     case types.FILTER_SPECIALITIES_MY_DOCTORS:
       let filtered;
