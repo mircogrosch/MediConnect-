@@ -19,6 +19,8 @@ import MedicalHistoryPatient from "./pages/MedicalHistoryPatient";
 import AppointmentConfig from "./pages/AppointmentConfig";
 import CrearReceta from "./pages/CrearReceta";
 import CrearOrden from "./pages/CrearOrden";
+import SchedulePatient from "./pages/SchedulePatient";
+import NewAppointment from "./pages/NewAppointment";
 
 function App() {
   return (
@@ -36,7 +38,16 @@ function App() {
         path="/account/appointment-config/:id"
         component={AppointmentConfig}
       />
-      <Route path="/account/schedule/:id" component={ScheduleDoctor} />
+      <Route
+        exact
+        path="/account/patient/new-appointment/:id"
+        component={NewAppointment}
+      />
+      <Route
+        path="/account/profesional/schedule/:id"
+        component={ScheduleDoctor}
+      />
+      <Route path="/account/patient/schedule/:id" component={SchedulePatient} />
       <Route exact path="/" component={LandingPage} />
       <Route path="/mensajes/paciente" component={MensajesPaciente} />
       <Route path="/mensajes/profesional" component={MensajesDoctor} />
@@ -52,8 +63,8 @@ function App() {
         path="/doctor/medical-history/:id"
         component={MedicalHistoryDoctor}
       />
-      <Route path='/doctor/recipes' component={CrearReceta}/>
-      <Route path="/doctor/orders" component={CrearOrden}/>
+      <Route path="/doctor/recipes" component={CrearReceta} />
+      <Route path="/doctor/orders" component={CrearOrden} />
     </div>
   );
 }
