@@ -1,5 +1,6 @@
 import React, {useEffect } from 'react';
 import {useSelector} from 'react-redux'
+import jwt from "jsonwebtoken";
 function JitsiMeet({closeJitsi}) {
   const containerStyle = {
     width: '100%',
@@ -7,7 +8,10 @@ function JitsiMeet({closeJitsi}) {
   };
 
 const roomId = useSelector(state => state.messages.conversation);
-
+const {user} = jwt.verify(
+  JSON.parse(sessionStorage.getItem("user"))?.token,
+  "secret"
+);
  function startConference() {
   try {
    const domain = 'meet.jit.si';
@@ -23,13 +27,17 @@ const roomId = useSelector(state => state.messages.conversation);
     configOverwrite: {
      disableSimulcast: false,
     },
-    onload:"Loading"
+    onload:"Loading",
+    userInfo: {
+      email: user.email,
+      displayName: `${user.name} ${user.lastname}`
+  }
    };
 
    const api = new window.JitsiMeetExternalAPI(domain, options);
    api.addEventListener('videoConferenceJoined', () => {
     console.log('Local User Joined');
-    api.executeCommand('displayName', 'MyName');
+    api.executeCommand('displayName', `${user.name} ${user.lastname}`);
    });
    api.addEventListener('readyToClose', ()=>{
       closeJitsi()
