@@ -29,9 +29,8 @@ function CardDoctor({ name, lastname, email, rol, img, dni, id }) {
     dispatch(getConversations(user.user.dni,dni))
     dispatch(getContact(email, rol));
     dispatch(deleteNotificationChat(user.user.dni));
-    dispatch(getNotificationsMessage(user.user.dni))
+    dispatch(getNotificationsMessage(user.user.dni));
     dispatch(getMessage(user.user.dni, dni));
-
   };
 
   const contactNoti = useSelector((state) => state.messages.notificationChat);
