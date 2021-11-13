@@ -2,7 +2,8 @@ import types from "../actions/types";
 
 const initialState = {
     chat: [],
-    notificationChat: []
+    notificationChat: [],
+    conversation:"",
 }
 
 export const messages = (state=initialState, action) => {
@@ -27,6 +28,8 @@ export const messages = (state=initialState, action) => {
             }
         case types.DELETE_NOTIFICATION_CHAT:
             return{...state}
+        case types.GET_CONVERSATION: 
+            return {...state, conversation:action.payload}
         default:
             return state
     }
