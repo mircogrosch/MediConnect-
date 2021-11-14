@@ -3,7 +3,7 @@ import { Grid } from "@mui/material";
 import { styled } from "@mui/system";
 import { InputBase, Typography } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
-import { AccountCircle, Send } from "@mui/icons-material";
+import { AccountCircle, Send,VideocamOutlined } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { teal } from "@material-ui/core/colors";
 import jwt from "jsonwebtoken";
@@ -13,6 +13,7 @@ import {
   socketChat,
 } from "../Controlers/chatMessage";
 import { useSelector } from "react-redux";
+import JitsiMeet from "../JITSI/JitsiMeet";
 
 const MyBox = styled(Box)({
   backgroundColor: teal[200],
@@ -52,12 +53,16 @@ function Chat({ user }) {
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
   );
-
+//GLOBAL STATES
   const chats = useSelector((state) => state.messages.chat.data);
 
+  //Local State
   const [chat, setChat] = useState([]);
   const [message, setMessage] = useState("");
+  const [showJitsi, setShowJitsi] = useState(false);
 
+
+//HOOKS
   useEffect(() => {
     initiateSocketChat(userSender.user, socketChat);
   }, []);
@@ -66,22 +71,34 @@ function Chat({ user }) {
     return setChat([]);
   }, [chats]);
 
+  //SOCKET
   socketChat.on("reciveChat", (data) => {
-    console.log(data);
     setChat([...chat, data]);
   });
 
-  console.log("sender", chat);
 
+
+  //HANDLES
   const handleSubmit = () => {
     sendMessage(userSender, user.selectContact, message, socketChat);
     setMessage("");
   };
+  const handleShowJitsi = ()=>{ 
+    setShowJitsi(!showJitsi)
+  }
   return (
-    <MyGrid>
-      <MyBox sx={{ whidth: 700, height: 75, marginBottom: "10px" }}>
+    <MyGrid id="chat-message">
+
+      {showJitsi? 
+        <JitsiMeet closeJitsi={handleShowJitsi}/>  
+        : 
+        <div> 
+
+         <MyBox sx={{ whidth: 700, height: 75, marginBottom: "10px" }}>
         {user.selectContact
           ? <MyIcon /> && (
+            <Box style={{display:"flex",justifyContent:"space-between",width:"100%"}}> 
+              <div style={{display:"flex"}}>      
               <img
                 src={user.selectContact.imageProfile}
                 style={{
@@ -94,13 +111,21 @@ function Chat({ user }) {
                   marginLeft: "10px",
                 }}
               />
+           <Typography variant="h5" style={{color:teal[900],marginTop:10}}>
+         
+                {`${user.selectContact.name} ${user.selectContact.lastname}`}
+               
+            </Typography> 
+            </div> 
+            <div>      
+            <IconButton style={{color:teal[900]}} onClick={()=>handleShowJitsi()}>      
+              <VideocamOutlined sx={{fontSize:"1.3em"}}/>
+          </IconButton>
+          </div>   
+            </Box>  
             )
           : null}
-        <Typography variant="h5">
-          {user.selectContact
-            ? `${user.selectContact.name} ${user.selectContact.lastname}`
-            : ""}
-        </Typography>
+      
       </MyBox>
       <Box
         sx={{
@@ -266,28 +291,17 @@ function Chat({ user }) {
                 handleSubmit();
               }}
             >
-              <Send color="primary" />
+             <Send color="primary" />
             </IconButton>
           }
+          sx={{width:"100%",marginBottom:2}}
         />
-      ) : (
-        <MyTextInput
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Escriba su mensaje..."
-          value={message}
-          endAdornment={
-            <IconButton
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              <Send color="primary" />
-            </IconButton>
-          }
-        />
-      )}
+      ) :null} 
+        </div> 
+      }
+      
     </MyGrid>
-  );
+  ); //return
 }
 
 export default Chat;

@@ -60,7 +60,7 @@ function DiseaseForm({ patientId, setDisplayed }) {
         <InputLabel sx={{ marginLeft: "5px" }}>Fecha de Diagnóstico</InputLabel>
         <TextField
           variant="standard"
-          defaultValue=""
+          type="date"
           error={errors.diagnosis_date ? true : false}
           sx={{ width: "100%" }}
           {...register("diagnosis_date", { required: "true" })}

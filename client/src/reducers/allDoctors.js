@@ -5,7 +5,9 @@ const initialState = {
   allDoctors: [],
   copyAllDoctors: [], // Este estado sirve de soporte para que funcione bien el filtrado (siempre va a tener todos los doctores)
 };
-
+/*
+ Este estado guarda todos los doctores NO asociados a un paciente
+ */
 export default function allDoctors(state = initialState, action) {
   switch (action.type) {
     case types.GET_DOCTORS:

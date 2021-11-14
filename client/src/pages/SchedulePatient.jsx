@@ -9,25 +9,24 @@ import DataTable from "react-data-table-component";
 const columnas = [
   { name: "Fecha", selector: "date", sortable: true },
   { name: "Hora", selector: "hour_long", sortable: true },
-  { name: "Nombre", selector: "patient.person.name", sortable: true },
-  { name: "Apellido", selector: "patient.person.lastname", sortable: true },
+  //   { name: "Nombre", selector: "patient.person.name", sortable: true },
+  //   { name: "Apellido", selector: "patient.person.lastname", sortable: true },
   { name: "Estado de pago", selector: "payment_status", sortable: true },
 ];
-const ScheduleDoctor = (props) => {
+const SchedulePatient = (props) => {
   const [data, setData] = useState([]);
 
-  const getAppointments = async () => {
-    const URL = "http://localhost:3001";
-    const response = await axios.get(
-      `${URL}/doctor/appointment/${props.match.params.id}`
-    );
-    setData(response.data.data);
-  };
+  //   const getAppointments = async () => {
+  //     const URL = "http://localhost:3001";
+  //     const response = await axios.get(
+  //       `${URL}/doctor/appointment/${props.match.params.id}`
+  //     );
+  //     setData(response.data.data);
+  //   };
 
-  useEffect(() => {
-    getAppointments();
-  }, []);
-  console.log("data ", data);
+  //   useEffect(() => {
+  //     getAppointments();
+  //   }, []);
   return (
     <>
       <Box sx={{ background: grey[50] }}>
@@ -79,7 +78,6 @@ const ScheduleDoctor = (props) => {
               </Grid>
             ) : (
               <Grid
-                // backgroundColor="red"
                 height="30vh"
                 style={{
                   display: "flex",
@@ -97,7 +95,7 @@ const ScheduleDoctor = (props) => {
             )}
 
             <Link
-              to={`/account/appointment-config/${props.match.params.id}`}
+              to={`/account/patient/new-appointment/${props.match.params.id}`}
               style={{ textDecoration: "none", width: "80%" }}
             >
               <Button
@@ -110,7 +108,7 @@ const ScheduleDoctor = (props) => {
                   background: teal[900],
                 }}
               >
-                Configurar agenda
+                Solicitar nuevo turno
               </Button>
             </Link>
           </Grid>
@@ -119,4 +117,4 @@ const ScheduleDoctor = (props) => {
     </>
   );
 };
-export default ScheduleDoctor;
+export default SchedulePatient;

@@ -316,6 +316,16 @@ export const getMessage = (dniSender, dniReciver) => {
   };
 };
 
+export const getConversations = (dniSender, dniReciver)=>{ 
+      return async function(dispatch){
+        const response = await axios.get(`${URL}/chat/conversation?dniSender=${dniSender}&dniReciver=${dniReciver}`)
+        return dispatch({
+          type: types.GET_CONVERSATION,
+          payload: response.data
+        })
+      }
+}
+
 export const getNotificationsMessage = (dniReciver) => {
   return async function (dispatch) {
     const response = await axios.get(`${URL}/chat/notifications?dniReciver=${dniReciver}&type=message`)
