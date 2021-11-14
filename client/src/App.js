@@ -19,6 +19,7 @@ import MedicalHistoryPatient from "./pages/MedicalHistoryPatient";
 import AppointmentConfig from "./pages/AppointmentConfig";
 import CrearReceta from "./pages/CrearReceta";
 import CrearOrden from "./pages/CrearOrden";
+import NewAppoinmentStep2 from "./pages/NewAppoinmentStep2";
 
 function App() {
   return (
@@ -52,8 +53,12 @@ function App() {
         path="/doctor/medical-history/:id"
         component={MedicalHistoryDoctor}
       />
-      <Route path='/doctor/recipes' component={CrearReceta}/>
-      <Route path="/doctor/orders" component={CrearOrden}/>
+      <Route path="/doctor/recipes" component={CrearReceta} />
+      <Route path="/doctor/orders" component={CrearOrden} />
+      <Route
+        path="/account/patient/new-appointment/2/:id"
+        component={NewAppoinmentStep2}
+      />
     </div>
   );
 }
