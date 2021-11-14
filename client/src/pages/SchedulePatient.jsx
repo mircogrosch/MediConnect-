@@ -6,27 +6,46 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
 
-const columnas = [
-  { name: "Fecha", selector: "date", sortable: true },
-  { name: "Hora", selector: "hour_long", sortable: true },
-  //   { name: "Nombre", selector: "patient.person.name", sortable: true },
-  //   { name: "Apellido", selector: "patient.person.lastname", sortable: true },
-  { name: "Estado de pago", selector: "payment_status", sortable: true },
-];
 const SchedulePatient = (props) => {
   const [data, setData] = useState([]);
 
-  //   const getAppointments = async () => {
-  //     const URL = "http://localhost:3001";
-  //     const response = await axios.get(
-  //       `${URL}/doctor/appointment/${props.match.params.id}`
-  //     );
-  //     setData(response.data.data);
-  //   };
+  const getAppointments = async () => {
+    const URL = "http://localhost:3001";
+    const response = await axios.get(
+      `${URL}/patient/appointment/${props.match.params.id}`
+    );
+    let refactor = response.data.data.map((e) => {
+      return {
+        name: e.doctor.person.name,
+        lastname: e.doctor.person.lastname,
+        date: e.date,
+        hour_long: e.hour_long,
+        payment_status: e.payment_status,
+      };
+    });
+    setData(refactor);
+  };
 
-  //   useEffect(() => {
-  //     getAppointments();
-  //   }, []);
+  useEffect(() => {
+    getAppointments();
+  }, []);
+
+  const columnas = [
+    { name: "Fecha", selector: (row) => row["date"] },
+    { name: "Hora", selector: (row) => row["hour_long"], sortable: true },
+    {
+      name: "Nombre",
+      selector: (row) => row["name"],
+      sortable: true,
+    },
+    { name: "Apellido", selector: (row) => row["lastname"], sortable: true },
+    {
+      name: "Estado de pago",
+      selector: (row) => row["payment_status"],
+      sortable: true,
+    },
+  ];
+
   return (
     <>
       <Box sx={{ background: grey[50] }}>

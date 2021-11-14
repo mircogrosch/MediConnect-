@@ -8,7 +8,7 @@ const ButtonRemove = ({ idPatient, idDoctor, aux, setAux }) => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    swal(" ¿Estás seguro? ", {
+    swal("Vas a eliminar un doctor de tus contactos, ¿estás seguro? ", {
       dangerMode: true,
       buttons: { cancel: true, confirm: "Continuar" },
     })
@@ -16,7 +16,6 @@ const ButtonRemove = ({ idPatient, idDoctor, aux, setAux }) => {
         res ? dispatch(deleteDoctor(idPatient, idDoctor)) : false
       )
       .then((ok) => (ok ? setAux(aux + 1) : false));
-    // .catch((error) => console.log("________________", error));
   };
   return (
     <>

@@ -1,6 +1,7 @@
 import { Box, Icon, Typography, Grid } from "@material-ui/core";
 import React from "react";
 import { AccountCircle } from "@mui/icons-material";
+import ButtonFoward from "./ButtonFoward";
 
 const Card = ({
   colorFont,
@@ -20,7 +21,7 @@ const Card = ({
     <Box
       bgcolor={color}
       width={"80%"}
-      height={"90px"}
+      height={"130px"}
       sx={{ borderRadius: "5px", padding: "1em" }}
     >
       <Grid container style={{ height: "100%" }}>
@@ -76,7 +77,11 @@ const Card = ({
             alignItems: "center",
             justifyContent: "center",
           }}
-        ></Grid>
+        >
+          <ButtonFoward
+            obj={{ name, lastname, idDoctor, idPatient, image, specialities }}
+          />
+        </Grid>
       </Grid>
     </Box>
   );

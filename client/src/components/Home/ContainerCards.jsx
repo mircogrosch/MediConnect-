@@ -4,13 +4,13 @@ import Card from "./cards/Card.jsx";
 import { Link } from "react-router-dom";
 import { teal } from "@material-ui/core/colors";
 import jwt from "jsonwebtoken";
+
 function ContainerCards({ cardInfo, bgColor, infoColor }) {
   const user = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
   );
 
-  console.log(user);
   return (
     <Box sx={{ marginTop: { md: "2em" } }}>
       <Grid container columnSpacing={3} rowSpacing={4}>

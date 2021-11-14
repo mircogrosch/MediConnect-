@@ -40,18 +40,18 @@ const cardInfo = [
 ];
 
 function HomePatientPage() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const classes = useStyles();
   const user = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
   );
-  console.log("user.user.imageProfile ------> ", user.user.imageProfile);
+
   useEffect(() => {
     socket_Connect(user.user, socket);
     initiateSocketChat(user.user.email, socketChat);
   }, []);
-  
+
   useEffect(() => {
     // Dispara la accion para traer todos los doctores asociados al paciente
     dispatch(getMyDoctors(user.rol.id));
