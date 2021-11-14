@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Box, Grid, Typography, Button } from "@mui/material";
-import { teal, grey } from "@mui/material/colors";
+import axios from "axios";
+import { Box, Grid, Button } from "@mui/material";
+import { teal } from "@mui/material/colors";
 import AppBar from "../components/Notification/AppBarNoti";
-import DoctorCard from "../componenets/NewAppoinment/Step2/DoctorCard";
+import DoctorCard from "../components/newAppointment/Step2/DoctorCard";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import circleUser from "../img/user.png";
+import HourCard from "../components/newAppointment/Step2/HourCard";
 
 const hours = [
   {
@@ -77,7 +78,7 @@ const hours = [
     available: false,
   },
   {
-    value: "15:30",
+    value: "16:30",
     available: true,
   },
   {
@@ -89,7 +90,22 @@ const hours = [
 function NewAppointmentStep2(props) {
   const [date, setDate] = useState(new Date());
 
-  // const { name, lastname, imageProfile } = props.location.state;
+  const { id, name, lastname, imageProfile, specialities } =
+    props.location.state.data;
+
+  const patientId = props.match.params.id;
+
+  const selectHour = (value) => {
+    console.log(value);
+  };
+
+  const saveShift = async (date) => {
+    const response = await axios.post(
+      `http://localhost:3001/doctor/appointment/${id}?patient=${patientId}`,
+      { date }
+    );
+    console.log(response.data);
+  };
 
   return (
     <Box
@@ -108,39 +124,14 @@ function NewAppointmentStep2(props) {
           display: "flex",
         }}
       >
-        {/*  <DoctorCard 
-          name={name} 
-          lastname={lastname} 
-          imageProfile={imageProfile} 
-        />*/}
-        <Grid
-          container
-          bgcolor={teal[600]}
-          alignItems="center"
-          sx={{ width: "70vw", padding: "0.5em 1em", borderRadius: "5px" }}
-        >
-          <Grid item xs={1}>
-            <img src={circleUser} alt="circle user" style={{ width: "50px" }} />
-          </Grid>
-          <Grid item xs={4}>
-            <Typography variant="h6" color={teal[50]}>
-              Dhalgüin Hernández
-            </Typography>
-          </Grid>
-          <Grid item xs={5}>
-            <Typography variant="h6" color={teal[50]}>
-              Cirujano Plástico
-            </Typography>
-          </Grid>
-          <Grid item xs={2}>
-            <Button
-              variant="contained"
-              sx={{ width: "100%", height: "50px", bgcolor: teal[900] }}
-            >
-              Cambiar
-            </Button>
-          </Grid>
-        </Grid>
+        <DoctorCard
+          id={id}
+          name={name}
+          lastname={lastname}
+          imageProfile={imageProfile}
+          specialities={specialities}
+          goBack={props.history.goBack}
+        />
         <Grid
           container
           sx={{ width: "70vw", padding: "0.5em 1em", borderRadius: "5px" }}
@@ -148,30 +139,23 @@ function NewAppointmentStep2(props) {
           <Grid item xs={6}>
             <Calendar value={date} onChange={(value) => setDate(value)} />
           </Grid>
-          <Grid item xs={6}>
+          <Grid
+            item
+            xs={6}
+            flexDirection="column"
+            justifyContent="space-between"
+            display="flex"
+          >
             <Grid container spacing={1}>
-              {hours.map((hour) => (
-                <Grid item xs={3}>
-                  <Box
-                    sx={{
-                      padding: "2px 5px",
-                      border: `2px solid ${
-                        hour.available ? teal[500] : grey[500]
-                      }`,
-                      borderRadius: "5px",
-                    }}
-                  >
-                    <Typography
-                      variant="body1"
-                      textAlign="center"
-                      color={`${!hour.available && grey[500]}`}
-                    >
-                      {hour.value}
-                    </Typography>
-                  </Box>
+              {hours.map((hour, index) => (
+                <Grid item key={index} xs={3}>
+                  <HourCard hour={hour} selectHour={selectHour} />
                 </Grid>
               ))}
             </Grid>
+            <Button variant="contained" onClick={() => saveShift(date)}>
+              Confirmar Turno
+            </Button>
           </Grid>
         </Grid>
       </Box>
