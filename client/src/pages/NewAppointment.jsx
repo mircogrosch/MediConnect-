@@ -34,7 +34,6 @@ const NewAppointment = (props) => {
               height="70vh"
               style={{
                 display: "flex",
-                backgroundColor: "red",
                 justifyContent: "center",
                 alignItems: "center",
               }}
