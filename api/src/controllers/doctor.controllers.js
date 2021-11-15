@@ -479,6 +479,45 @@ const getAppointment = async (req, res) => {
   }
 };
 
+const getAppointmentByDay = async (req, res) => {
+  const { id } = req.params; // id de doctor
+  const { day, month, year } = req.body;
+  try {
+    const appointments = await Appointment.findAll({
+      where: {
+        doctorId: id,
+        day: day,
+        month: month,
+        year: year,
+      },
+      include: [
+        {
+          model: Patient,
+          include: {
+            model: Person,
+          },
+        },
+        {
+          model: Doctor,
+          include: {
+            model: Person,
+          },
+        },
+      ],
+    });
+    res.json({
+      data: appointments,
+      message: `Turnos del Doctor en la fecha ${day}/${month}/${year}`,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
 const createWorkDay = async (req, res) => {
   const { id } = req.params;
   const { week } = req.body;
@@ -531,6 +570,7 @@ module.exports = {
   getPatients,
   createAppointment,
   getAppointment,
+  getAppointmentByDay,
   createWorkDay,
   getWorkDays,
 };
