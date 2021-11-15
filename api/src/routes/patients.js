@@ -7,6 +7,7 @@ const {
   getDoctors,
   addDoctor,
   deleteDoctor,
+  getAppointment,
   getAllergies,
   createAllergie,
   createDisease,
@@ -59,6 +60,14 @@ ej: localhost:3001/patient/doctors/:id_paciente?id_Doctor=Mauricio
 */
 router.route("/doctors/:id").delete(deleteDoctor);
 
+/*
+  Devuelve todos los turnos pendientes de un Paciente
+  fecha - hora - estado de pago - datos paciente
+  Se envia id_paciente por params
+  ej:  localhost:3001/patient/appointment/id_paciente
+*/
+router.route("/appointment/:id").get(getAppointment);
+
 router.route("/:id").get(getPatient);
 
 //Ruta para traer las alergias vinculadas con un paciente
@@ -96,14 +105,12 @@ router.route("/allergy/:idPatient").delete(deleteAllergie);
 //Ruta para borrar una enfermedad vinculada a un paciente
 //recibe el id del paciente por params
 //recibe el id de la enfermdedad por query
-router.route("/disease/:idDisease").delete(deleteDisease);
+router.route("/disease/:idPatient").delete(deleteDisease);
 
 //Ruta para borrar un medicamento vinculado a un paciente
 //recibe el id del paciente por params
 //recibe el id del medicamento por query
-router
-  .route("/prescription_drug/:idPrescription_drug")
-  .delete(deletePrescription_drug);
+router.route("/prescription_drug/:idPatient").delete(deletePrescription_drug);
 
 //Ruta para modificar campos de una alergia ya creada
 //recibe el id de la alergia por params

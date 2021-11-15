@@ -7,7 +7,9 @@ const {
   Conversation,
   Allergy,
   Disease,
+  Appointment,
   Prescription_drug,
+  Work_day,
 } = require("../db");
 const { Op, literal } = require("sequelize");
 const bcryptjs = require("bcryptjs");
@@ -37,7 +39,16 @@ function concat_json(json, json_empty) {
 }
 
 const createPatient = async (req, res) => {
-  let result = null;
+  let result;
+  try {
+    if (req.file != undefined) {
+      result = await cloudinary.v2.uploader.upload(req.file.path);
+      result = result.url;
+    }
+  } catch (error) {
+    console.log("Error con cloudinary:", error);
+  }
+
   const {
     dni,
     name,
@@ -48,9 +59,6 @@ const createPatient = async (req, res) => {
     num_member,
     healthInsuranceId,
   } = req.body;
-  if (req.file.path) {
-    result = await cloudinary.v2.uploader.upload(req.file.path);
-  }
   const rol = "Patient";
   if (
     dni &&
@@ -69,7 +77,7 @@ const createPatient = async (req, res) => {
           name,
           lastname,
           address,
-          imageProfile: result.url,
+          imageProfile: result,
           email,
           password: encryptPassword(password),
           rol,
@@ -87,7 +95,13 @@ const createPatient = async (req, res) => {
           ],
         }
       );
-      await fs.unlink(req.file.path); // Elimina la imagen guardada en api/src/public/uploads
+      try {
+        if (req.file != undefined) {
+          await fs.unlink(req.file.path); // Elimina la imagen guardada en api/src/public/uploads
+        }
+      } catch (error) {
+        console.log("Error eliminando la imagen guardada", error);
+      }
       let newPatient = await Patient.create(
         {
           num_member,
@@ -204,6 +218,9 @@ const getDoctors = async (req, res) => {
           {
             model: Speciality,
           },
+          {
+            model: Work_day,
+          },
         ],
       },
     });
@@ -218,9 +235,14 @@ const getDoctors = async (req, res) => {
       },
       include: {
         model: Doctor,
-        include: {
-          model: Speciality,
-        },
+        include: [
+          {
+            model: Speciality,
+          },
+          {
+            model: Work_day,
+          },
+        ],
       },
     });
     let json = {};
@@ -231,6 +253,7 @@ const getDoctors = async (req, res) => {
       concat_json(doctor.dataValues.doctors[0].dataValues, json);
       json["specialities"] =
         doctor.dataValues.doctors[0].dataValues.specialities;
+      json["work_days"] = doctor.dataValues.doctors[0].dataValues.work_days;
       return json;
     });
     // Se concatena la informacion en un solo json
@@ -240,6 +263,7 @@ const getDoctors = async (req, res) => {
       concat_json(doctor.dataValues.doctors[0].dataValues, json);
       json["specialities"] =
         doctor.dataValues.doctors[0].dataValues.specialities;
+      json["work_days"] = doctor.dataValues.doctors[0].dataValues.work_days;
       return json;
     });
     res.json({
@@ -321,6 +345,41 @@ const deleteDoctor = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send(error);
+  }
+};
+
+const getAppointment = async (req, res) => {
+  const { id } = req.params; // id de paciente
+  try {
+    const appointments = await Appointment.findAll({
+      where: {
+        patientId: id,
+      },
+      include: [
+        {
+          model: Patient,
+          include: {
+            model: Person,
+          },
+        },
+        {
+          model: Doctor,
+          include: {
+            model: Person,
+          },
+        },
+      ],
+    });
+    res.json({
+      data: appointments,
+      message: "Turnos pendientes del Paciente",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
   }
 };
 
@@ -715,6 +774,7 @@ module.exports = {
   createPatient,
   addDoctor,
   deleteDoctor,
+  getAppointment,
   getAllergies,
   createAllergie,
   createDisease,

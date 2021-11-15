@@ -84,7 +84,7 @@ function DoctorRegisterForm() {
     user.append("specialities", data.specialities);
     user.append("address", data.address);
     user.append("location", data.location);
-
+    user.append("signature", imgURL);
     dispatch(postDoctor(user, history));
   };
 
