@@ -43,14 +43,14 @@ const server_pp = http.createServer(server);
 const ioNotification = socketIO(server_pp, {
   path: "/notification",
   cors: {
-    origin: "https://medi-connect-ld8ye6jy6-mediconnect2021-gmailcom.vercel.app",
+    origin: "https://medi-connect.vercel.app",
     methods: ["GET", "POST", "PUT"],
   },
 });
 const ioChat = socketIO(server_pp, {
   path: "/message",
   cors: {
-    origin: "https://medi-connect-ld8ye6jy6-mediconnect2021-gmailcom.vercel.app",
+    origin: "https://medi-connect.vercel.app",
     methods: ["GET", "POST", "PUT"],
   },
 });
