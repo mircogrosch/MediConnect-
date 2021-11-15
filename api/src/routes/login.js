@@ -30,7 +30,7 @@ router.post(
     failureFlash: true,
   }),
   function (req, res) {
-    res.redirect("/success");
+    res.redirect("/login/success");
   }
 );
 
