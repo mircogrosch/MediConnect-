@@ -2,7 +2,7 @@ import React from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import FiltroSelect from "../FiltroSelect/FiltroSelect";
 import { Grid } from "@mui/material";
-import { Box, styled } from "@mui/system";
+import { Box } from "@mui/system";
 import {
   filterSpecialitiesMyDoctors,
   filterMyDoctorsByName,

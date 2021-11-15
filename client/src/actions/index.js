@@ -1,7 +1,6 @@
 import axios from "axios";
 import types from "./types.js";
 import swal from "sweetalert";
-import { Alert } from "@mui/material";
 const URL = "http://localhost:3001";
 
 export const getDoctors = (id_patient) => {
@@ -114,7 +113,7 @@ export const getMyDoctors = (payload) => {
 export const postMyDoctor = (payload, id_Doctor) => {
   return async function (dispatch) {
     try {
-      const response = await axios.post(`${URL}/patient/doctors/${payload}`, {
+      await axios.post(`${URL}/patient/doctors/${payload}`, {
         id_Doctor: id_Doctor,
       });
       swal({

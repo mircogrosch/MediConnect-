@@ -24,23 +24,22 @@ function MedicalHistoryDoctor(props) {
   // const doctorId = props.match.params.id;
 
   useEffect(() => {
+    const getPatient = async (patientId) => {
+      const response = await axios.get(
+        `http://localhost:3001/patient/${patientId}`
+      );
+      const data = await response.data.data;
+      setPatientData({
+        ...patientData,
+        id: data.id,
+        name: data.name,
+        lastname: data.lastname,
+        dni: data.personDni,
+        image: data.imageProfile,
+      });
+    };
     getPatient(patientId);
-  }, [patientId]);
-
-  const getPatient = async (patientId) => {
-    const response = await axios.get(
-      `http://localhost:3001/patient/${patientId}`
-    );
-    const data = await response.data.data;
-    setPatientData({
-      ...patientData,
-      id: data.id,
-      name: data.name,
-      lastname: data.lastname,
-      dni: data.personDni,
-      image: data.imageProfile,
-    });
-  };
+  }, [patientId, patientData]);
 
   return (
     <Box>

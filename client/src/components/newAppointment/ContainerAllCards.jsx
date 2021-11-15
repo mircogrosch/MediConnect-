@@ -14,7 +14,7 @@ function ContainerAllCards({ props }) {
   console.log("myDoctors", myDoctors);
   useEffect(() => {
     dispatch(getMyDoctors(props.match.params.id));
-  }, []);
+  }, [props.match.params.id, dispatch]);
 
   return (
     <>
@@ -43,7 +43,7 @@ function ContainerAllCards({ props }) {
                 <Card
                   colorFont={"#676767"}
                   color={teal[200]}
-                  key={e.id}
+                  // key={e.id}
                   name={e.name}
                   lastname={e.lastname}
                   address={e.address}

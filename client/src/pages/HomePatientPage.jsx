@@ -50,12 +50,12 @@ function HomePatientPage() {
   useEffect(() => {
     socket_Connect(user.user, socket);
     initiateSocketChat(user.user.email, socketChat);
-  }, []);
+  }, [user.user]);
 
   useEffect(() => {
     // Dispara la accion para traer todos los doctores asociados al paciente
     dispatch(getMyDoctors(user.rol.id));
-  }, []);
+  }, [dispatch, user.rol.id]);
 
   return (
     <Box className={classes.root} sx={{ background: teal[50] }}>
