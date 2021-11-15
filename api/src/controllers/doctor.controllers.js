@@ -11,6 +11,8 @@ const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const cloudinary = require("cloudinary");
 const fs = require("fs-extra");
+const atob = require("atob");
+global.Blob = require("node-blob");
 const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
   process.env;
 
@@ -75,6 +77,7 @@ const createDoctor = async (req, res) => {
     enrollment,
     location,
     specialities, // tiene que ser un arreglo de id de specialties o un arreglo vacio
+    signature,
   } = req.body;
   const rol = "Doctor";
   if (
@@ -89,6 +92,14 @@ const createDoctor = async (req, res) => {
     specialities
   ) {
     try {
+      const decode_sign = atob(signature);
+      const array_sign = new Array(decode_sign.length);
+      for (let i = 0; i < decode_sign.length; i++) {
+        array_sign[i] = decode_sign.charCodeAt(i);
+      }
+      const byte_array_sign = new Uint8Array(array_sign);
+      const blob = await new Blob([byte_array_sign], { type: "" });
+      console.log("BLOB: ", blob);
       let newPerson = await Person.create(
         {
           dni,
@@ -124,9 +135,10 @@ const createDoctor = async (req, res) => {
         {
           enrollment,
           location,
+          signature: blob,
         },
         {
-          fields: ["enrollment", "location"],
+          fields: ["enrollment", "location", "signature"],
         }
       );
       await newDoctor.setPerson(dni);
