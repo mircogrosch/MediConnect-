@@ -6,6 +6,7 @@ const routes = require("./routes/index.js");
 const loginRouter = require("./routes/login");
 const patientRouter = require("./routes/patients");
 const doctorRouter = require("./routes/doctor");
+const sendEmail = require("./routes/sendEmail");
 const { Person, Patient, Doctor } = require("./db");
 const passport = require("passport");
 const Strategy = require("passport-local").Strategy;
@@ -18,6 +19,7 @@ const chatMessage = require("./routes/chatMessage");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const nodemailer = require("nodemailer");
 require("./db.js");
 
 //Para poder comparar con la password encrypt
@@ -216,6 +218,7 @@ server.use("/specialities", specialitiesRouter);
 server.use("/healthinsurance", healthinsuranceRouter);
 server.use("/notifications", notification);
 server.use("/chat", chatMessage);
+server.use("/email-send", sendEmail);
 // Error catching endware.
 server.use((err, req, res, next) => {
   // eslint-disable-line no-unused-vars
