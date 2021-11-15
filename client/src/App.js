@@ -19,6 +19,7 @@ import MedicalHistoryPatient from "./pages/MedicalHistoryPatient";
 import AppointmentConfig from "./pages/AppointmentConfig";
 import CrearReceta from "./pages/CrearReceta";
 import CrearOrden from "./pages/CrearOrden";
+import ConfirmAppointment from "./pages/ConfirmAppointment"
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
       />
       <Route path='/doctor/recipes' component={CrearReceta}/>
       <Route path="/doctor/orders" component={CrearOrden}/>
+      <Route path="/account/patient/new-appointment/3" component={ConfirmAppointment} />
     </div>
   );
 }
