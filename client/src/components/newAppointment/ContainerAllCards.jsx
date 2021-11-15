@@ -11,7 +11,7 @@ function ContainerAllCards({ props }) {
   const dispatch = useDispatch();
 
   let myDoctors = useSelector((state) => state.myDoctors.names); // Doctores asociados
-
+  console.log("myDoctors", myDoctors);
   useEffect(() => {
     dispatch(getMyDoctors(props.match.params.id));
   }, []);

@@ -7,12 +7,21 @@ import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
 
 const columnas = [
-  { name: "Fecha", selector: "date", sortable: true },
-  { name: "Hora", selector: "hour_long", sortable: true },
-  { name: "Nombre", selector: "patient.person.name", sortable: true },
-  { name: "Apellido", selector: "patient.person.lastname", sortable: true },
-  { name: "Estado de pago", selector: "payment_status", sortable: true },
+  { name: "Fecha", selector: (row) => row["date"] },
+  { name: "Hora", selector: (row) => row["hour_long"], sortable: true },
+  {
+    name: "Nombre",
+    selector: (row) => row["name"],
+    sortable: true,
+  },
+  { name: "Apellido", selector: (row) => row["lastname"], sortable: true },
+  {
+    name: "Estado de pago",
+    selector: (row) => row["payment_status"],
+    sortable: true,
+  },
 ];
+
 const ScheduleDoctor = (props) => {
   const [data, setData] = useState([]);
 
@@ -21,13 +30,22 @@ const ScheduleDoctor = (props) => {
     const response = await axios.get(
       `${URL}/doctor/appointment/${props.match.params.id}`
     );
-    setData(response.data.data);
+    let refactor = response.data.data.map((e) => {
+      return {
+        name: e.patient.person.name,
+        lastname: e.patient.person.lastname,
+        date: e.date,
+        hour_long: e.hour_long,
+        payment_status: e.payment_status,
+      };
+    });
+    setData(refactor);
   };
 
   useEffect(() => {
     getAppointments();
   }, []);
-  console.log("data ", data);
+
   return (
     <>
       <Box sx={{ background: grey[50] }}>

@@ -3,7 +3,6 @@ import ForwardIcon from "@mui/icons-material/Forward";
 import { Link } from "react-router-dom";
 
 const ButtonFoward = ({ obj }) => {
-  console.log("obj", obj);
   return (
     <>
       <Link
