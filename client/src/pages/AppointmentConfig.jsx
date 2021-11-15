@@ -11,10 +11,14 @@ import {
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
 import { teal, grey } from "@mui/material/colors";
 import { Checkbox, FormControlLabel } from "@material-ui/core";
+import axios from "axios";
+import swal from "sweetalert";
+import { useHistory } from "react-router-dom";
 
-const AppointmentConfig = () => {
+const AppointmentConfig = (props) => {
+  const history = useHistory();
+
   // Estados
-
   const [dia1, setDia1] = useState({
     lunes: false,
     day: 1,
@@ -47,8 +51,6 @@ const AppointmentConfig = () => {
   });
 
   // Funciones
-
-  // Franja horaria cada 30 minutos.
   const timeSlots = Array.from(new Array(24 * 2)).map(
     (_, index) =>
       `${index < 20 ? "0" : ""}${Math.floor(index / 2)}:${
@@ -59,9 +61,17 @@ const AppointmentConfig = () => {
     let arr = str.split(":");
     return [parseInt(arr[0]), parseInt(arr[1])];
   };
+  const postConfig = async (week) => {
+    const URL = "http://localhost:3001";
+
+    const response = await axios.post(
+      `${URL}/doctor/workday/${props.match.params.id}`,
+      week
+    );
+    console.log("postConfig ", response);
+  };
   const handleSubmit = () => {
-    // Se estructura el objeto a enviar
-    let week = [];
+    let week = []; // Se estructura el objeto a enviar
     if (dia1.lunes) {
       let [initHour, initMinutes] = descomponerHora(dia1.init);
       let [endHour, endMinutes] = descomponerHora(dia1.end);
@@ -137,7 +147,12 @@ const AppointmentConfig = () => {
         },
       });
     }
-    console.log("week ", week);
+    postConfig({ week });
+    swal({
+      title: `Los datos fueron guardados`,
+      icon: "success",
+      button: "Continuar",
+    }).then(() => history.push("/account/profesional"));
   };
   const handleClear = () => {
     setDia1({

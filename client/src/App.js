@@ -9,7 +9,6 @@ import MisProfesionales from "./components/MisProfesionales/MisProfesionales";
 import AddDoctors from "./pages/AddDoctors";
 import HomePageDoctor from "./pages/HomePageDoctor";
 import MensajesPaciente from "./pages/MenssagesPatients";
-import PruebaChat from "./components/PruebaChat.jsx";
 import MensajesDoctor from "./pages/MenssagesDoctor";
 import MyPatientsPage from "./pages/MyPatientsPage";
 import MedicalHistoryDoctor from "./pages/MedicalHistoryDoctor";
@@ -20,6 +19,9 @@ import AppointmentConfig from "./pages/AppointmentConfig";
 import CrearReceta from "./pages/CrearReceta";
 import CrearOrden from "./pages/CrearOrden";
 import ConfirmAppointment from "./pages/ConfirmAppointment"
+import SchedulePatient from "./pages/SchedulePatient";
+import NewAppointment from "./pages/NewAppointment";
+import NewAppoinmentStep2 from "./pages/NewAppoinmentStep2";
 
 function App() {
   return (
@@ -37,7 +39,16 @@ function App() {
         path="/account/appointment-config/:id"
         component={AppointmentConfig}
       />
-      <Route path="/account/schedule/:id" component={ScheduleDoctor} />
+      <Route
+        exact
+        path="/account/patient/new-appointment/:id"
+        component={NewAppointment}
+      />
+      <Route
+        path="/account/profesional/schedule/:id"
+        component={ScheduleDoctor}
+      />
+      <Route path="/account/patient/schedule/:id" component={SchedulePatient} />
       <Route exact path="/" component={LandingPage} />
       <Route path="/mensajes/paciente" component={MensajesPaciente} />
       <Route path="/mensajes/profesional" component={MensajesDoctor} />
@@ -56,6 +67,10 @@ function App() {
       <Route path='/doctor/recipes' component={CrearReceta}/>
       <Route path="/doctor/orders" component={CrearOrden}/>
       <Route path="/account/patient/new-appointment/3" component={ConfirmAppointment} />
+      <Route
+        path="/account/patient/new-appointment/2/:id"
+        component={NewAppoinmentStep2}
+      />
     </div>
   );
 }

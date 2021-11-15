@@ -9,6 +9,7 @@ const {
   Disease,
   Appointment,
   Prescription_drug,
+  Work_day,
 } = require("../db");
 const { Op, literal } = require("sequelize");
 const bcryptjs = require("bcryptjs");
@@ -217,6 +218,9 @@ const getDoctors = async (req, res) => {
           {
             model: Speciality,
           },
+          {
+            model: Work_day,
+          },
         ],
       },
     });
@@ -231,9 +235,14 @@ const getDoctors = async (req, res) => {
       },
       include: {
         model: Doctor,
-        include: {
-          model: Speciality,
-        },
+        include: [
+          {
+            model: Speciality,
+          },
+          {
+            model: Work_day,
+          },
+        ],
       },
     });
     let json = {};
@@ -244,6 +253,7 @@ const getDoctors = async (req, res) => {
       concat_json(doctor.dataValues.doctors[0].dataValues, json);
       json["specialities"] =
         doctor.dataValues.doctors[0].dataValues.specialities;
+      json["work_days"] = doctor.dataValues.doctors[0].dataValues.work_days;
       return json;
     });
     // Se concatena la informacion en un solo json
@@ -253,6 +263,7 @@ const getDoctors = async (req, res) => {
       concat_json(doctor.dataValues.doctors[0].dataValues, json);
       json["specialities"] =
         doctor.dataValues.doctors[0].dataValues.specialities;
+      json["work_days"] = doctor.dataValues.doctors[0].dataValues.work_days;
       return json;
     });
     res.json({

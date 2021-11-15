@@ -6,6 +6,7 @@ const routes = require("./routes/index.js");
 const loginRouter = require("./routes/login");
 const patientRouter = require("./routes/patients");
 const doctorRouter = require("./routes/doctor");
+const sendEmail = require("./routes/sendEmail");
 const prescriptionRouter = require("./routes/prescription");
 const { Person, Patient, Doctor } = require("./db");
 const passport = require("passport");
@@ -20,6 +21,7 @@ const payments = require("./routes/mercadopago");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const nodemailer = require("nodemailer");
 require("./db.js");
 
 //Para poder comparar con la password encrypt
@@ -219,6 +221,7 @@ server.use("/healthinsurance", healthinsuranceRouter);
 server.use("/notifications", notification);
 server.use("/prescription", prescriptionRouter);
 server.use("/chat", chatMessage);
+server.use("/email-send", sendEmail);
 server.use("/checkout", payments);
 // Error catching endware.
 server.use((err, req, res, next) => {
