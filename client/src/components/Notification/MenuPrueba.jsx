@@ -12,7 +12,7 @@ import { Box } from "@mui/system";
 const StyledMenu = styled((props) => (
   <Menu
     display="flex"
-    alignItems="center"
+    alignitems="center"
     elevation={0}
     anchorOrigin={{
       vertical: "bottom",
@@ -103,7 +103,7 @@ export default function CustomizedMenus() {
           </Box>
         ) : (
           notifications.notifications.map((e) => (
-            <MenuItem onClick={handleClose} disableRipple>
+            <MenuItem onClick={handleClose} key={e.id} disableRipple>
               {e.description ? (
                 <CardNotification
                   msg={e.description}

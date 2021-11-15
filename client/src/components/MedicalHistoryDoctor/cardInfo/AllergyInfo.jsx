@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import swal from "sweetalert";
 import { Box, Typography, Button, IconButton } from "@mui/material";
-import { Edit, HighlightOff } from "@mui/icons-material";
+import { HighlightOff } from "@mui/icons-material";
 import { teal, grey } from "@mui/material/colors";
 
 function AllergyInfo({ setDisplayed, patientId }) {

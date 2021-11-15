@@ -23,7 +23,7 @@ function ContainerCardAdd({ props }) {
   useEffect(() => {
     dispatch(getDoctors(props.match.params.id));
     socket_Connect(userLog.user, socket);
-  }, []);
+  }, [dispatch, props.match.params.id, userLog.user]);
 
   return (
     <Grid
@@ -37,6 +37,7 @@ function ContainerCardAdd({ props }) {
           return (
             <Grid
               item
+              key={e.id}
               xl={4}
               md={6}
               xs={12}

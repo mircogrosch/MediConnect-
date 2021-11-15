@@ -23,24 +23,21 @@ import { useHistory } from "react-router-dom";
 import { validateUser } from "../Controlers/Controlers";
 import SimpleAppBar from "../AppBar/SimpleAppBar";
 
-
 const Login = () => {
   //Local states
   const [input, setInput] = useState({ email: "", password: "" });
   const [handlePassword, setPassword] = useState({ showPassword: false });
   //Global States
-  const token = useSelector((state)=> state.users.state)
-  
- 
-  
+  const token = useSelector((state) => state.users.state);
+
   //Hooks
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
 
-   useEffect(() => {
-      validateUser(token, history);
-   }, [token]);
+  useEffect(() => {
+    validateUser(token, history);
+  }, [token, history]);
 
   return (
     <div className={classes.root}>

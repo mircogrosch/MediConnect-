@@ -14,17 +14,20 @@ import {
   NotificationsOutlined,
   MoreVert,
   MailOutline,
+  Logout
 } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import logo from "../../img/mediconnect-logo.png";
 import { socket } from "../Controlers/notifications";
 import MenuPrueba from "./MenuPrueba";
-import { getNotifications, getNotificationsMessage } from "../../actions";
+import { getNotifications, getNotificationsMessage} from "../../actions";
+import {logout} from '../Controlers/sessions'
 import jwt from "jsonwebtoken";
 import { Link } from "react-router-dom";
 import { socketChat } from "../Controlers/chatMessage";
-
+import {useHistory} from 'react-router-dom'
 export default function PrimarySearchAppBar(props) {
+  const history = useHistory();
   //state global
 
   const notifications = useSelector(
@@ -65,9 +68,9 @@ export default function PrimarySearchAppBar(props) {
     console.log(user.rol.id);
     dispatch(getNotifications(user.rol.id));
     dispatch(getNotificationsMessage(user.user.dni));
-  }, [dispatch]);
+  }, [dispatch, user.rol.id, user.user.dni]);
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  // const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -77,7 +80,7 @@ export default function PrimarySearchAppBar(props) {
   };
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
+    // setAnchorEl(null);
     handleMobileMenuClose();
   };
 
@@ -168,6 +171,9 @@ export default function PrimarySearchAppBar(props) {
               <MenuPrueba />
             </Badge>
             {/* </IconButton> */}
+            <IconButton onClick={()=>logout(history)}> 
+              <Logout sx={{ fontSize: "1em", color: teal[900] }}/>
+            </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
