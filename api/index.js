@@ -39,18 +39,19 @@ const no_existen_Especialidades = async () => {
 };
 
 //socket.io
+const port = "http://localhost:3000" || "https://medi-connect-mulrkmxip-mediconnect2021-gmailcom.vercel.app";
 const server_pp = http.createServer(server);
 const ioNotification = socketIO(server_pp, {
   path: "/notification",
   cors: {
-    origin: "http://localhost:3000",
+    origin: port,
     methods: ["GET", "POST", "PUT"],
   },
 });
 const ioChat = socketIO(server_pp, {
   path: "/message",
   cors: {
-    origin: "http://localhost:3000",
+    origin: port,
     methods: ["GET", "POST", "PUT"],
   },
 });
