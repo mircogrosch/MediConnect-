@@ -22,6 +22,8 @@ export const logout = (history) => {
       case "defeat": {
         return;
       }
+      default: 
+      return value;
     }
   });
 };

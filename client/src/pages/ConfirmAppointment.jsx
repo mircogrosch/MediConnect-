@@ -31,6 +31,8 @@ const handleClick = ()=> {
             case "defeat":{
                return  history.push(`/account/patient/new-appointment/${rol.id}`);
             }
+            default:
+                return value;
         }
     })
 }
