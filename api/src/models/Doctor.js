@@ -14,12 +14,10 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      /*
-    signature: {
-      type: DataTypes.,
-      allowNull: false,
-    },
-    */
+      signature: {
+        type: DataTypes.BLOB,
+        allowNull: false,
+      },
       location: {
         type: DataTypes.STRING,
         // allowNull: false,
