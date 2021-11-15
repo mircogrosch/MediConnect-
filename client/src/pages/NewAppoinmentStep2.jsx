@@ -90,9 +90,9 @@ const hours = [
 function NewAppointmentStep2(props) {
   const [date, setDate] = useState(new Date());
 
-  const { id, name, lastname, imageProfile, specialities } =
+  const { idDoctor, name, lastname, image, specialities } =
     props.location.state.data;
-
+  console.log();
   const patientId = props.match.params.id;
 
   const selectHour = (value) => {
@@ -101,7 +101,7 @@ function NewAppointmentStep2(props) {
 
   const saveShift = async (date) => {
     const response = await axios.post(
-      `http://localhost:3001/doctor/appointment/${id}?patient=${patientId}`,
+      `http://localhost:3001/doctor/appointment/${idDoctor}?patient=${patientId}`,
       { date }
     );
     console.log(response.data);
@@ -125,10 +125,10 @@ function NewAppointmentStep2(props) {
         }}
       >
         <DoctorCard
-          id={id}
+          id={idDoctor}
           name={name}
           lastname={lastname}
-          imageProfile={imageProfile}
+          imageProfile={image}
           specialities={specialities}
           goBack={props.history.goBack}
         />

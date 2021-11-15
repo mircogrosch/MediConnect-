@@ -28,6 +28,7 @@ const Card = ({
         {image ? (
           <Grid item xs={3}>
             <img
+              alt="notfound"
               src={image}
               style={{
                 maxWidth: "80px",

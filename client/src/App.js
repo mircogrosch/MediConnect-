@@ -9,7 +9,6 @@ import MisProfesionales from "./components/MisProfesionales/MisProfesionales";
 import AddDoctors from "./pages/AddDoctors";
 import HomePageDoctor from "./pages/HomePageDoctor";
 import MensajesPaciente from "./pages/MenssagesPatients";
-import PruebaChat from "./components/PruebaChat.jsx";
 import MensajesDoctor from "./pages/MenssagesDoctor";
 import MyPatientsPage from "./pages/MyPatientsPage";
 import MedicalHistoryDoctor from "./pages/MedicalHistoryDoctor";

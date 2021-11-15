@@ -27,7 +27,7 @@ function DoctorCard({ name, lastname, imageProfile, specialities, goBack }) {
       </Grid>
       <Grid item md={5}>
         <Typography variant="h6" color={teal[50]}>
-          {specialities[0].name}
+          {specialities}
         </Typography>
       </Grid>
       <Grid item md={2}>
