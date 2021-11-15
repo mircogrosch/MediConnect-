@@ -51,17 +51,23 @@ function HomePageDoctor() {
   useEffect(() => {
     socket_Connect(user.user, socket);
     initiateSocketChat(user.user.email, socketChat);
-  }, []);
+  }, [user.user]);
   useEffect(() => {
     // Dispara la accion para traer todos los doctores asociados al paciente
     dispatch(getMyPatients(user.rol.id));
-  }, []);
+  }, [dispatch, user.rol.id]);
 
   return (
     <Box className={classes.root} sx={{ background: teal[100] }}>
       <PrimarySearchAppBar bgColor={teal[500]} color={teal[50]} />
       <Box className={classes.container}>
-        <Grid container md={12} columnSpacing={4} justifyContent="center">
+        <Grid
+          item
+          display="flex"
+          md={12}
+          columnSpacing={4}
+          justifyContent="center"
+        >
           <Grid item lg={3} md={4} xs={10}>
             <Perfil
               bgColor={teal[500]}
@@ -74,7 +80,7 @@ function HomePageDoctor() {
               imagePerfil={user.user.imageProfile}
             />
           </Grid>
-          <Grid container item md={8} xs={11} flexDirection="column">
+          <Grid item md={8} xs={11} display="flex" flexDirection="column">
             <ShifsNotificator
               bgColor={teal[500]}
               bgDarkColor={teal[800]}

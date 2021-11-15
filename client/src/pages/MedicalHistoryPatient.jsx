@@ -16,7 +16,7 @@ function MedicalHistoryPatient(props) {
     !allergies.length > 0 && getAllergies(id);
     !diseases.length > 0 && getDiseases(id);
     !prescriptions.length > 0 && getPrescriptions(id);
-  }, [id]);
+  }, [id, allergies.length, diseases.length, prescriptions.length]);
 
   const getAllergies = async (id) => {
     const response = await axios.get(

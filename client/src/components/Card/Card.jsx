@@ -1,8 +1,6 @@
 import { Box, Icon, Typography, Grid } from "@material-ui/core";
 import React from "react";
-import { styled } from "@mui/material/styles";
 import { AccountCircle } from "@mui/icons-material";
-import { useSelector } from "react-redux";
 import { teal } from "@mui/material/colors";
 import ButtonRemove from "./ButtonRemove";
 
@@ -17,9 +15,6 @@ const Card = ({
   setAux,
   image,
 }) => {
-  let myDoctors = useSelector((state) => state.myDoctors);
-  myDoctors = myDoctors.names.data;
-
   let docName = `Dr ${name} ${lastname}`;
   return (
     <Box
@@ -40,6 +35,7 @@ const Card = ({
                 minHeight: "80px",
                 borderRadius: "50%",
               }}
+              alt="not found"
             />
           </Grid>
         ) : (

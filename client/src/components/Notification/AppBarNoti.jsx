@@ -65,9 +65,9 @@ export default function PrimarySearchAppBar(props) {
     console.log(user.rol.id);
     dispatch(getNotifications(user.rol.id));
     dispatch(getNotificationsMessage(user.user.dni));
-  }, [dispatch]);
+  }, [dispatch, user.rol.id, user.user.dni]);
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  // const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -77,7 +77,7 @@ export default function PrimarySearchAppBar(props) {
   };
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
+    // setAnchorEl(null);
     handleMobileMenuClose();
   };
 
