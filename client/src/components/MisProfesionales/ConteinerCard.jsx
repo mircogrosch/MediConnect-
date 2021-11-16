@@ -17,7 +17,7 @@ function ContainerCard({ props }) {
   useEffect(() => {
     // Dispara la accion para traer todos los doctores asociados al paciente
     dispatch(getMyDoctors(props.match.params.id));
-  }, [dispatch, aux]);
+  }, [dispatch, aux, props.match.params.id]);
 
   return (
     <Grid
@@ -45,6 +45,7 @@ function ContainerCard({ props }) {
           return (
             <Grid
               item
+              key={e.id}
               xl={4}
               md={6}
               xs={12}

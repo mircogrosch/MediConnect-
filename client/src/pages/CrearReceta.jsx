@@ -9,12 +9,13 @@ import {
 } from "@mui/material";
 import { teal } from "@mui/material/colors";
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
 
 const CrearReceta = () => {
   const patients = useSelector((state) => state.myPatients);
+  const [patient, setPatient] = useState("");
 
   return (
     <Grid>
@@ -25,18 +26,23 @@ const CrearReceta = () => {
         <Grid container rowSpacing={1}>
           <Grid
             item
+            display="flex"
             xs={12}
             textAlign="center"
             marginBottom="20px"
             marginTop="20px"
+            justifyContent="center"
           >
             <Typography variant="h2">Receta</Typography>
           </Grid>
-          <Grid container xs={12} justifyContent="center">
+          <Grid item display="flex" xs={12} justifyContent="center">
             <Grid item xs={10}>
               <InputLabel>Paciente</InputLabel>
               <Select
                 variant="standard"
+                defaultValue=""
+                value={patient}
+                onChange={(e) => setPatient(e.target.value)}
                 sx={{ width: "100%", marginBottom: "20px" }}
               >
                 {patients.names.map((a) => {

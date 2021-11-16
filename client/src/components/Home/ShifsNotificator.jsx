@@ -31,7 +31,8 @@ function ShifsNotificator(props) {
         </Typography>
       </Card>
       <Grid
-        container
+        item
+        display="flex"
         flexDirection="column"
         justifyContent="center"
         md={12}
@@ -54,7 +55,7 @@ function ShifsNotificator(props) {
               styles={classes}
             />
           </Grid>
-          <Grid container item flexDirection="column" md={8}>
+          <Grid item display="flex" flexDirection="column" md={8}>
             <Typography
               variant="h6"
               textAlign="center"

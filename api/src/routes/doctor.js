@@ -7,7 +7,9 @@ const {
   getPatient,
   getPatients,
   createAppointment,
+  deleteAppointment,
   getAppointment,
+  getAppointmentByDay,
   createWorkDay,
   getWorkDays,
 } = require("../controllers/doctor.controllers");
@@ -43,9 +45,17 @@ router.route("/patients/:id").get(getPatients);
   Devuelve todos los turnos pendientes de un Doctor
   fecha - hora - estado de pago - datos paciente
   Se envia id_doctor por params
-  ej:  localhost:3001/doctor/appointment/id_doctor
+  ej: (method: GET) localhost:3001/doctor/appointment/id_doctor
 */
 router.route("/appointment/:id").get(getAppointment);
+
+/*
+  Devuelve todos los turnos pendientes de un Doctor dada una fecha
+  fecha - hora - estado de pago - datos paciente
+  Se envia id_doctor por params
+  ej: (method: GET) localhost:3001/doctor/appointmentByDay/id_doctor
+*/
+router.route("/appointmentByDay/:id").get(getAppointmentByDay);
 
 /*
   RUTA DESDE PACIENTE
@@ -55,6 +65,15 @@ router.route("/appointment/:id").get(getAppointment);
   ej:  localhost:3001/doctor/appointment/id_doctor?patient=Id_patient
 */
 router.route("/appointment/:id").post(createAppointment);
+
+/*
+  RUTA DESDE PACIENTE
+  Cancelar turno
+  fecha - hora - estado de pago - datos paciente
+  Se envia id_turno por params
+  ej: (method: DELETE) localhost:3001/doctor/appointment/id_turno
+*/
+router.route("/appointment/:id").delete(deleteAppointment);
 
 /*
   Crea una Jornada laboral semanal para un Doctor

@@ -11,7 +11,7 @@ function ContainerAllCards({ props }) {
 
   useEffect(() => {
     dispatch(getMyDoctors(props.match.params.id));
-  }, []);
+  }, [props.match.params.id, dispatch]);
 
   const refactorWorkDays = (arrayObj) => {
     let newArray = [];
@@ -113,6 +113,8 @@ function ContainerAllCards({ props }) {
                 <Card
                   work_days={e.work_days}
                   key={e.id}
+                  colorFont={"#676767"}
+                  color={teal[200]}
                   name={e.name}
                   lastname={e.lastname}
                   address={e.address}

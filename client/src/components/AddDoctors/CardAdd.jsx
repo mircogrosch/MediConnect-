@@ -58,6 +58,7 @@ const CardAdd = ({
                 minHeight: "80px",
                 borderRadius: "50%",
               }}
+              alt="not found"
             />
           </Grid>
         ) : (

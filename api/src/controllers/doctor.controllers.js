@@ -11,6 +11,8 @@ const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const cloudinary = require("cloudinary");
 const fs = require("fs-extra");
+const atob = require("atob");
+global.Blob = require("node-blob");
 const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
   process.env;
 
@@ -75,6 +77,7 @@ const createDoctor = async (req, res) => {
     enrollment,
     location,
     specialities, // tiene que ser un arreglo de id de specialties o un arreglo vacio
+    signature,
   } = req.body;
   const rol = "Doctor";
   if (
@@ -120,13 +123,21 @@ const createDoctor = async (req, res) => {
       } catch (error) {
         console.log("Error eliminando la imagen guardada", error);
       }
+      const byte_sign = atob(signature);
+      const byte_number_sign = new Array(byte_sign.length);
+      for (let i = 0; i < byte_sign.length; i++) {
+        byte_number_sign[i] = byte_sign.charCodeAt(i);
+      }
+      const byte_array_sign = new Uint8Array(byte_number_sign);
+      const blob = new Blob([byte_array_sign], { type: "" });
       let newDoctor = await Doctor.create(
         {
           enrollment,
           location,
+          signature: blob,
         },
         {
-          fields: ["enrollment", "location"],
+          fields: ["enrollment", "location", "signature"],
         }
       );
       await newDoctor.setPerson(dni);
@@ -444,6 +455,27 @@ const createAppointment = async (req, res) => {
   }
 };
 
+const deleteAppointment = async (req, res) => {
+  const { id } = req.params; // id de Turno
+  try {
+    await Appointment.destroy({
+      where: {
+        id: id,
+      },
+    });
+    res.json({
+      data: null,
+      message: `Turno Eliminado`,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
 const getAppointment = async (req, res) => {
   const { id } = req.params; // id de doctor
   try {
@@ -469,6 +501,45 @@ const getAppointment = async (req, res) => {
     res.json({
       data: appointments,
       message: "Turnos pendientes del Doctor",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
+const getAppointmentByDay = async (req, res) => {
+  const { id } = req.params; // id de doctor
+  const { day, month, year } = req.body;
+  try {
+    const appointments = await Appointment.findAll({
+      where: {
+        doctorId: id,
+        day: day,
+        month: month,
+        year: year,
+      },
+      include: [
+        {
+          model: Patient,
+          include: {
+            model: Person,
+          },
+        },
+        {
+          model: Doctor,
+          include: {
+            model: Person,
+          },
+        },
+      ],
+    });
+    res.json({
+      data: appointments,
+      message: `Turnos del Doctor en la fecha ${day}/${month}/${year}`,
     });
   } catch (error) {
     console.log(error);
@@ -530,7 +601,9 @@ module.exports = {
   getPatient,
   getPatients,
   createAppointment,
+  deleteAppointment,
   getAppointment,
+  getAppointmentByDay,
   createWorkDay,
   getWorkDays,
 };

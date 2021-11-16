@@ -25,26 +25,25 @@ const columnas = [
 const ScheduleDoctor = (props) => {
   const [data, setData] = useState([]);
 
-  const getAppointments = async () => {
-    const URL = "http://localhost:3001";
-    const response = await axios.get(
-      `${URL}/doctor/appointment/${props.match.params.id}`
-    );
-    let refactor = response.data.data.map((e) => {
-      return {
-        name: e.patient.person.name,
-        lastname: e.patient.person.lastname,
-        date: e.date,
-        hour_long: e.hour_long,
-        payment_status: e.payment_status,
-      };
-    });
-    setData(refactor);
-  };
-
   useEffect(() => {
+    const getAppointments = async () => {
+      const URL = "http://localhost:3001";
+      const response = await axios.get(
+        `${URL}/doctor/appointment/${props.match.params.id}`
+      );
+      let refactor = response.data.data.map((e) => {
+        return {
+          name: e.patient.person.name,
+          lastname: e.patient.person.lastname,
+          date: e.date,
+          hour_long: e.hour_long,
+          payment_status: e.payment_status,
+        };
+      });
+      setData(refactor);
+    };
     getAppointments();
-  }, []);
+  }, [props.match.params.id]);
 
   return (
     <>

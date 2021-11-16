@@ -23,7 +23,7 @@ const FiltroSelect = ({ filterSpecialities }) => {
 
   useEffect(() => {
     dispatch(filterSpecialities(special));
-  }, [special]);
+  }, [special, filterSpecialities, dispatch]);
 
   return (
     <Box>

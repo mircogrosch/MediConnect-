@@ -18,56 +18,57 @@ import MedicalHistoryPatient from "./pages/MedicalHistoryPatient";
 import AppointmentConfig from "./pages/AppointmentConfig";
 import CrearReceta from "./pages/CrearReceta";
 import CrearOrden from "./pages/CrearOrden";
+import ConfirmAppointment from "./pages/ConfirmAppointment"
 import SchedulePatient from "./pages/SchedulePatient";
 import NewAppointment from "./pages/NewAppointment";
 import NewAppoinmentStep2 from "./pages/NewAppoinmentStep2";
-
+import PrivateRoute from './components/PrivateRoute/PrivateRoute.jsx'
 function App() {
   return (
     <div>
+      <Route exact path="/" component={LandingPage} />
       <Route path="/register/doctor" component={DoctorRegisterForm} />
       <Route path="/register/patient" component={PatientRegisterForm} />
       <Route path="/register/form" component={SelectorRegisterForm} />
       <Route path="/login" component={LoginPage} />
-      <Route path="/account/profesionales/:id" component={MisProfesionales} />
-      <Route path="/account/doctor/patients/:id" component={MyPatientsPage} />
-      <Route exact path="/account/profesional" component={HomePageDoctor} />
-      <Route exact path="/account/patient" component={HomePatientPage} />
-      <Route path="/account/doctors/:id" component={AddDoctors} />
-      <Route
+      <PrivateRoute path="/account/profesionales/:id" Component={MisProfesionales} />
+      <PrivateRoute path="/account/doctor/patients/:id" Component={MyPatientsPage} />
+      <PrivateRoute path="/account/profesional" Component={HomePageDoctor} />
+      <PrivateRoute path="/account/patient" Component={HomePatientPage}/>
+      <PrivateRoute path="/account/doctors/:id" Component={AddDoctors} />
+      <PrivateRoute
         path="/account/appointment-config/:id"
-        component={AppointmentConfig}
+        Component={AppointmentConfig}
       />
-      <Route
-        exact
+      <PrivateRoute
         path="/account/patient/new-appointment/:id"
-        component={NewAppointment}
+        Component={NewAppointment}
       />
-      <Route
+      <PrivateRoute
         path="/account/profesional/schedule/:id"
-        component={ScheduleDoctor}
+        Component={ScheduleDoctor}
       />
-      <Route path="/account/patient/schedule/:id" component={SchedulePatient} />
-      <Route exact path="/" component={LandingPage} />
-      <Route path="/mensajes/paciente" component={MensajesPaciente} />
-      <Route path="/mensajes/profesional" component={MensajesDoctor} />
-      <Route
+      <PrivateRoute path="/account/patient/schedule/:id" Component={SchedulePatient} />
+      <PrivateRoute path="/mensajes/paciente" Component={MensajesPaciente} />
+      <PrivateRoute path="/mensajes/profesional" Component={MensajesDoctor} />
+      <PrivateRoute
         path="/doctor/patients/medical-historial/:id"
-        component={MyPatientsHistory}
+        Component={MyPatientsHistory}
       />
-      <Route
+      <PrivateRoute
         path="/account/patient/medical-history/:id"
-        component={MedicalHistoryPatient}
+        Component={MedicalHistoryPatient}
       />
-      <Route
+      <PrivateRoute
         path="/doctor/medical-history/:id"
-        component={MedicalHistoryDoctor}
+        Component={MedicalHistoryDoctor}
       />
-      <Route path="/doctor/recipes" component={CrearReceta} />
-      <Route path="/doctor/orders" component={CrearOrden} />
-      <Route
+      <PrivateRoute path='/doctor/recipes' Component={CrearReceta}/>
+      <PrivateRoute path="/doctor/orders" Component={CrearOrden}/>
+      <PrivateRoute path="/account/patient/new-appointment/3" Component={ConfirmAppointment} />
+      <PrivateRoute
         path="/account/patient/new-appointment/2/:id"
-        component={NewAppoinmentStep2}
+        Component={NewAppoinmentStep2}
       />
     </div>
   );
