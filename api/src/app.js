@@ -24,6 +24,58 @@ const path = require("path");
 const nodemailer = require("nodemailer");
 require("./db.js");
 
+const server = express();
+
+server.name = "API";
+
+// middlewares
+
+server.use(cors({ credentials: true, origin: "https://medi-connect.vercel.app" }));
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
+server.use(cookieParser("secret"));
+server.use(morgan("dev"));
+server.use((req, res, next) => {
+
+  res.header("Access-Control-Allow-Origin", "https://medi-connect.vercel.app"); // update to match the domain you will make the request from
+
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  next();
+});
+server.use(
+  session({
+    secret: "1234",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// Inicializa Passport y recupera el estado de autenticación de la sesión.
+server.use(flash());
+server.use(passport.initialize());
+server.use(passport.session());
+
+// Middleware para mostrar la sesión actual en cada request
+server.use((req, res, next) => {
+  console.log(req.cookies);
+  console.log(req.session);
+  console.log(req.user);
+  next();
+});
+
+// config multer
+const storage = multer.diskStorage({
+  destination: "./src/public/uploads/",
+  filename: function (req, file, cb) {
+    cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+  },
+});
+server.use(multer({ storage: storage }).single("image"));
 // comment
 //Para poder comparar con la password encrypt
 function comparePassword(password, passwordDB) {
@@ -160,60 +212,6 @@ passport.deserializeUser(async function (dni, done) {
     return done(error);
   }
 });
-
-const server = express();
-
-server.name = "API";
-
-// middlewares
-
-server.use(cors({ credentials: true, origin: "https://medi-connect.vercel.app" }));
-server.use(express.json());
-server.use(express.urlencoded({ extended: true }));
-server.use(cookieParser("secret"));
-server.use(morgan("dev"));
-server.use((req, res, next) => {
-
-  res.header("Access-Control-Allow-Origin", "https://medi-connect.vercel.app"); // update to match the domain you will make the request from
-
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-  next();
-});
-server.use(
-  session({
-    secret: "1234",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
-// Inicializa Passport y recupera el estado de autenticación de la sesión.
-server.use(flash());
-server.use(passport.initialize());
-server.use(passport.session());
-
-// Middleware para mostrar la sesión actual en cada request
-server.use((req, res, next) => {
-  console.log(req.cookies);
-  console.log(req.session);
-  console.log(req.user);
-  next();
-});
-
-// config multer
-const storage = multer.diskStorage({
-  destination: "./src/public/uploads/",
-  filename: function (req, file, cb) {
-    cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
-  },
-});
-server.use(multer({ storage: storage }).single("image"));
-
 // Routes
 // localhost:3001/
 server.use("/", routes);
