@@ -68,7 +68,7 @@ router.route("/appointment/:id").post(createAppointment);
 
 /*
   RUTA DESDE PACIENTE
-  Crea un TURNO
+  Cancelar turno
   fecha - hora - estado de pago - datos paciente
   Se envia id_turno por params
   ej: (method: DELETE) localhost:3001/doctor/appointment/id_turno
