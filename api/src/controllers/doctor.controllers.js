@@ -134,7 +134,7 @@ const createDoctor = async (req, res) => {
         {
           enrollment,
           location,
-          signature:blob,
+          signature: blob,
         },
         {
           fields: ["enrollment", "location", "signature"],
@@ -455,6 +455,27 @@ const createAppointment = async (req, res) => {
   }
 };
 
+const deleteAppointment = async (req, res) => {
+  const { id } = req.params; // id de Turno
+  try {
+    await Appointment.destroy({
+      where: {
+        id: id,
+      },
+    });
+    res.json({
+      data: null,
+      message: `Turno Eliminado`,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
 const getAppointment = async (req, res) => {
   const { id } = req.params; // id de doctor
   try {
@@ -580,6 +601,7 @@ module.exports = {
   getPatient,
   getPatients,
   createAppointment,
+  deleteAppointment,
   getAppointment,
   getAppointmentByDay,
   createWorkDay,
