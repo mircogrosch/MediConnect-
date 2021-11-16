@@ -3,7 +3,8 @@ const router = Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
-router.get("/success", (req, res) => {
+router.get("/success",isAuthenticated, (req, res) => {
+  console.log("ESTE ES EL SUCCESS",req.user);
   const token = jwt.sign(req.user, "secret");
   //respuesta un token
   res.send({
@@ -30,6 +31,7 @@ router.post(
     failureFlash: true,
   }),
   function (req, res) {
+    console.log("ESTE ES EN EL REDIRECT",req.user)
     res.redirect("/login/success");
   }
 );
