@@ -7,6 +7,7 @@ const {
   getPatient,
   getPatients,
   createAppointment,
+  deleteAppointment,
   getAppointment,
   getAppointmentByDay,
   createWorkDay,
@@ -64,6 +65,15 @@ router.route("/appointmentByDay/:id").get(getAppointmentByDay);
   ej:  localhost:3001/doctor/appointment/id_doctor?patient=Id_patient
 */
 router.route("/appointment/:id").post(createAppointment);
+
+/*
+  RUTA DESDE PACIENTE
+  Crea un TURNO
+  fecha - hora - estado de pago - datos paciente
+  Se envia id_turno por params
+  ej: (method: DELETE) localhost:3001/doctor/appointment/id_turno
+*/
+router.route("/appointment/:id").delete(deleteAppointment);
 
 /*
   Crea una Jornada laboral semanal para un Doctor
