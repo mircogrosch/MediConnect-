@@ -3,16 +3,6 @@ const router = Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
-router.get("/success", (req, res) => {
-  console.log("ESTE ES EL SUCCESS",req.user);
-  const token = jwt.sign(req.user, "secret");
-  console.log("ESTE ES EL TOKEN", token)
-  //respuesta un token
-  res.send({
-    token,
-  });
-});
-
 router.get("/fail", (req, res) => {
   res.send({
     user: null,
@@ -29,9 +19,21 @@ router.post(
   "/",
   passport.authenticate("local", {
     failureRedirect: "/login/fail",
-    successRedirect:"/login/success",
     failureFlash: true,
-  })
+  }),
+  (req,res)=>{
+    if(!req.user){
+      res.json({
+        user:null,
+        message:"NOT FOUND"
+      })
+    }
+  const token = jwt.sign(req.user, "secret");
+  //respuesta un token
+  res.send({
+    token,
+  });
+  }
 );
 
 function isAuthenticated(req, res, next) {
