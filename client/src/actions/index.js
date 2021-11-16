@@ -11,11 +11,17 @@ export const getDoctors = (id_patient) => {
 
 export const getUser = (user) => {
   return async function (dispatch) {
-    const response = await axios.post(`/login`, user, {
-      withCredentials: true,
-    });
-    sessionStorage.setItem("user", JSON.stringify(response.data));
-    dispatch({ type: types.GET_USER_LOGIN, payload: response.data });
+    try{
+      const response = await axios.post(`/login`, user, {
+        withCredentials: true,
+      });
+      sessionStorage.setItem("user", JSON.stringify(response.data));
+      dispatch({ type: types.GET_USER_LOGIN, payload: response.data });
+    }
+    catch(e){
+      console.log(e)
+    }
+  
   };
 };
 
