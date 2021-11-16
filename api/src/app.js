@@ -164,10 +164,12 @@ passport.use(
 
 //Serializar
 passport.serializeUser(function (user, done) {
+  console.log("ESTE ES EL SERIALIZE",user.user);
   return done(null, user.user.dni);
 });
 //Deserializar
 passport.deserializeUser(async function (dni, done) {
+  console.log("ESTE ES EL DESERIALIZE",dni)
   try {
     let user = await Person.findOne({
       where: {
