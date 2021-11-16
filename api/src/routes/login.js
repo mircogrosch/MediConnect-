@@ -3,7 +3,7 @@ const router = Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
-router.get("/", (req, res) => {
+router.get("/success", (req, res) => {
   console.log("ESTE ES EL SUCCESS",req.user);
   const token = jwt.sign(req.user, "secret");
   console.log("ESTE ES EL TOKEN", token)
