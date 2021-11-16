@@ -29,12 +29,9 @@ router.post(
   "/",
   passport.authenticate("local", {
     failureRedirect: "/login/fail",
+    successRedirect:"/login/success",
     failureFlash: true,
-  }),
-  function (req, res) {
-    console.log("ESTE ES EN EL REDIRECT",req.user)
-    res.redirect("/login/success");
-  }
+  })
 );
 
 function isAuthenticated(req, res, next) {
