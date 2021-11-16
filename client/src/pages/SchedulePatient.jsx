@@ -43,6 +43,26 @@ const SchedulePatient = (props) => {
       selector: (row) => row["payment_status"],
       sortable: true,
     },
+    {
+      name: "",
+      cell: () => (
+        <Button
+          variant="contained"
+          sx={{
+            marginTop: "0.5em",
+            fontSize: "12px",
+            width: "100%",
+            height: "30px",
+            background: teal[800],
+          }}
+        >
+          Cancelar
+        </Button>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    },
   ];
 
   return (
@@ -123,7 +143,7 @@ const SchedulePatient = (props) => {
                   fontSize: "14px",
                   width: "100%",
                   height: "50px",
-                  background: teal[900],
+                  background: teal[300],
                 }}
               >
                 Solicitar nuevo turno

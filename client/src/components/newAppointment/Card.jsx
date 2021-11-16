@@ -2,13 +2,13 @@ import { Box, Icon, Typography, Grid } from "@material-ui/core";
 import React from "react";
 import { AccountCircle } from "@mui/icons-material";
 import ButtonFoward from "./ButtonFoward";
+import { teal } from "@mui/material/colors";
 
 const Card = ({
-  colorFont,
-  color,
   key,
   name,
   lastname,
+  work_days,
   address,
   email,
   idPatient,
@@ -17,70 +17,61 @@ const Card = ({
   specialities,
 }) => {
   let docName = `Dr ${name} ${lastname}`;
+
+  let string_work_days = "";
+  work_days.forEach((e) => (string_work_days = string_work_days + e.day + " "));
+
   return (
     <Box
-      bgcolor={color}
-      width={"80%"}
-      height={"130px"}
-      sx={{ borderRadius: "5px", padding: "1em" }}
+      bgcolor={work_days.length ? teal[200] : teal[50]}
+      width="60vw"
+      height="75px"
+      borderRadius="7px"
+      padding="1em 0em 0em 1em"
     >
-      <Grid container style={{ height: "100%" }}>
-        {image ? (
-          <Grid item xs={3}>
-            <img
-              alt="notfound"
-              src={image}
-              style={{
-                maxWidth: "80px",
-                maxHeight: "80px",
-                minWidth: "80px",
-                minHeight: "80px",
-                borderRadius: "50%",
-              }}
-            />
-          </Grid>
-        ) : (
-          <Grid item xs={3}>
-            <Icon
-              style={{ width: "100%", height: "100%", textAlign: "center" }}
-            >
-              <AccountCircle style={{ fontSize: "80px", color: colorFont }} />
-            </Icon>
-          </Grid>
-        )}
-
-        <Grid item xs={7}>
-          <Typography
-            variant="h5"
-            style={{
-              fontWeight: "400",
-              color: colorFont,
-              marginBottom: "0.4em",
-            }}
-          >
+      <Grid
+        container
+        // bgcolor={teal[600]}
+        alignItems="center"
+        justifyContent="center"
+        display="flex"
+        rowSpacing={-1}
+        sx={{ width: "70vw", padding: "0.5em 1em", borderRadius: "5px" }}
+      >
+        <Grid item md={1}>
+          <img
+            src={image || AccountCircle}
+            alt="circle user"
+            style={{ width: "60px", height: "60px", borderRadius: "50%" }}
+          />
+        </Grid>
+        <Grid item md={3}>
+          <Typography variant="body1" color={teal[50]}>
             {docName}
           </Typography>
-          <Typography
-            variant="body1"
-            style={{ color: colorFont, marginBottom: "0.2em" }}
-          >
-            <strong>Especialidad:</strong> {specialities}
-          </Typography>
-          <Typography variant="body1" style={{ color: colorFont }}>
-            <strong>Ubicación:</strong> {address}
+        </Grid>
+        <Grid item md={3}>
+          <Typography variant="body1" color={teal[50]}>
+            {specialities}
           </Typography>
         </Grid>
-        <Grid
-          item
-          xs={2}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <Grid item md={3}>
+          <Typography variant="body1">
+            {string_work_days ? string_work_days : "Sin config de agenda"}
+          </Typography>
+        </Grid>
+        <Grid item md={2}>
           <ButtonFoward
-            obj={{ name, lastname, idDoctor, idPatient, image, specialities }}
+            obj={{
+              name,
+              lastname,
+              idDoctor,
+              idPatient,
+              image,
+              specialities,
+              work_days,
+            }}
+            sx={{ width: "100%", height: "50px", bgcolor: teal[900] }}
           />
         </Grid>
       </Grid>
