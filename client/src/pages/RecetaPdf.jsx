@@ -6,7 +6,6 @@ const RecetaPdf = ({ info, receta, date }) => {
   return (
     <Document>
       <Page size="A5" style={{ display: "flex" }}>
-        <img src={logo} alt="MEDICONNECT+" style={{ width: "200px" }} />
         <Image src={logo} alt="MEDICONNECT+" style={{ width: "200px" }} />
         <View>
           <Text style={{ display: "flex", fontSize: "15px" }}>

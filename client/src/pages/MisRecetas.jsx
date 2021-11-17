@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
@@ -33,32 +33,36 @@ const MisRecetas = () => {
   return (
     <Grid>
       <PrimarySearchAppBar />
-      <Grid>
-        {recipes.map((e) => {
-          infoPerson = {
-            name: e.patient.person.name,
-            lastname: e.patient.person.lastname,
-            dni: e.patient.personDni,
-            healthInsurance: {
-              name: e.patient.healthInsurance.name,
-            },
-          };
-          infoReceta = {
-            medication: e.medication,
-            frequency: e.frequency,
-            diagnostic: e.diagnostic,
-          };
-          date = new Date(e.date);
-          return (
-            <PDFViewer
-              key={e.id}
-              style={{ width: "400px", height: "650px", margin: "20px" }}
-            >
-              <RecetaPdf info={infoPerson} receta={infoReceta} date={date} />
-            </PDFViewer>
-          );
-        })}
-      </Grid>
+      {recipes.length === 0 ? (
+        <Typography variant="h3">No hay recetas</Typography>
+      ) : (
+        <Grid>
+          {recipes.map((e) => {
+            infoPerson = {
+              name: e.patient.person.name,
+              lastname: e.patient.person.lastname,
+              dni: e.patient.personDni,
+              healthInsurance: {
+                name: e.patient.healthInsurance.name,
+              },
+            };
+            infoReceta = {
+              medication: e.medication,
+              frequency: e.frequency,
+              diagnostic: e.diagnostic,
+            };
+            date = new Date(e.date);
+            return (
+              <PDFViewer
+                key={e.id}
+                style={{ width: "400px", height: "650px", margin: "20px" }}
+              >
+                <RecetaPdf info={infoPerson} receta={infoReceta} date={date} />
+              </PDFViewer>
+            );
+          })}
+        </Grid>
+      )}
     </Grid>
   );
 };
