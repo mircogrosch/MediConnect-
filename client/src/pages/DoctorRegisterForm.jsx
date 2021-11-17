@@ -15,6 +15,7 @@ import {
   Select,
   MenuItem,
   Button,
+  LinearProgress
 } from "@mui/material";
 import { teal } from "@mui/material/colors";
 import { useStyles } from "../styles/registerForms/doctors";
@@ -44,6 +45,8 @@ function DoctorRegisterForm() {
     password: false,
     idemPassword: false,
   });
+  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [disabledButton, setDisabledButton] = useState(false);
 
   useEffect(() => {
     dispatch(getSpecialities());
@@ -85,7 +88,8 @@ function DoctorRegisterForm() {
     user.append("address", data.address);
     user.append("location", data.location);
     user.append("signature", imgURL);
-    dispatch(postDoctor(user, history));
+    setDisabledButton(true)
+    dispatch(postDoctor(user, history,setLoadingProgress));
   };
 
   const getProvinces = async () => {
@@ -325,9 +329,13 @@ function DoctorRegisterForm() {
                   fontSize: "16px",
                   background: teal[900],
                 }}
+                disabled={disabledButton}
               >
                 REGISTRAR
               </Button>
+              {
+              disabledButton ? <LinearProgress variant="determinate" value={loadingProgress}/> : false
+              }
             </Grid>
           </Grid>
         </Box>
