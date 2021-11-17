@@ -17,12 +17,14 @@ import {
   Button,
   Grid,
   IconButton,
+  LinearProgress
 } from "@mui/material";
 import axios from "axios";
 import SimpleAppBar from "../components/AppBar/SimpleAppBar";
 import CheckIcon from "@mui/icons-material/Check";
-
 const PatientRegisterForm = () => {
+  
+
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -38,6 +40,8 @@ const PatientRegisterForm = () => {
     password: false,
     idemPassword: false,
   });
+  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [disabledButton, setDisabledButton] = useState(false);
 
   const healthInsurances = useSelector((state) => state.healthInsurances);
 
@@ -61,6 +65,9 @@ const PatientRegisterForm = () => {
     setImgPerfil(file);
     setCheckUpLoad(true);
   };
+  const handleLoadingProgress = (percent)=>{ 
+    setLoadingProgress(percent);
+  }
 
   const onSubmit = (data) => {
     setEqual(true);
@@ -88,8 +95,8 @@ const PatientRegisterForm = () => {
     user.append("healthInsuranceId", data.healthInsuranceId);
     user.append("address", data.address);
     user.append("location", data.location);
-
-    dispatch(postPatient(user, history));
+    setDisabledButton(true)
+    dispatch(postPatient(user, history,handleLoadingProgress));
   };
 
   const getProvinces = async () => {
@@ -110,7 +117,8 @@ const PatientRegisterForm = () => {
     );
     setTowns(response.data.municipios);
   };
-
+ 
+  console.log("ESTE ES EL PROGRESS", loadingProgress)
   return (
     <Box>
       <SimpleAppBar background={teal[900]} />
@@ -120,6 +128,7 @@ const PatientRegisterForm = () => {
           marginTop: { sm: "0", xs: "2em" },
         }}
       >
+       
         <Box sx={{ width: { lg: "60vw", md: "70vw", xs: "90vw" } }}>
           <Grid container rowSpacing={1}>
             <Grid item xs={12} textAlign="center">
@@ -325,10 +334,16 @@ const PatientRegisterForm = () => {
                   fontSize: "16px",
                   background: teal[900],
                 }}
+                disabled={disabledButton}
               >
                 REGISTRAR
               </Button>
+              {
+              disabledButton ? <LinearProgress variant="determinate" value={loadingProgress}/> : false
+              }
             </Grid>
+            
+            
           </Grid>
         </Box>
       </Box>
