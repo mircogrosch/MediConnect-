@@ -25,10 +25,16 @@ export const getUser = (user) => {
   };
 };
 
-export const postDoctor = (payload, history) => {
+export const postDoctor = (payload, history,handleState) => {
   return async function (dispatch) {
     try {
-      const response = await axios.post(`${URL}/doctor`, payload);
+      const config = {
+        onUploadProgress: function(progressEvent) {
+          var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+         handleState(percentCompleted)
+        }
+      }
+      const response = await axios.post(`${URL}/doctor`, payload,config);
       swal({
         title: `El registro fue exitoso`,
         icon: "success",
@@ -63,10 +69,16 @@ export function getSpecialities() {
   };
 }
 
-export const postPatient = (payload, history) => {
+export const postPatient = (payload, history,handleState) => {
   return async function (dispatch) {
     try {
-      await axios.post(`${URL}/patient`, payload);
+      const config = {
+        onUploadProgress: function(progressEvent) {
+          var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+         handleState(percentCompleted)
+        }
+      }
+      await axios.post(`${URL}/patient`, payload,config);
       swal({
         title: `El registro fue exitoso`,
         icon: "success",
