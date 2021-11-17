@@ -35,7 +35,7 @@ function ContainerCardAdd() {
       className={classes.containerCards}
       sx={{ height: { sm: "70vh", xs: "65vh" } }}
     >
-      {allDoctors.length > 0 ? (
+      {allDoctors.length ? (
         allDoctors.map((e) => {
           return (
             <Grid
@@ -69,11 +69,13 @@ function ContainerCardAdd() {
         })
       ) : (
         <Grid
+          item
           height="30vh"
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            marginLeft: "500px",
           }}
         >
           <Typography
