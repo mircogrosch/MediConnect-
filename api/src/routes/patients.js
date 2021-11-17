@@ -8,6 +8,7 @@ const {
   addDoctor,
   deleteDoctor,
   getAppointment,
+  getPrescription,
   getAllergies,
   createAllergie,
   createDisease,
@@ -67,6 +68,13 @@ router.route("/doctors/:id").delete(deleteDoctor);
   ej:  localhost:3001/patient/appointment/id_paciente
 */
 router.route("/appointment/:id").get(getAppointment);
+
+/*
+  Mostrar todas las RECETAS del Paciente
+  Se envian el id del Paciente por query
+  ej: (method GET) localhost:3001/patient/prescription?patientId=patient_id
+*/
+router.route("/prescription").get(getPrescription);
 
 router.route("/:id").get(getPatient);
 
