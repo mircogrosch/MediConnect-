@@ -10,6 +10,7 @@ const {
   Appointment,
   Prescription_drug,
   Work_day,
+  Prescription,
 } = require("../db");
 const { Op, literal } = require("sequelize");
 const bcryptjs = require("bcryptjs");
@@ -345,6 +346,41 @@ const deleteDoctor = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send(error);
+  }
+};
+
+const getPrescription = async (req, res) => {
+  const { patientId } = req.query;
+  if (patientId) {
+    const prescriptions = await Prescription.findAll({
+      where: {
+        patientId: patientId,
+      },
+      include: [
+        {
+          model: Patient,
+          include: {
+            model: Person,
+          },
+        },
+        {
+          model: Doctor,
+          include: {
+            model: Person,
+          },
+        },
+      ],
+    });
+    res.json({
+      data: prescriptions,
+      message: "Todas las Recetas del Paciente",
+    });
+  } else {
+    res.json({
+      data: null,
+      message:
+        "Se necesita que se envien los id de Doctor y Paciente, como tambien los atributos de Receta",
+    });
   }
 };
 
@@ -775,6 +811,7 @@ module.exports = {
   addDoctor,
   deleteDoctor,
   getAppointment,
+  getPrescription,
   getAllergies,
   createAllergie,
   createDisease,
