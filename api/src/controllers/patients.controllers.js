@@ -359,9 +359,14 @@ const getPrescription = async (req, res) => {
       include: [
         {
           model: Patient,
-          include: {
-            model: Person,
-          },
+          include: [
+            {
+              model: Person,
+            },
+            {
+              model: HealthInsurance,
+            },
+          ],
         },
         {
           model: Doctor,
