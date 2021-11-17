@@ -17,6 +17,7 @@ import { PDFViewer } from "@react-pdf/renderer";
 import axios from "axios";
 import { postPrescription } from "../actions/index";
 import jwt from "jsonwebtoken";
+import { useHistory } from "react-router-dom";
 
 const CrearReceta = () => {
   const user = jwt.verify(
@@ -24,6 +25,7 @@ const CrearReceta = () => {
     "secret"
   );
 
+  const history = useHistory();
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.myPatients);
   const [patient, setPatient] = useState("");
@@ -57,6 +59,7 @@ const CrearReceta = () => {
 
   const handleSubmit = () => {
     dispatch(postPrescription(user.rol.id, infoPatient.id, receta));
+    history.push("/account/profesional");
   };
 
   return (

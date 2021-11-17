@@ -27,26 +27,33 @@ const MisRecetas = () => {
 
   console.log(recipes);
 
-  // let infoPerson
-  // let infoReceta
-  // let date
+  let infoPerson;
+  let infoReceta;
+  let date;
   return (
     <Grid>
       <PrimarySearchAppBar />
       <Grid>
         {recipes.map((e) => {
-          let infoPerson = {
+          infoPerson = {
             name: e.patient.person.name,
-            lastneme: e.patient.person.lastname,
+            lastname: e.patient.person.lastname,
             dni: e.patient.personDni,
+            healthInsurance: {
+              name: e.patient.healthInsurance.name,
+            },
           };
-          let infoReceta = {
+          infoReceta = {
             medication: e.medication,
             frequency: e.frequency,
+            diagnostic: e.diagnostic,
           };
-          let date = e.date;
+          date = new Date(e.date);
           return (
-            <PDFViewer>
+            <PDFViewer
+              key={e.id}
+              style={{ width: "400px", height: "650px", margin: "20px" }}
+            >
               <RecetaPdf info={infoPerson} receta={infoReceta} date={date} />
             </PDFViewer>
           );
