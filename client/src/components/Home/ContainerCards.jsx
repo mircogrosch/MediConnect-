@@ -91,7 +91,9 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
               />
             </Link>
           ) : (
-            <Card title="Mis Recetas" icon={cardInfo[3].icon} />
+            <Link to={`/patient/recipes`} style={{ textDecoration: "none" }}>
+              <Card title="Mis Recetas" icon={cardInfo[3].icon} />
+            </Link>
           )}
         </Grid>
         <Grid item md={4} sm={4} xs={5}>
