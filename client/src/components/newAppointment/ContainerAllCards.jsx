@@ -27,6 +27,7 @@ function ContainerAllCards() {
             end: `${arrayObj[i].end.hour}:${arrayObj[i].end.minutes}`,
           };
           newArray.push(lun);
+          break;
 
         case 2:
           let mar = {
@@ -36,6 +37,7 @@ function ContainerAllCards() {
             end: `${arrayObj[i].end.hour}:${arrayObj[i].end.minutes}`,
           };
           newArray.push(mar);
+          break;
 
         case 3:
           let mie = {
@@ -45,6 +47,7 @@ function ContainerAllCards() {
             end: `${arrayObj[i].end.hour}:${arrayObj[i].end.minutes}`,
           };
           newArray.push(mie);
+          break;
 
         case 4:
           let jue = {
@@ -54,6 +57,8 @@ function ContainerAllCards() {
             end: `${arrayObj[i].end.hour}:${arrayObj[i].end.minutes}`,
           };
           newArray.push(jue);
+          break;
+
         case 5:
           let vie = {
             day: "Vie",
@@ -62,8 +67,11 @@ function ContainerAllCards() {
             end: `${arrayObj[i].end.hour}:${arrayObj[i].end.minutes}`,
           };
           newArray.push(vie);
+          break;
+
         default:
           return newArray;
+          break;
       }
     }
     return newArray;

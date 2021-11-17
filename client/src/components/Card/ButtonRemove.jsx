@@ -17,6 +17,7 @@ const ButtonRemove = ({ idPatient, idDoctor, aux, setAux }) => {
       )
       .then((ok) => (ok ? setAux(aux + 1) : false));
   };
+
   return (
     <>
       <IconButton onClick={handleClick} aria-label="delete" size="small">
