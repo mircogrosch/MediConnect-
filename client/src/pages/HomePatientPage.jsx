@@ -21,7 +21,7 @@ import {
   socketChat,
 } from "../components/Controlers/chatMessage";
 import ShifsNotificatorPatient from "../components/Home/ShifsNotificatorPatient";
-import Carousel from "../components/Carousel";
+import Carousel from "../components/Home/Carousel";
 
 const cardInfo = [
   {
