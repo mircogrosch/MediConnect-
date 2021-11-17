@@ -44,7 +44,11 @@ function ContainerCardAdd() {
               xl={4}
               md={6}
               xs={12}
-              style={{ display: "flex", justifyContent: "center" }}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
               <CardAdd
                 key={e.id}

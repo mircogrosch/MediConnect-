@@ -6,11 +6,11 @@ import { teal } from "@mui/material/colors";
 import AppBar from "../components/Notification/AppBarNoti";
 import SearchBar from "../components/SearchBar/SearchBar";
 import PatientCard from "../components/MyPatients/PatientCard";
+import { useParams } from "react-router-dom";
 
 function MyPatientsPage(props) {
   const dispatch = useDispatch();
-
-  const id = props.match.params.id;
+  const { id } = useParams();
   const myPatients = useSelector((state) => state.myPatients);
   console.log("page myPatients", myPatients);
   useEffect(() => {

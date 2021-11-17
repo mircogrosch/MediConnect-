@@ -4,13 +4,13 @@ import { Box, Grid, Typography } from "@mui/material";
 import { teal, grey } from "@mui/material/colors";
 import AppBar from "../components/Notification/AppBarNoti";
 import CardLabel from "../components/MedicalHistoryPatient/CardLabel";
+import { useParams } from "react-router-dom";
 
 function MedicalHistoryPatient(props) {
   const [allergies, setAllergies] = useState([]);
   const [diseases, setDiseases] = useState([]);
   const [prescriptions, setPrescriptions] = useState([]);
-
-  const id = props.match.params.id;
+  const { id } = useParams();
 
   useEffect(() => {
     !allergies.length > 0 && getAllergies(id);
