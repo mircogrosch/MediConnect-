@@ -12,6 +12,7 @@ const {
   getAppointmentByDay,
   createWorkDay,
   getWorkDays,
+  createPrescription,
 } = require("../controllers/doctor.controllers");
 
 router.route("/").get(getDoctors);
@@ -74,6 +75,13 @@ router.route("/appointment/:id").post(createAppointment);
   ej: (method: DELETE) localhost:3001/doctor/appointment/id_turno
 */
 router.route("/appointment/:id").delete(deleteAppointment);
+
+/*
+  Crear una RECETA
+  Se envian el id del Doctor y Paciente por query
+  ej: (method POST) localhost:3001/doctor/prescription?patientId=patient_id&doctorId=doctor_id
+*/
+router.route("/prescription").post(createPrescription);
 
 /*
   Crea una Jornada laboral semanal para un Doctor
