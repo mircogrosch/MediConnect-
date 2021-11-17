@@ -10,9 +10,11 @@ import {
 import ConteinerCard from "./ConteinerCard";
 import { useStyles } from "../../styles/doctors/add_doctor";
 import PrimarySearchAppBar from "../../components/Notification/AppBarNoti";
+import { useParams } from "react-router-dom";
 
 const MisProfesionales = (props) => {
   const classes = useStyles();
+  const { id } = useParams();
 
   return (
     <Box>
@@ -26,7 +28,7 @@ const MisProfesionales = (props) => {
             />
             <SearchBar
               filterName={filterMyDoctorsByName}
-              id={props.match.params.id}
+              id={id}
               styles={classes}
             />
           </Grid>

@@ -3,7 +3,7 @@ import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
 import { Typography, Button, Grid, Box } from "@mui/material";
 import { teal, grey } from "@mui/material/colors";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import DataTable from "react-data-table-component";
 
 const columnas = [
@@ -24,13 +24,12 @@ const columnas = [
 
 const ScheduleDoctor = (props) => {
   const [data, setData] = useState([]);
+  const { id } = useParams();
 
   useEffect(() => {
     const getAppointments = async () => {
       const URL = "http://localhost:3001";
-      const response = await axios.get(
-        `${URL}/doctor/appointment/${props.match.params.id}`
-      );
+      const response = await axios.get(`${URL}/doctor/appointment/${id}`);
       let refactor = response.data.data.map((e) => {
         return {
           name: e.patient.person.name,
@@ -43,7 +42,7 @@ const ScheduleDoctor = (props) => {
       setData(refactor);
     };
     getAppointments();
-  }, [props.match.params.id]);
+  }, [id]);
 
   return (
     <>
@@ -114,7 +113,7 @@ const ScheduleDoctor = (props) => {
             )}
 
             <Link
-              to={`/account/appointment-config/${props.match.params.id}`}
+              to={`/account/appointment-config/${id}`}
               style={{ textDecoration: "none", width: "80%" }}
             >
               <Button
