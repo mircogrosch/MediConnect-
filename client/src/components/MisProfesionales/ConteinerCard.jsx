@@ -5,19 +5,21 @@ import Card from "../Card/Card";
 import AddProfesionals from "../Card/AddProfesionals";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyDoctors } from "../../actions";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function ContainerCard({ props }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { id } = useParams();
+
   // Estado auxiliar
   const [aux, setAux] = useState(0);
   let MyDoctors = useSelector((state) => state.myDoctors.names); // Guarda doctores asociados para renderizar en las cards
 
   useEffect(() => {
     // Dispara la accion para traer todos los doctores asociados al paciente
-    dispatch(getMyDoctors(props.match.params.id));
-  }, [dispatch, aux, props.match.params.id]);
+    dispatch(getMyDoctors(id));
+  }, [dispatch, aux, id]);
 
   return (
     <Grid
@@ -34,7 +36,7 @@ function ContainerCard({ props }) {
         style={{ display: "flex", justifyContent: "center" }}
       >
         <Link
-          to={`/account/doctors/${props.match.params.id}`}
+          to={`/account/doctors/${id}`}
           style={{ textDecoration: "none", color: "#676767" }}
         >
           <AddProfesionals />
@@ -57,7 +59,7 @@ function ContainerCard({ props }) {
                 lastname={e.lastname}
                 address={e.address}
                 email={e.email}
-                idPatient={props.match.params.id}
+                idPatient={id}
                 idDoctor={e.id}
                 image={e.imageProfile}
                 props={props}

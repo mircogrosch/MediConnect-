@@ -13,10 +13,11 @@ import { teal, grey } from "@mui/material/colors";
 import { Checkbox, FormControlLabel } from "@material-ui/core";
 import axios from "axios";
 import swal from "sweetalert";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
-const AppointmentConfig = (props) => {
+const AppointmentConfig = () => {
   const history = useHistory();
+  const { id } = useParams();
 
   // Estados
   const [dia1, setDia1] = useState({
@@ -64,10 +65,7 @@ const AppointmentConfig = (props) => {
   const postConfig = async (week) => {
     const URL = "http://localhost:3001";
 
-    const response = await axios.post(
-      `${URL}/doctor/workday/${props.match.params.id}`,
-      week
-    );
+    const response = await axios.post(`${URL}/doctor/workday/${id}`, week);
     console.log("postConfig ", response);
   };
   const handleSubmit = () => {
