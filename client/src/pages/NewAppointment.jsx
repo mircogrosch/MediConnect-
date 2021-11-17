@@ -10,9 +10,11 @@ import FiltroSelect from "../components/FiltroSelect/FiltroSelect";
 import SearchBar from "../components/SearchBar/SearchBar";
 import { useStyles } from "../styles/doctors/add_doctor";
 import { teal } from "@mui/material/colors";
+import { useParams } from "react-router-dom";
 
 const NewAppointment = (props) => {
   const classes = useStyles();
+  const { id } = useParams();
   return (
     <>
       <Box>
@@ -26,7 +28,7 @@ const NewAppointment = (props) => {
               />
               <SearchBar
                 filterName={filterMyDoctorsByName}
-                id={props.match.params.id}
+                id={id}
                 styles={classes}
               />
             </Grid>

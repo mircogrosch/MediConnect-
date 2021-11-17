@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Card from "./Card";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyDoctors } from "../../actions/index";
+import { useParams } from "react-router-dom";
+import { teal, grey } from "@mui/material/colors";
 
-function ContainerAllCards({ props }) {
+function ContainerAllCards() {
   const dispatch = useDispatch();
-
+  const { id } = useParams();
   let myDoctors = useSelector((state) => state.myDoctors.names); // Doctores asociados
 
   useEffect(() => {
-    dispatch(getMyDoctors(props.match.params.id));
-  }, [props.match.params.id, dispatch]);
+    dispatch(getMyDoctors(id));
+  }, [id, dispatch]);
 
   const refactorWorkDays = (arrayObj) => {
     let newArray = [];
@@ -95,7 +97,7 @@ function ContainerAllCards({ props }) {
           rowSpacing: 1,
         }}
       >
-        {refactor &&
+        {refactor.length ? (
           refactor.map((e) => {
             return (
               <Grid
@@ -119,14 +121,31 @@ function ContainerAllCards({ props }) {
                   lastname={e.lastname}
                   address={e.address}
                   email={e.email}
-                  idPatient={props.match.params.id}
+                  idPatient={id}
                   idDoctor={e.id}
                   image={e.image}
                   specialities={e.specialities}
                 />
               </Grid>
             );
-          })}
+          })
+        ) : (
+          <Grid
+            height="30vh"
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              align={"center"}
+              variant="h6"
+              style={{ color: grey[700] }}
+            >
+              No tiene ningún profesional asociado
+            </Typography>
+          </Grid>
+        )}
       </Grid>
     </>
   );

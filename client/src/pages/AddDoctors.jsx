@@ -9,9 +9,11 @@ import {
   filterDoctorsByName,
   filterSpecialitiesAllDoctors,
 } from "../actions/index";
+import { useParams } from "react-router-dom";
 
 function AddDoctors(props) {
   const classes = useStyles();
+  const { id } = useParams();
 
   return (
     <Box>
@@ -25,7 +27,7 @@ function AddDoctors(props) {
             />
             <SearchBar
               filterName={filterDoctorsByName}
-              id={props.match.params.id}
+              id={id}
               styles={classes}
             />
           </Grid>
