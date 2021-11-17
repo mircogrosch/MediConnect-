@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useStyles } from "../styles/home";
 import { Box, Grid } from "@mui/material";
 import { teal } from "@mui/material/colors";
@@ -10,7 +10,6 @@ import {
   ForumOutlined,
 } from "@mui/icons-material";
 import Perfil from "../components/Home/Perfil";
-import ShifsNotificator from "../components/Home/ShifsNotificator.jsx";
 import ContainerCards from "../components/Home/ContainerCards.jsx";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti.jsx";
 import jwt from "jsonwebtoken";
@@ -21,6 +20,8 @@ import {
   initiateSocketChat,
   socketChat,
 } from "../components/Controlers/chatMessage";
+import ShifsNotificatorPatient from "../components/Home/ShifsNotificatorPatient";
+import Carousel from "../components/Carousel";
 
 const cardInfo = [
   {
@@ -73,7 +74,8 @@ function HomePatientPage() {
             />
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">
-            <ShifsNotificator />
+            {/* <ShifsNotificatorPatient id={user.rol.id} /> */}
+            <Carousel />
             <ContainerCards cardInfo={cardInfo} />
           </Grid>
         </Grid>
