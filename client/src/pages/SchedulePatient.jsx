@@ -5,20 +5,21 @@ import { teal, grey } from "@mui/material/colors";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import DataTable from "react-data-table-component";
+import swal from "sweetalert";
 
 const SchedulePatient = () => {
   const [data, setData] = useState([]);
   const { id } = useParams();
+  const URL = "http://localhost:3001";
 
   useEffect(() => {
     const getAppointments = async () => {
-      const URL = "http://localhost:3001";
       const response = await axios.get(`${URL}/patient/appointment/${id}`);
       let refactor = response.data.data.map((e) => {
         return {
-          name: e.doctor.person.name,
-          lastname: e.doctor.person.lastname,
+          fullname: e.doctor.person.name + " " + e.doctor.person.lastname,
           date: e.date,
+          id_appointment: e.id,
           hour_long: e.hour_long,
           payment_status: e.payment_status,
         };
@@ -28,15 +29,33 @@ const SchedulePatient = () => {
     getAppointments();
   }, [id]);
 
+  const handleDelete = (id_appointment) => {
+    let filtered = [];
+    swal("Vas a eliminar un turno ya agendado, ¿estás seguro? ", {
+      dangerMode: true,
+      buttons: { cancel: true, confirm: "Continuar" },
+    })
+      .then(
+        (success) =>
+          success && axios.delete(`${URL}/doctor/appointment/${id_appointment}`)
+      )
+      .then(
+        (success) =>
+          success &&
+          (filtered = data.filter((e) => e.id_appointment !== id_appointment))
+      )
+      .then((success) => success && setData(filtered))
+      .catch((error) => console.log("No se elimino el turno", error));
+  };
+
   const columnas = [
     { name: "Fecha", selector: (row) => row["date"] },
     { name: "Hora", selector: (row) => row["hour_long"], sortable: true },
     {
-      name: "Nombre",
-      selector: (row) => row["name"],
+      name: "Profesional",
+      selector: (row) => row["fullname"],
       sortable: true,
     },
-    { name: "Apellido", selector: (row) => row["lastname"], sortable: true },
     {
       name: "Estado de pago",
       selector: (row) => row["payment_status"],
@@ -44,18 +63,20 @@ const SchedulePatient = () => {
     },
     {
       name: "",
-      cell: () => (
+      cell: (row) => (
         <Button
+          onClick={() => handleDelete(row.id_appointment)}
           variant="contained"
           sx={{
-            marginTop: "0.5em",
-            fontSize: "12px",
+            margin: "0.5em",
+            lineHeight: "1.2em",
+            fontSize: "10px",
             width: "100%",
             height: "30px",
             background: teal[800],
           }}
         >
-          Cancelar
+          Cancelar turno
         </Button>
       ),
       ignoreRowClick: true,
@@ -110,7 +131,7 @@ const SchedulePatient = () => {
                   data={data}
                   title={""}
                   fixedHeader
-                  fixedHeaderScrollHeight="400px"
+                  fixedHeaderScrollHeight="300px"
                 />
               </Grid>
             ) : (
@@ -142,7 +163,7 @@ const SchedulePatient = () => {
                   fontSize: "14px",
                   width: "100%",
                   height: "50px",
-                  background: teal[300],
+                  background: teal[900],
                 }}
               >
                 Solicitar nuevo turno
