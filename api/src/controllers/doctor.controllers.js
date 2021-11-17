@@ -492,7 +492,7 @@ const getAppointment = async (req, res) => {
 
 const getAppointmentByDay = async (req, res) => {
   const { id } = req.params; // id de doctor
-  const { day, month, year } = req.body;
+  const { day, month, year } = req.query;
   try {
     const appointments = await Appointment.findAll({
       where: {
