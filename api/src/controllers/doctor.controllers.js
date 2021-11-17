@@ -6,6 +6,7 @@ const {
   HealthInsurance,
   Appointment,
   Work_day,
+  Prescription,
 } = require("../db");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
@@ -550,6 +551,42 @@ const getAppointmentByDay = async (req, res) => {
   }
 };
 
+const createPrescription = async (req, res) => {
+  const { patientId, doctorId } = req.query;
+  const { medication, amount, frequency, how_much } = req.body;
+  const send_all_params =
+    medication && amount && frequency && how_much && patientId && doctorId;
+  if (send_all_params) {
+    try {
+      const newPrescription = await Prescription.create({
+        medication,
+        amount,
+        frequency,
+        how_much,
+        date: new Date(),
+      });
+      await newPrescription.setDoctor(doctorId);
+      await newPrescription.setPatient(patientId);
+      res.json({
+        data: newPrescription,
+        message: "Receta creada",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        data: error,
+        message: "something goes wrong",
+      });
+    }
+  } else {
+    res.json({
+      data: null,
+      message:
+        "Se necesita que se envien los id de Doctor y Paciente, como tambien los atributos de Receta",
+    });
+  }
+};
+
 const createWorkDay = async (req, res) => {
   const { id } = req.params;
   const { week } = req.body;
@@ -606,4 +643,5 @@ module.exports = {
   getAppointmentByDay,
   createWorkDay,
   getWorkDays,
+  createPrescription,
 };
