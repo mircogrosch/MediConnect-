@@ -47,7 +47,7 @@ const ScheduleDoctor = (props) => {
   return (
     <>
       <Box sx={{ background: grey[50] }}>
-        <PrimarySearchAppBar />
+        <PrimarySearchAppBar bgColor={teal[900]} color={teal[50]} />
         <Box
           sx={{
             height: "100vh",
@@ -90,7 +90,7 @@ const ScheduleDoctor = (props) => {
                   data={data}
                   title={""}
                   fixedHeader
-                  fixedHeaderScrollHeight="400px"
+                  fixedHeaderScrollHeight="300px"
                 />
               </Grid>
             ) : (
