@@ -553,9 +553,9 @@ const getAppointmentByDay = async (req, res) => {
 
 const createPrescription = async (req, res) => {
   const { patientId, doctorId } = req.query;
-  const { medication, amount, frequency, how_much } = req.body;
+  const { medication, amount, frequency, how_much, diagnostic } = req.body;
   const send_all_params =
-    medication && amount && frequency && how_much && patientId && doctorId;
+    medication && amount && frequency && how_much && patientId && doctorId && diagnostic;
   if (send_all_params) {
     try {
       const newPrescription = await Prescription.create({
@@ -563,6 +563,7 @@ const createPrescription = async (req, res) => {
         amount,
         frequency,
         how_much,
+        diagnostic,
         date: new Date(),
       });
       await newPrescription.setDoctor(doctorId);
