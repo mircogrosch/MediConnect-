@@ -53,18 +53,9 @@ const CrearReceta = () => {
       ...receta,
       [e.target.name]: e.target.value,
     });
-    console.log(receta);
   };
 
   const handleSubmit = () => {
-    console.log(
-      "idDoc",
-      user.rol.id,
-      "idpat",
-      infoPatient.id,
-      "receta",
-      receta
-    );
     dispatch(postPrescription(user.rol.id, infoPatient.id, receta));
   };
 
