@@ -79,6 +79,7 @@ function ContainerAllCards() {
 
   let refactor = myDoctors.map((e) => {
     return {
+      id: e.id,
       address: e.address,
       dni: e.dni,
       name: e.name,

@@ -18,7 +18,7 @@ function HourCard({ time, selectHour }) {
         textAlign="center"
         color={`${!time.available && grey[500]}`}
       >
-        {time.value}
+        {time.show}
       </Typography>
     </Box>
   );
