@@ -23,6 +23,7 @@ import SchedulePatient from "./pages/SchedulePatient";
 import NewAppointment from "./pages/NewAppointment";
 import NewAppoinmentStep2 from "./pages/NewAppoinmentStep2";
 import PrivateRoute from './components/PrivateRoute/PrivateRoute.jsx'
+import MisRecetas from "./pages/MisRecetas";
 function App() {
   return (
     <div>
@@ -70,6 +71,7 @@ function App() {
         path="/account/patient/new-appointment/2/:id"
         Component={NewAppoinmentStep2}
       />
+      <PrivateRoute path='/patient/recipes' Component={MisRecetas}/>
     </div>
   );
 }

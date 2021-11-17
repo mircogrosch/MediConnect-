@@ -10,21 +10,31 @@ import {
 import { teal } from "@mui/material/colors";
 import { Box } from "@mui/material";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
 import RecetaPdf from "./RecetaPdf";
 import { PDFViewer } from "@react-pdf/renderer";
 import axios from "axios";
+import { postPrescription } from "../actions/index";
+import jwt from "jsonwebtoken";
 
 const CrearReceta = () => {
+  const user = jwt.verify(
+    JSON.parse(sessionStorage.getItem("user"))?.token,
+    "secret"
+  );
+
+  const dispatch = useDispatch();
   const patients = useSelector((state) => state.myPatients);
   const [patient, setPatient] = useState("");
   const [verPdf, setVerPdf] = useState(false);
   const [infoPatient, setInfoPatient] = useState({});
   const [receta, setReceta] = useState({
-    medicineName: "",
-    frecuency: "",
+    medication: "",
+    frequency: "",
     diagnostic: "",
+    amount: "",
+    how_much: "",
   });
 
   const handleSelect = (e) => {
@@ -44,6 +54,18 @@ const CrearReceta = () => {
       [e.target.name]: e.target.value,
     });
     console.log(receta);
+  };
+
+  const handleSubmit = () => {
+    console.log(
+      "idDoc",
+      user.rol.id,
+      "idpat",
+      infoPatient.id,
+      "receta",
+      receta
+    );
+    dispatch(postPrescription(user.rol.id, infoPatient.id, receta));
   };
 
   return (
@@ -78,6 +100,7 @@ const CrearReceta = () => {
                 fontSize: "16px",
                 background: teal[700],
               }}
+              onClick={handleSubmit}
             >
               Emitir Receta
             </Button>
@@ -129,12 +152,13 @@ const CrearReceta = () => {
                     <InputLabel>Nombre del medicamento</InputLabel>
                     <TextField
                       variant="standard"
+                      value={receta.medication}
                       sx={{
                         width: { sm: "90%", xs: "100%" },
                         marginBottom: "20px",
                         marginRight: "5px",
                       }}
-                      name="medicineName"
+                      name="medication"
                       onChange={(e) => handleChange(e)}
                     />
                   </Grid>
@@ -142,9 +166,40 @@ const CrearReceta = () => {
                     <InputLabel>Se debe tomar cada</InputLabel>
                     <TextField
                       variant="standard"
+                      value={receta.frequency}
                       type="number"
                       sx={{ width: { sm: "100%", xs: "100%" } }}
-                      name="frecuency"
+                      name="frequency"
+                      onChange={(e) => handleChange(e)}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item sm={12} display="flex" flexDirection="row">
+                  <Grid item sm={6} xs={12}>
+                    <InputLabel>Peso del comprimido</InputLabel>
+                    <TextField
+                      variant="standard"
+                      value={receta.amount}
+                      sx={{
+                        width: { sm: "90%", xs: "100%" },
+                        marginBottom: "20px",
+                        marginRight: "5px",
+                      }}
+                      name="amount"
+                      onChange={(e) => handleChange(e)}
+                    />
+                  </Grid>
+                  <Grid item sm={6} xs={12}>
+                    <InputLabel>Duracion del tratamiento</InputLabel>
+                    <TextField
+                      value={receta.how_much}
+                      variant="standard"
+                      sx={{
+                        width: { sm: "100%", xs: "100%" },
+                        marginBottom: "20px",
+                        marginRight: "5px",
+                      }}
+                      name="how_much"
                       onChange={(e) => handleChange(e)}
                     />
                   </Grid>
@@ -153,6 +208,7 @@ const CrearReceta = () => {
                   <InputLabel>Diagnostico</InputLabel>
                   <TextField
                     variant="standard"
+                    value={receta.diagnostic}
                     multiline
                     sx={{ width: { sm: "100%", xs: "100%" } }}
                     name="diagnostic"

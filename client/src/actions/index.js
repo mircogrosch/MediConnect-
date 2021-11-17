@@ -343,3 +343,13 @@ export const deleteNotificationChat = (personDni) => {
     })
   }
 }
+
+export const postPrescription = (idDoctor, idPatient, payload) => {
+  return async function (dispatch){
+    await axios.post(`${URL}/doctor/prescription?patientId=${idPatient}&doctorId=${idDoctor}`, payload)
+    return dispatch({
+      type: types.POST_PRESCRIPTION,
+      payload
+    })
+  }
+}

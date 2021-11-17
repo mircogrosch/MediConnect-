@@ -31,12 +31,12 @@ const RecetaPdf = ({ info, receta, date }) => {
           <Text
             style={{ display: "flex", fontSize: "20px", marginBottom: "10px" }}
           >
-            Medicamento: {receta ? `${receta.medicineName}` : null}
+            Medicamento: {receta ? `${receta.medication}` : null}
           </Text>
           <Text
             style={{ display: "flex", fontSize: "20px", marginBottom: "10px" }}
           >
-            Frecuencia: {receta ? `Cada ${receta.frecuency}hs` : null}
+            Frecuencia: {receta ? `Cada ${receta.frequency}hs` : null}
           </Text>
           <Text
             style={{ display: "flex", fontSize: "15px", marginTop: "280px" }}
