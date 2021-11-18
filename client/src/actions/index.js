@@ -370,3 +370,13 @@ export const postPrescription = (idDoctor, idPatient, payload) => {
     })
   }
 }
+
+export const postOrder = (idDoctor, idPatient, payload) => {
+  return async function (dispatch){
+    await axios.post(`${URL}/doctor/medicalorder?patientId=${idPatient}&doctorId=${idDoctor}`, payload)
+    return dispatch({
+      type: types.POST_ORDER,
+      payload
+    })
+  }
+}

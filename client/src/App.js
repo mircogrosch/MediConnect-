@@ -22,6 +22,7 @@ import SchedulePatient from "./pages/SchedulePatient";
 import NewAppointment from "./pages/NewAppointment";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute.jsx";
 import MisRecetas from "./pages/MisRecetas";
+import MisOrdenes from "./pages/MisOrdenes";
 function App() {
   return (
     <div>
@@ -74,6 +75,7 @@ function App() {
       <PrivateRoute path="/doctor/recipes" Component={CrearReceta} />
       <PrivateRoute path="/doctor/orders" Component={CrearOrden} />
       <PrivateRoute path="/patient/recipes" Component={MisRecetas} />
+      <PrivateRoute path="/patient/orders" Component={MisOrdenes} />
     </div>
   );
 }

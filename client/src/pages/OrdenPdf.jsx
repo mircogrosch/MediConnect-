@@ -26,7 +26,7 @@ const OrdenPdf = ({ info, orden, date }) => {
               marginTop: "40px",
             }}
           >
-            Estudio: {orden ? `${orden.studyName}` : null}
+            Estudio: {orden ? `${orden.medical_studies}` : null}
           </Text>
           <Text
             style={{ display: "flex", fontSize: "20px", marginBottom: "10px" }}

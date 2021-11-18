@@ -11,6 +11,7 @@ import { postMyDoctor } from "./postMyDoctor";
 import { myPatients } from "./myPatients";
 import { messages } from "./messages"
 import { postPrescription } from "./prescription"
+import { postOrder } from "./order";
 
 //import reducers here
 export default combineReducers({
@@ -27,4 +28,5 @@ export default combineReducers({
   myPatients,
   messages,
   postPrescription,
+  postOrder,
 });
