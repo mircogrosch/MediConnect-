@@ -1,20 +1,19 @@
-import { Box, Icon, Typography, Grid } from "@material-ui/core";
 import React from "react";
+import { Box, Typography, Grid } from "@material-ui/core";
 import { AccountCircle } from "@mui/icons-material";
 import ButtonFoward from "./ButtonFoward";
 import { teal } from "@mui/material/colors";
 
 const Card = ({
-  key,
   name,
   lastname,
   work_days,
-  address,
-  email,
   idPatient,
   idDoctor,
   image,
   specialities,
+  setDoctorData,
+  nextStep,
 }) => {
   let docName = `Dr ${name} ${lastname}`;
 
@@ -31,11 +30,9 @@ const Card = ({
     >
       <Grid
         container
-        // bgcolor={teal[600]}
         alignItems="center"
         justifyContent="center"
         display="flex"
-        rowSpacing={-1}
         sx={{ width: "70vw", padding: "0.5em 1em", borderRadius: "5px" }}
       >
         <Grid item md={1}>
@@ -46,14 +43,10 @@ const Card = ({
           />
         </Grid>
         <Grid item md={3}>
-          <Typography variant="body1" color={teal[50]}>
-            {docName}
-          </Typography>
+          <Typography variant="body1">{docName}</Typography>
         </Grid>
         <Grid item md={3}>
-          <Typography variant="body1" color={teal[50]}>
-            {specialities}
-          </Typography>
+          <Typography variant="body1">{specialities}</Typography>
         </Grid>
         <Grid item md={3}>
           <Typography variant="body1">
@@ -62,6 +55,8 @@ const Card = ({
         </Grid>
         <Grid item md={2}>
           <ButtonFoward
+            setDoctorData={setDoctorData}
+            nextStep={nextStep}
             obj={{
               name,
               lastname,

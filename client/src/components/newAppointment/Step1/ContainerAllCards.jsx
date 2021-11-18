@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { Grid, Typography } from "@mui/material";
-import Card from "./Card";
 import { useDispatch, useSelector } from "react-redux";
-import { getMyDoctors } from "../../actions/index";
+import { getMyDoctors } from "../../../actions";
 import { useParams } from "react-router-dom";
 import { teal, grey } from "@mui/material/colors";
+import Card from "./Card";
 
-function ContainerAllCards() {
+function ContainerAllCards({ setDoctorData, nextStep }) {
   const dispatch = useDispatch();
   const { id } = useParams();
   let myDoctors = useSelector((state) => state.myDoctors.names); // Doctores asociados
@@ -71,7 +71,6 @@ function ContainerAllCards() {
 
         default:
           return newArray;
-          break;
       }
     }
     return newArray;
@@ -93,70 +92,68 @@ function ContainerAllCards() {
   });
 
   return (
-    <>
-      {/* Doctores asociados */}
-      <Grid
-        container
-        sx={{
-          height: "70vh",
-          display: "flex",
-          overflowY: "scroll",
-          marginTop: "1em",
-          justifyContent: "center",
-          rowSpacing: 1,
-        }}
-      >
-        {refactor.length ? (
-          refactor.map((e) => {
-            return (
-              <Grid
-                // container
-                item
-                key={e.id}
-                xs={12}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Card
-                  work_days={e.work_days}
-                  key={e.id}
-                  colorFont={"#676767"}
-                  color={teal[200]}
-                  name={e.name}
-                  lastname={e.lastname}
-                  address={e.address}
-                  email={e.email}
-                  idPatient={id}
-                  idDoctor={e.id}
-                  image={e.image}
-                  specialities={e.specialities}
-                />
-              </Grid>
-            );
-          })
-        ) : (
-          <Grid
-            height="30vh"
-            style={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              align={"center"}
-              variant="h6"
-              style={{ color: grey[700] }}
+    <Grid
+      container
+      sx={{
+        height: "70vh",
+        display: "flex",
+        overflowY: "scroll",
+        marginTop: "1em",
+        justifyContent: "center",
+        rowSpacing: 1,
+      }}
+    >
+      {refactor.length ? (
+        refactor.map((e) => {
+          return (
+            <Grid
+              item
+              key={e.id}
+              xs={12}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
-              No tiene ningún profesional asociado
-            </Typography>
-          </Grid>
-        )}
-      </Grid>
-    </>
+              <Card
+                work_days={e.work_days}
+                key={e.id}
+                colorFont={"#676767"}
+                color={teal[200]}
+                name={e.name}
+                lastname={e.lastname}
+                address={e.address}
+                email={e.email}
+                idPatient={id}
+                idDoctor={e.id}
+                image={e.image}
+                specialities={e.specialities}
+                setDoctorData={setDoctorData}
+                nextStep={nextStep}
+              />
+            </Grid>
+          );
+        })
+      ) : (
+        <Grid
+          height="30vh"
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            align={"center"}
+            variant="h6"
+            style={{ color: grey[700] }}
+          >
+            No tiene ningún profesional asociado
+          </Typography>
+        </Grid>
+      )}
+    </Grid>
   );
 }
 
