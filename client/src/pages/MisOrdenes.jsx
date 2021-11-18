@@ -38,7 +38,7 @@ const MisOrdenes = () => {
           variant="h3"
           style={{ marginTop: "100px", marginLeft: "520px", color: grey[700] }}
         >
-          No hay recetas
+          No hay ordenes
         </Typography>
       ) : (
         <Grid>

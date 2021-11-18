@@ -11,6 +11,8 @@ import {
   getConversations,
 } from "../../actions";
 import jwt from "jsonwebtoken";
+import CircleIcon from "@mui/icons-material/Circle";
+import { grey } from "@mui/material/colors";
 
 const MyGrid = styled(Grid)({
   display: "flex",
@@ -62,7 +64,14 @@ function CardDoctor({ name, lastname, email, rol, img, dni, id }) {
         <Typography variant="h6">{userName}</Typography>
         <Typography variant="body">Ingrese al chat con {userName}</Typography>
         {contactNoti.find((e) => e.idPatient === id) && (
-          <Typography variant="body">1</Typography>
+          <CircleIcon
+            style={{
+              width: "20px",
+              marginLeft: "190px",
+              marginTop: "-10px",
+              color: grey[700],
+            }}
+          />
         )}
       </Grid>
     </MyGrid>
