@@ -1,51 +1,88 @@
-import React from "react";
-import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
-import { Grid, Box } from "@mui/material";
-import ContainerAllCards from "../components/newAppointment/ContainerAllCards";
-import {
-  filterSpecialitiesMyDoctors,
-  filterMyDoctorsByName,
-} from "../actions/index";
-import FiltroSelect from "../components/FiltroSelect/FiltroSelect";
-import SearchBar from "../components/SearchBar/SearchBar";
-import { useStyles } from "../styles/doctors/add_doctor";
+import React, { useState } from "react";
+import { Box, Stepper, Step, StepLabel } from "@mui/material";
 import { teal } from "@mui/material/colors";
-import { useParams } from "react-router-dom";
+import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
+import SelectDoctor from "../components/newAppointment/SelectDoctor";
+import SelectDate from "../components/newAppointment/SelectDate";
+import ConfirmAppointment from "../components/newAppointment/ConfirmAppointment";
 
-const NewAppointment = (props) => {
-  const classes = useStyles();
-  const { id } = useParams();
+const steps = [
+  "Selecionar Profesional",
+  "Elegir Fecha y Hora",
+  "Confirmar Turno",
+];
+
+const NewAppointment = () => {
+  const [activeStep, setActiveStep] = useState(0);
+  const [doctorData, setDoctorData] = useState();
+  const [dateSelected, setDateSelected] = useState("");
+
+  const getStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return (
+          <SelectDoctor setDoctorData={setDoctorData} nextStep={nextStep} />
+        );
+      case 1:
+        return (
+          <SelectDate
+            doctorData={doctorData}
+            nextStep={nextStep}
+            previousStep={previousStep}
+            setDateSelected={setDateSelected}
+          />
+        );
+      case 2:
+        return (
+          <ConfirmAppointment
+            dateSelected={dateSelected}
+            doctorData={doctorData}
+            previousStep={previousStep}
+          />
+        );
+
+      default:
+        break;
+    }
+  };
+
+  console.log(dateSelected);
+
+  const nextStep = () => setActiveStep(activeStep + 1);
+
+  const previousStep = () => setActiveStep(activeStep - 1);
+
   return (
-    <>
-      <Box>
-        <PrimarySearchAppBar />
-        <Box className={classes.root}>
-          <Box backgroundColor={teal[100]} sx={{ width: "80vw" }}>
-            <Grid container justifyContent="space-between">
-              <FiltroSelect
-                filterSpecialities={filterSpecialitiesMyDoctors}
-                styles={classes}
-              />
-              <SearchBar
-                filterName={filterMyDoctorsByName}
-                id={id}
-                styles={classes}
-              />
-            </Grid>
-            <Grid
-              height="70vh"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <ContainerAllCards props={props} />
-            </Grid>
-          </Box>
+    <Box>
+      <PrimarySearchAppBar />
+      <Stepper activeStep={activeStep}>
+        {steps.map((label, index) => (
+          <Step key={index}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+      <Box
+        sx={{
+          height: "90vh",
+          alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+        }}
+      >
+        <Box
+          bgcolor={teal[100]}
+          sx={{
+            width: "80vw",
+            height: "80vh",
+            padding: "0.5em",
+            borderRadius: "10px",
+          }}
+        >
+          {getStepContent(activeStep)}
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 export default NewAppointment;
