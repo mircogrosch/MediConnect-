@@ -125,18 +125,11 @@ const createDoctor = async (req, res) => {
       } catch (error) {
         console.log("Error eliminando la imagen guardada", error);
       }
-      const byte_sign = atob(signature);
-      const byte_number_sign = new Array(byte_sign.length);
-      for (let i = 0; i < byte_sign.length; i++) {
-        byte_number_sign[i] = byte_sign.charCodeAt(i);
-      }
-      const byte_array_sign = new Uint8Array(byte_number_sign);
-      const blob = new Blob([byte_array_sign], { type: "" });
       let newDoctor = await Doctor.create(
         {
           enrollment,
           location,
-          signature: blob,
+          signature,
         },
         {
           fields: ["enrollment", "location", "signature"],
@@ -604,6 +597,7 @@ const createMedicalOrder = async (req, res) => {
       const newMedicalOrder = await Medical_order.create({
         medical_studies,
         diagnostic,
+        date: new Date(),
       });
       await newMedicalOrder.setDoctor(doctorId);
       await newMedicalOrder.setPatient(patientId);

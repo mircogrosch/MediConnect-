@@ -15,7 +15,7 @@ import {
   Select,
   MenuItem,
   Button,
-  LinearProgress
+  LinearProgress,
 } from "@mui/material";
 import { teal } from "@mui/material/colors";
 import { useStyles } from "../styles/registerForms/doctors";
@@ -45,7 +45,7 @@ function DoctorRegisterForm() {
     password: false,
     idemPassword: false,
   });
-  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const [disabledButton, setDisabledButton] = useState(false);
 
   useEffect(() => {
@@ -88,8 +88,8 @@ function DoctorRegisterForm() {
     user.append("address", data.address);
     user.append("location", data.location);
     user.append("signature", imgURL);
-    setDisabledButton(true)
-    dispatch(postDoctor(user, history,setLoadingProgress));
+    setDisabledButton(true);
+    dispatch(postDoctor(user, history, setLoadingProgress));
   };
 
   const getProvinces = async () => {
@@ -294,7 +294,7 @@ function DoctorRegisterForm() {
             </Grid>
             <Grid item xs={12}>
               <Signature
-                imgURL={imgURL}
+                imgURL={imgURL}    
                 setImgURL={setImgURL}
                 bgColor={teal[900]}
               />
@@ -333,9 +333,11 @@ function DoctorRegisterForm() {
               >
                 REGISTRAR
               </Button>
-              {
-              disabledButton ? <LinearProgress variant="determinate" value={loadingProgress}/> : false
-              }
+              {disabledButton ? (
+                <LinearProgress variant="determinate" value={loadingProgress} />
+              ) : (
+                false
+              )}
             </Grid>
           </Grid>
         </Box>

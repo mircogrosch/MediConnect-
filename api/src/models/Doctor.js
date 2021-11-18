@@ -15,7 +15,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       signature: {
-        type: DataTypes.BLOB,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       location: {
