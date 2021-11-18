@@ -7,6 +7,7 @@ const {
   Appointment,
   Work_day,
   Prescription,
+  Medical_order,
 } = require("../db");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
@@ -555,7 +556,13 @@ const createPrescription = async (req, res) => {
   const { patientId, doctorId } = req.query;
   const { medication, amount, frequency, how_much, diagnostic } = req.body;
   const send_all_params =
-    medication && amount && frequency && how_much && patientId && doctorId && diagnostic;
+    medication &&
+    amount &&
+    frequency &&
+    how_much &&
+    patientId &&
+    doctorId &&
+    diagnostic;
   if (send_all_params) {
     try {
       const newPrescription = await Prescription.create({
@@ -584,6 +591,38 @@ const createPrescription = async (req, res) => {
       data: null,
       message:
         "Se necesita que se envien los id de Doctor y Paciente, como tambien los atributos de Receta",
+    });
+  }
+};
+
+const createMedicalOrder = async (req, res) => {
+  const { patientId, doctorId } = req.query;
+  const { medical_studies, diagnostic } = req.body;
+  const send_all_params = medical_studies && diagnostic;
+  if (send_all_params) {
+    try {
+      const newMedicalOrder = await Medical_order.create({
+        medical_studies,
+        diagnostic,
+      });
+      await newMedicalOrder.setDoctor(doctorId);
+      await newMedicalOrder.setPatient(patientId);
+      res.json({
+        data: newMedicalOrder,
+        message: "Orden Medica creada",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        data: error,
+        message: "something goes wrong",
+      });
+    }
+  } else {
+    res.json({
+      data: null,
+      message:
+        "Se necesita que se envien los id de Doctor y Paciente, como tambien los atributos de Orden Medica",
     });
   }
 };
@@ -645,4 +684,5 @@ module.exports = {
   createWorkDay,
   getWorkDays,
   createPrescription,
+  createMedicalOrder,
 };
