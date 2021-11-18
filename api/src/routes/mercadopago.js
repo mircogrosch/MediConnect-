@@ -1,7 +1,8 @@
 const { Router } = require("express");
 const router = Router();
-const {doPayment} =require("../controllers/mercadopago");
+const {doPayment,paymentFinish} =require("../controllers/mercadopago");
 
-router.route("/").get(doPayment);
+router.route("/").post(doPayment);
+router.route("/payment").put(paymentFinish)
 
 module.exports = router; 
