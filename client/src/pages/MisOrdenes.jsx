@@ -5,6 +5,7 @@ import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
 import jwt from "jsonwebtoken";
 import { PDFViewer } from "@react-pdf/renderer";
 import OrdenPdf from "./OrdenPdf";
+import { grey } from "@mui/material/colors";
 
 const MisOrdenes = () => {
   const [orders, setOrders] = useState([]);
@@ -33,7 +34,12 @@ const MisOrdenes = () => {
     <Grid>
       <PrimarySearchAppBar />
       {orders.length === 0 ? (
-        <Typography variant="h3">No hay recetas</Typography>
+        <Typography
+          variant="h3"
+          style={{ marginTop: "100px", marginLeft: "520px", color: grey[700] }}
+        >
+          No hay recetas
+        </Typography>
       ) : (
         <Grid>
           {orders.map((e) => {

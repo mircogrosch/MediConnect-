@@ -5,6 +5,7 @@ import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
 import jwt from "jsonwebtoken";
 import { PDFViewer } from "@react-pdf/renderer";
 import RecetaPdf from "./RecetaPdf";
+import { grey } from "@mui/material/colors";
 
 const MisRecetas = () => {
   const [recipes, setRecipes] = useState([]);
@@ -35,7 +36,12 @@ const MisRecetas = () => {
     <Grid>
       <PrimarySearchAppBar />
       {recipes.length === 0 ? (
-        <Typography variant="h3">No hay recetas</Typography>
+        <Typography
+          variant="h3"
+          style={{ marginTop: "100px", marginLeft: "520px", color: grey[700] }}
+        >
+          No hay recetas
+        </Typography>
       ) : (
         <Grid>
           {recipes.map((e) => {
