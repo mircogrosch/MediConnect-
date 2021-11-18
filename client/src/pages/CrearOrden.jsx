@@ -10,19 +10,29 @@ import {
 import { teal } from "@mui/material/colors";
 import { Box } from "@mui/material";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
 import axios from "axios";
 import OrdenPdf from "./OrdenPdf";
 import { PDFViewer } from "@react-pdf/renderer";
+import jwt from "jsonwebtoken";
+import { useHistory } from "react-router-dom";
+import { postOrder } from "../actions/index";
 
 const CrearOrden = () => {
+  const user = jwt.verify(
+    JSON.parse(sessionStorage.getItem("user"))?.token,
+    "secret"
+  );
+
+  const dispatch = useDispatch();
+  const history = useHistory();
   const patients = useSelector((state) => state.myPatients);
   const [patient, setPatient] = useState("");
   const [infoPatient, setInfoPatient] = useState({});
   const [verPdf, setVerPdf] = useState(false);
   const [orden, setOrden] = useState({
-    studyName: "",
+    medical_studies: "",
     diagnostic: "",
   });
 
@@ -42,9 +52,13 @@ const CrearOrden = () => {
       ...orden,
       [e.target.name]: e.target.value,
     });
-    console.log(orden);
   };
-  console.log(infoPatient);
+
+  const handleSubmit = () => {
+    dispatch(postOrder(user.rol.id, infoPatient.id, orden));
+    history.push("/account/profesional");
+  };
+
   return (
     <Grid>
       <PrimarySearchAppBar bgColor={teal[500]} color={teal[50]} />
@@ -77,6 +91,7 @@ const CrearOrden = () => {
                 fontSize: "16px",
                 background: teal[700],
               }}
+              onClick={handleSubmit}
             >
               Emitir orden
             </Button>
@@ -128,7 +143,7 @@ const CrearOrden = () => {
                       marginBottom: "20px",
                       marginRight: "5px",
                     }}
-                    name="studyName"
+                    name="medical_studies"
                     onChange={(e) => handleChange(e)}
                   />
                 </Grid>
