@@ -55,9 +55,10 @@ const SchedulePatient = () => {
        idPayment: id_appointment,
        title: fullname,
        price: 1500,
+       idPatient:id
      };
      swal(
-       `${fullname} vas a enviar $1500 por el pago de tu consulta, ¿estás de acuerdo? `,
+       `Vas a realizar un pago por $1500 a ${fullname}, ¿Estas de acuerdo?`,
        {
          dangerMode: false,
          buttons: { cancel: true, confirm: "Continuar" },
