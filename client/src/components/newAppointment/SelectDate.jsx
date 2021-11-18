@@ -111,7 +111,11 @@ function NewAppointmentStep2({
           alignItems="center"
           display="flex"
         >
-          <Calendar value={date} onChange={(value) => handleCalendar(value)} />
+          <Calendar
+            value={date}
+            minDate={new Date()}
+            onChange={(value) => handleCalendar(value)}
+          />
           <Typography variant="body1" fontWeight="800" marginTop="1em">
             {availableDays.join(" - ")}
           </Typography>
