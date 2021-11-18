@@ -5,7 +5,7 @@ mercadopago.configure({
 });
 
 const doPayment = (req, res)=> { 
-    const {title, price,idPayment} = req.body;
+    const {title, price,idPayment,idPatient} = req.body;
     let preference = {
         items: [
           {
@@ -15,7 +15,7 @@ const doPayment = (req, res)=> {
           },       
         ],
          back_urls: {
-           success: `http://localhost:3001/checkout/payment?idAppointment=${idPayment}`,
+           success: `http://localhost:3001/checkout/payment?idAppointment=${idPayment}&idPatient=${idPatient}`,
        },
       };
       
@@ -31,8 +31,8 @@ const doPayment = (req, res)=> {
       
 }
 const paymentFinish= async (req,res)=>{
-  const {idAppointment} = req.query; 
-  console.log(req.query)
+  const {idAppointment,idPatient} = req.query; 
+ 
  
     try{ 
       const appointmentToAprobe= await Appointment.findOne({
@@ -41,14 +41,14 @@ const paymentFinish= async (req,res)=>{
          }
        }) 
 
-       await Appointment.update({ 
-         date: appointmentToAprobe.date,
-         day: appointmentToAprobe.day,
-         day_name: appointmentToAprobe.day_name,
-         month:appointmentToAprobe.month,
-         year:appointmentToAprobe.year,
-         hour:appointmentToAprobe.hour,
-         minutes: appointmentToAprobe.minutes,
+       const update = await Appointment.update({ 
+         date: appointmentToAprobe.dataValues.date,
+         day: appointmentToAprobe.dataValues.day,
+         day_name: appointmentToAprobe.dataValues.day_name,
+         month:appointmentToAprobe.dataValues.month,
+         year:appointmentToAprobe.dataValues.year,
+         hour:appointmentToAprobe.dataValues.hour,
+         minutes: appointmentToAprobe.dataValues.minutes,
          payment_status: "Abonado",
        }, {
        where: {
@@ -56,7 +56,8 @@ const paymentFinish= async (req,res)=>{
        }
      })
 
-     res.status(200)
+     res.redirect(`http://localhost:3000/account/patient/schedule/${idPatient}`)
+     
  }catch{
    res.status(400)
  }
