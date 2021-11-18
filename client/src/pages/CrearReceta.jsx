@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { teal } from "@mui/material/colors";
+import { teal, grey } from "@mui/material/colors";
 import { Box } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -70,7 +70,7 @@ const CrearReceta = () => {
 
   return (
     <Grid>
-      <PrimarySearchAppBar bgColor={teal[500]} color={teal[50]} />
+      <PrimarySearchAppBar bgColor={teal[900]} color={teal[50]} />
       <Box
         sx={{ width: { lg: "60vw", md: "70vw", xs: "90vw" }, margin: "auto" }}
       >
@@ -84,7 +84,9 @@ const CrearReceta = () => {
             marginTop="20px"
             justifyContent="center"
           >
-            <Typography variant="h2">Receta</Typography>
+            <Typography variant="h4" sx={{ color: grey[700] }}>
+              Crear receta
+            </Typography>
           </Grid>
           <Grid
             item

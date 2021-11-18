@@ -5,45 +5,70 @@ import {
   LocationOnOutlined,
   ArrowDropDownCircleOutlined,
   ContactMailOutlined,
+  EmailOutlined,
+  LocalHospitalOutlined,
 } from "@mui/icons-material";
 
 function BodyData(props) {
   const classes = props.classes;
 
   return (
-    <Box className={classes.cardInfo} sx={{ background: props.bgColor }}>
+    <Box
+      sx={{
+        width: "100%",
+        paddingY: "1em",
+        background: props.bgColor,
+        borderRadius: "5px",
+      }}
+    >
       <Typography
         variant="h6"
         marginBottom={3}
         className={classes.textName}
-        color={props.color || grey[600]}
+        color={props.color || grey[50]}
       >
         {`${props.name} ${props.lastname}`}
       </Typography>
       <Grid container alignItems="center">
         <Grid item xs={2} marginY={1}>
-          <ContactMailOutlined sx={{ color: props.color || teal[900] }} />
+          <ContactMailOutlined sx={{ color: props.color || teal[50] }} />
         </Grid>
         <Grid item xs={10} marginY={1} textAlign="left">
-          <Typography variant="p" color={props.color || grey[700]}>
+          <Typography variant="p" color={props.color || grey[50]}>
             {props.dni}
           </Typography>
         </Grid>
         <Grid item xs={2} marginY={1}>
           <ArrowDropDownCircleOutlined
-            sx={{ color: props.color || teal[900] }}
+            sx={{ color: props.color || teal[50] }}
           />
         </Grid>
         <Grid item xs={10} marginY={1} textAlign="left">
-          <Typography variant="p" color={props.color || grey[700]}>
+          <Typography variant="p" color={props.color || grey[50]}>
             OSDE
           </Typography>
         </Grid>
         <Grid item xs={2} marginY={1}>
-          <LocationOnOutlined sx={{ color: props.color || teal[900] }} />
+          <EmailOutlined sx={{ color: props.color || teal[50] }} />
         </Grid>
         <Grid item xs={10} marginY={1} textAlign="left">
-          <Typography variant="p" color={props.color || grey[700]}>
+          <Typography variant="p" color={props.color || grey[50]}>
+            {props.email}
+          </Typography>
+        </Grid>
+        <Grid item xs={2} marginY={1}>
+          <LocalHospitalOutlined sx={{ color: props.color || teal[50] }} />
+        </Grid>
+        <Grid item xs={10} marginY={1} textAlign="left">
+          <Typography variant="p" color={props.color || grey[50]}>
+            {props.enrollment}
+          </Typography>
+        </Grid>
+        <Grid item xs={2} marginY={1}>
+          <LocationOnOutlined sx={{ color: props.color || teal[50] }} />
+        </Grid>
+        <Grid item xs={10} marginY={1} textAlign="left">
+          <Typography variant="p" color={props.color || grey[50]}>
             {props.address}
           </Typography>
         </Grid>

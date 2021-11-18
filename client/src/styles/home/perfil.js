@@ -10,8 +10,7 @@ export const useStyles = makeStyles({
   },
   circleUser: {
     margin: "auto",
-    width: 150,
-    height: 150,
+    width: "70%",
     borderRadius: "50%",
   },
   cardInfo: {

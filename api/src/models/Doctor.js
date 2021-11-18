@@ -18,6 +18,9 @@ module.exports = (sequelize) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
+      cbu: {
+        type: DataTypes.INTEGER,
+      },
       location: {
         type: DataTypes.STRING,
         // allowNull: false,

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { teal } from "@material-ui/core/colors";
 import jwt from "jsonwebtoken";
 
-function ContainerCards({ cardInfo, bgColor, infoColor }) {
+function ContainerCards({ cardInfo }) {
   const user = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
@@ -13,7 +13,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
 
   return (
     <Box sx={{ marginTop: { md: "2em" } }}>
-      <Grid container columnSpacing={3} rowSpacing={4}>
+      <Grid container columnSpacing={3} rowSpacing={4} justifyContent="center">
         <Grid item md={4} sm={4} xs={5}>
           {user.user.rol === "Doctor" ? (
             <Link
@@ -23,7 +23,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
               <Card
                 title="Mis Turnos"
                 icon={cardInfo[0].icon}
-                bgColor={teal[600]}
+                bgColor={teal[900]}
                 color={teal[50]}
               />
             </Link>
@@ -45,7 +45,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
               <Card
                 title="Historial Medico"
                 icon={cardInfo[1].icon}
-                bgColor={teal[600]}
+                bgColor={teal[900]}
                 color={teal[50]}
               />
             </Link>
@@ -67,7 +67,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
               <Card
                 title="Mis Pacientes"
                 icon={cardInfo[2].icon}
-                bgColor={teal[600]}
+                bgColor={teal[900]}
                 color={teal[50]}
               />
             </Link>
@@ -86,7 +86,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
               <Card
                 title="Mis Recetas"
                 icon={cardInfo[3].icon}
-                bgColor={teal[600]}
+                bgColor={teal[900]}
                 color={teal[50]}
               />
             </Link>
@@ -102,7 +102,7 @@ function ContainerCards({ cardInfo, bgColor, infoColor }) {
               <Card
                 title="Mis Órdenes"
                 icon={cardInfo[4].icon}
-                bgColor={teal[600]}
+                bgColor={teal[900]}
                 color={teal[50]}
               />
             </Link>

@@ -7,7 +7,7 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import { teal } from "@mui/material/colors";
+import { teal, grey } from "@mui/material/colors";
 import {
   AccountBoxOutlined,
   EventAvailableOutlined,
@@ -19,12 +19,12 @@ const infoPatient = [
   {
     title: "Agrega profesionales a tu agenda para chatear y solicitar turnos",
     body: "Antes de solicitar un turno con un profesional específico, asegurate de haberlo agregado a tu lista de profesionales asociados. Esto se hace desde la sección MIS PROFESIONALES, Agregar nuevo profesional.",
-    icon: <AccountBoxOutlined sx={{ fontSize: "6em" }} />,
+    icon: <AccountBoxOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
   },
   {
     title: "Agenda un turno con tu médico el día y a la hora que prefieras",
     body: "En la sección de MIS TURNOS podés filtrar por especialidad médica y elegir día y horario para agendar tu próximo turno con algún profesional de los que tengas asociados a vos.",
-    icon: <EventAvailableOutlined sx={{ fontSize: "6em" }} />,
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
   },
 ];
 
@@ -33,17 +33,16 @@ const infoDoctor = [
     title:
       "Configurá días y horarios en los que vas a estar disponible para trabajar",
     body: "Para que un paciente pueda agendar un turno con vos, lo primero que debes hacer es configurar tu agenda. Esto se hace ingresando a la sección de MI AGENDA, configuración de agenda.",
-    icon: <EventAvailableOutlined sx={{ fontSize: "6em" }} />,
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
   },
   {
     title: "Agenda un turno con tu médico el día y a la hora que prefieras",
     body: "En la sección de MIS TURNOS podés filtrar por especialidad médica y elegir día y horario para agendar tu próximo turno con algún profesional de los que tengas asociados a vos.",
-    icon: <EventAvailableOutlined sx={{ fontSize: "6em" }} />,
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
   },
 ];
 
 function Carousel({ rol }) {
-  console.log("carousel ", rol);
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps =
@@ -62,14 +61,14 @@ function Carousel({ rol }) {
   };
 
   return (
-    <Box sx={{ maxWidth: 855, flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }}>
       <Grid item xs={12}>
         <Box
           sx={{
             width: "100%",
             height: "35px",
             background: rol.rol === "Patient" ? teal[200] : teal[900],
-            borderRadius: "8px",
+            borderRadius: "8px 8px 0 0",
             color: rol.rol === "Patient" ? teal[900] : teal[50],
           }}
         >
@@ -84,102 +83,94 @@ function Carousel({ rol }) {
         onChangeIndex={handleStepChange}
         enableMouseEvents
         interval={9000}
-        style={{ borderRadius: "5px" }}
+        style={{ background: teal[100] }}
       >
         {rol.rol === "Doctor"
           ? infoDoctor.map((step, index) => (
               <div key={step.title}>
                 {Math.abs(activeStep - index) <= 2 ? (
-                  <>
-                    <Grid
-                      container
-                      width="100%"
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
+                  <Grid
+                    container
+                    justifyContent="space-around"
+                    alignItems="center"
+                    paddingY="1em"
+                  >
+                    <Grid item xs={6}>
                       <Typography
-                        lineHeight="1em"
                         variant="h6"
-                        sx={{ padding: "10px", color: "#676767" }}
+                        lineHeight="1.2em"
+                        marginBottom="1em"
+                        color={grey[800]}
                       >
                         {infoDoctor[activeStep].title}
                       </Typography>
-                      <Grid
-                        item
-                        xs={6}
-                        sx={{
-                          padding: "5px",
-                          marginLeft: "50px",
-                          color: "#9B9B9B",
-                          textAlign: "justify",
-                        }}
+                      <Typography
+                        variant="body1"
+                        textAlign="justify"
+                        lineHeight="1.3em"
+                        color={grey[600]}
                       >
-                        <Typography variant="body1">
-                          {infoDoctor[activeStep].body}
-                        </Typography>
-                      </Grid>
-                      <Grid
-                        item
-                        xs={3}
-                        sx={{
-                          textAlign: "center",
-                          color: teal[50],
-                        }}
-                      >
-                        {infoDoctor[activeStep].icon}
-                      </Grid>
+                        {infoDoctor[activeStep].body}
+                      </Typography>
+                      {/* </Grid> */}
                     </Grid>
-                  </>
+                    <Grid
+                      item
+                      xs={3}
+                      sx={{
+                        textAlign: "center",
+                        color: teal[50],
+                      }}
+                    >
+                      {infoDoctor[activeStep].icon}
+                    </Grid>
+                  </Grid>
                 ) : null}
               </div>
             ))
           : infoPatient.map((step, index) => (
               <div key={step.title}>
                 {Math.abs(activeStep - index) <= 2 ? (
-                  <>
+                  <Grid
+                    container
+                    width="100%"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Typography
+                      lineHeight="1em"
+                      variant="h6"
+                      sx={{ padding: "10px", color: "#676767" }}
+                    >
+                      {infoPatient[activeStep].title}
+                    </Typography>
                     <Grid
-                      container
-                      width="100%"
+                      item
+                      xs={6}
                       sx={{
-                        display: "flex",
-                        justifyContent: "center",
+                        padding: "5px",
+                        marginLeft: "50px",
+                        color: "#9B9B9B",
+                        textAlign: "justify",
                       }}
                     >
-                      <Typography
-                        lineHeight="1em"
-                        variant="h6"
-                        sx={{ padding: "10px", color: "#676767" }}
-                      >
-                        {infoPatient[activeStep].title}
+                      <Typography variant="body1">
+                        {infoPatient[activeStep].body}
                       </Typography>
-                      <Grid
-                        item
-                        xs={6}
-                        sx={{
-                          padding: "5px",
-                          marginLeft: "50px",
-                          color: "#9B9B9B",
-                          textAlign: "justify",
-                        }}
-                      >
-                        <Typography variant="body1">
-                          {infoPatient[activeStep].body}
-                        </Typography>
-                      </Grid>
-                      <Grid
-                        item
-                        xs={3}
-                        sx={{
-                          textAlign: "center",
-                          color: teal[400],
-                        }}
-                      >
-                        {infoPatient[activeStep].icon}
-                      </Grid>
                     </Grid>
-                  </>
+                    <Grid
+                      item
+                      xs={3}
+                      sx={{
+                        textAlign: "center",
+                        color: teal[400],
+                      }}
+                    >
+                      {infoPatient[activeStep].icon}
+                    </Grid>
+                  </Grid>
                 ) : null}
               </div>
             ))}
@@ -188,6 +179,7 @@ function Carousel({ rol }) {
         steps={maxSteps}
         position="static"
         activeStep={activeStep}
+        sx={{ bgcolor: teal[100], borderRadius: "0 0 8px 8px" }}
         nextButton={
           <Button
             size="small"

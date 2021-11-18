@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { Box, Grid, Typography } from "@mui/material";
 import { teal } from "@mui/material/colors";
@@ -12,6 +13,7 @@ import DiseaseInfo from "../components/MedicalHistoryDoctor/cardInfo/DiseaseInfo
 import PrescriptionInfo from "../components/MedicalHistoryDoctor/cardInfo/PrescriptionInfo";
 
 function MedicalHistoryDoctor(props) {
+  const history = useHistory();
   const [patientData, setPatientData] = useState({});
   const [displayed, setDisplayed] = useState({
     allergy: false,
@@ -19,9 +21,7 @@ function MedicalHistoryDoctor(props) {
     prescription: false,
   });
 
-  const query = new URLSearchParams(props.location.search);
-  const patientId = query.get("patient");
-  // const doctorId = props.match.params.id;
+  const patientId = history.location.state;
 
   useEffect(() => {
     const getPatient = async (patientId) => {
