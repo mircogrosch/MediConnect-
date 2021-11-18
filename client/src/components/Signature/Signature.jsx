@@ -5,13 +5,23 @@ import "reactjs-popup/dist/index.css";
 import SignaturePad from "react-signature-canvas";
 import "../../styles/registerForms/sig_canvas.css";
 
-export default function Signature({ imgURL, setImgURL, bgColor }) {
+export default function Signature({
+  imgURL,
+  setImgURL,
+  bgColor,
+}) {
   const sigCanvas = useRef({});
 
   const cleanUp = () => sigCanvas.current.clear();
-
-  const save = () =>
-    setImgURL(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
+  const save = async () => {
+    const b64ToBlob = async (b64) => {
+      const blob = await fetch(b64);
+      return blob;
+    };
+    b64ToBlob(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png")).then(
+      (result) => setImgURL(result.url)
+    );
+  };
 
   return (
     <Grid container>

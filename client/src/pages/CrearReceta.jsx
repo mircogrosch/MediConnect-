@@ -24,7 +24,6 @@ const CrearReceta = () => {
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
   );
-
   const history = useHistory();
   const dispatch = useDispatch();
   const patients = useSelector((state) => state.myPatients);
@@ -119,6 +118,7 @@ const CrearReceta = () => {
                   info={infoPatient}
                   receta={receta}
                   date={new Date()}
+                  firma={user.rol.signature}
                 />
               </PDFViewer>
             )
