@@ -57,7 +57,12 @@ const MisRecetas = () => {
             return (
               <PDFViewer
                 key={e.id}
-                style={{ width: "400px", height: "650px", margin: "20px" }}
+                style={{
+                  width: "400px",
+                  height: "650px",
+                  margin: "20px",
+                  borderRadius: "15px",
+                }}
               >
                 <RecetaPdf
                   info={infoPerson}

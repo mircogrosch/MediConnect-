@@ -18,6 +18,7 @@ import axios from "axios";
 import { postPrescription } from "../actions/index";
 import jwt from "jsonwebtoken";
 import { useHistory } from "react-router-dom";
+import swal from "sweetalert";
 
 const CrearReceta = () => {
   const user = jwt.verify(
@@ -58,6 +59,12 @@ const CrearReceta = () => {
 
   const handleSubmit = () => {
     dispatch(postPrescription(user.rol.id, infoPatient.id, receta));
+    swal({
+      title: "Se envio la receta!",
+      text: `La receta se envio a ${infoPatient.name}`,
+      icon: "success",
+      button: "Entendido",
+    });
     history.push("/account/profesional");
   };
 
@@ -94,6 +101,16 @@ const CrearReceta = () => {
                 background: teal[700],
               }}
               onClick={handleSubmit}
+              disabled={
+                patient !== "" &&
+                receta.medication !== "" &&
+                receta.frequency !== "" &&
+                receta.diagnostic !== "" &&
+                receta.amount !== "" &&
+                receta.how_much !== ""
+                  ? false
+                  : true
+              }
             >
               Emitir Receta
             </Button>
@@ -107,13 +124,29 @@ const CrearReceta = () => {
               onClick={() => {
                 setVerPdf(!verPdf);
               }}
+              disabled={
+                patient !== "" &&
+                receta.medication !== "" &&
+                receta.frequency !== "" &&
+                receta.diagnostic !== "" &&
+                receta.amount !== "" &&
+                receta.how_much !== ""
+                  ? false
+                  : true
+              }
             >
               {verPdf ? "Cerrar Pdf" : "Ver PDF"}
             </Button>
           </Grid>
           {verPdf ? (
             infoPatient && (
-              <PDFViewer style={{ width: "100vw", height: "100vh" }}>
+              <PDFViewer
+                style={{
+                  width: "100vw",
+                  height: "100vh",
+                  borderRadius: "15px",
+                }}
+              >
                 <RecetaPdf
                   info={infoPatient}
                   receta={receta}

@@ -18,6 +18,7 @@ import { PDFViewer } from "@react-pdf/renderer";
 import jwt from "jsonwebtoken";
 import { useHistory } from "react-router-dom";
 import { postOrder } from "../actions/index";
+import swal from "sweetalert";
 
 const CrearOrden = () => {
   const user = jwt.verify(
@@ -56,6 +57,12 @@ const CrearOrden = () => {
 
   const handleSubmit = () => {
     dispatch(postOrder(user.rol.id, infoPatient.id, orden));
+    swal({
+      title: "Se envio la orden!",
+      text: `La orden se envio a ${infoPatient.name}`,
+      icon: "success",
+      button: "Entendido",
+    });
     history.push("/account/profesional");
   };
 
@@ -92,6 +99,13 @@ const CrearOrden = () => {
                 background: teal[700],
               }}
               onClick={handleSubmit}
+              disabled={
+                patient !== "" &&
+                orden.medical_studies !== "" &&
+                orden.diagnostic !== ""
+                  ? false
+                  : true
+              }
             >
               Emitir orden
             </Button>
@@ -105,13 +119,26 @@ const CrearOrden = () => {
               onClick={() => {
                 setVerPdf(!verPdf);
               }}
+              disabled={
+                patient !== "" &&
+                orden.medical_studies !== "" &&
+                orden.diagnostic !== ""
+                  ? false
+                  : true
+              }
             >
               {verPdf ? "Cerrar Pdf" : "Ver PDF"}
             </Button>
           </Grid>
           {verPdf ? (
             infoPatient && (
-              <PDFViewer style={{ width: "100vw", height: "100vh" }}>
+              <PDFViewer
+                style={{
+                  width: "100vw",
+                  height: "100vh",
+                  borderRadius: "15px",
+                }}
+              >
                 <OrdenPdf
                   info={infoPatient}
                   orden={orden}
