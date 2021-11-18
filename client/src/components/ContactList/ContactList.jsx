@@ -3,7 +3,6 @@ import List from "@mui/material/List";
 import { Grid } from "@material-ui/core";
 import { styled } from "@material-ui/core";
 import { teal } from "@material-ui/core/colors";
-import SearchBar from "../SearchBar/SearchBar";
 import CardDoctor from "./CardDoctor";
 import { MenuItem } from "@mui/material";
 
@@ -20,7 +19,6 @@ const MyGrid = styled(Grid)({
 const ContactList = ({ user }) => {
   return (
     <MyGrid container item>
-      <SearchBar />
       <List
         sx={{
           overflowY: "auto",
