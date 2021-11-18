@@ -2,14 +2,14 @@ const hours = [
   {
     hour: "00",
     mins: "00",
-    show: "00:00",
+    show: "0:00",
     value: "0:0",
     available: true,
   },
   {
     hour: "00",
     mins: "30",
-    show: "00:30",
+    show: "0:30",
     value: "0:30",
     available: true,
   },
