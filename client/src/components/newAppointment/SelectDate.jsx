@@ -112,7 +112,9 @@ function NewAppointmentStep2({
           display="flex"
         >
           <Calendar value={date} onChange={(value) => handleCalendar(value)} />
-          <Typography variant="body1">{availableDays.join(" - ")}</Typography>
+          <Typography variant="body1" fontWeight="800" marginTop="1em">
+            {availableDays.join(" - ")}
+          </Typography>
         </Grid>
         <Grid
           item
