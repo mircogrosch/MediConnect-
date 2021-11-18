@@ -1,6 +1,6 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { Box, Grid, Icon, Typography, IconButton } from "@mui/material";
+import { Link } from "react-router-dom";
+import { Box, Grid, Icon, Typography } from "@mui/material";
 import { AccountCircle, ListAltOutlined } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 
@@ -15,7 +15,6 @@ function PatientCard({
   img,
   historial,
 }) {
-  const history = useHistory();
   const docName = `${name} ${lastname}`;
 
   return (
@@ -84,15 +83,14 @@ function PatientCard({
           }}
         >
           {historial && (
-            <IconButton
-              onClick={() =>
-                history.push(
-                  `/doctor/medical-history/${idDoctor}?patient=${id}`
-                )
-              }
+            <Link
+              to={{
+                pathname: `/doctor/medical-history/${idDoctor}`,
+                state: id,
+              }}
             >
               <ListAltOutlined style={{ fontSize: "60px", color: teal[50] }} />
-            </IconButton>
+            </Link>
           )}
         </Grid>
       </Grid>

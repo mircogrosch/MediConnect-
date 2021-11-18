@@ -48,7 +48,6 @@ export default function PrimarySearchAppBar(props) {
   );
 
   socketChat.on("reciveNotificationChat", (data) => {
-    console.log("data", data);
     dispatch({ type: "SAVE_NOTIFICATION_CHAT", payload: data });
   });
 
@@ -65,12 +64,10 @@ export default function PrimarySearchAppBar(props) {
   }, [notificationsChat]);
 
   useEffect(() => {
-    console.log(user.rol.id);
     dispatch(getNotifications(user.rol.id));
     dispatch(getNotificationsMessage(user.user.dni));
   }, [dispatch, user.rol.id, user.user.dni]);
 
-  // const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -80,7 +77,6 @@ export default function PrimarySearchAppBar(props) {
   };
 
   const handleMenuClose = () => {
-    // setAnchorEl(null);
     handleMobileMenuClose();
   };
 
@@ -173,7 +169,7 @@ export default function PrimarySearchAppBar(props) {
               color="error"
               overlap="circular"
             >
-              <MenuPrueba />
+              <MenuPrueba color={props.color || teal[900]} />
             </Badge>
             {/* </IconButton> */}
             <IconButton onClick={() => logout(history)}>

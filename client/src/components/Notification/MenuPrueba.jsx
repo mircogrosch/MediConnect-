@@ -60,7 +60,7 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function CustomizedMenus() {
+export default function CustomizedMenus({ color }) {
   let notifications = useSelector((state) => state.notification);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -85,7 +85,7 @@ export default function CustomizedMenus() {
         aria-label="show 17 new notifications"
         color="inherit"
       >
-        <NotificationsOutlined sx={{ fontSize: "1.6em", color: teal[900] }} />
+        <NotificationsOutlined sx={{ fontSize: "1.6em", color: color }} />
       </IconButton>
       <StyledMenu
         id="demo-customized-menu"
