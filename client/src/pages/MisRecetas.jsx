@@ -30,6 +30,7 @@ const MisRecetas = () => {
   let infoPerson;
   let infoReceta;
   let date;
+  let firma;
   return (
     <Grid>
       <PrimarySearchAppBar />
@@ -52,12 +53,18 @@ const MisRecetas = () => {
               diagnostic: e.diagnostic,
             };
             date = new Date(e.date);
+            firma = e.doctor.signature;
             return (
               <PDFViewer
                 key={e.id}
                 style={{ width: "400px", height: "650px", margin: "20px" }}
               >
-                <RecetaPdf info={infoPerson} receta={infoReceta} date={date} />
+                <RecetaPdf
+                  info={infoPerson}
+                  receta={infoReceta}
+                  date={date}
+                  firma={firma}
+                />
               </PDFViewer>
             );
           })}

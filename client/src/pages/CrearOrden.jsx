@@ -112,7 +112,12 @@ const CrearOrden = () => {
           {verPdf ? (
             infoPatient && (
               <PDFViewer style={{ width: "100vw", height: "100vh" }}>
-                <OrdenPdf info={infoPatient} orden={orden} date={new Date()} />
+                <OrdenPdf
+                  info={infoPatient}
+                  orden={orden}
+                  date={new Date()}
+                  firma={user.rol.signature}
+                />
               </PDFViewer>
             )
           ) : (
@@ -138,6 +143,7 @@ const CrearOrden = () => {
                   <InputLabel>Nombre del Estudio</InputLabel>
                   <TextField
                     variant="standard"
+                    value={orden.medical_studies}
                     sx={{
                       width: { sm: "100%", xs: "100%" },
                       marginBottom: "20px",
@@ -151,6 +157,7 @@ const CrearOrden = () => {
                   <InputLabel>Diagnostico</InputLabel>
                   <TextField
                     variant="standard"
+                    value={orden.diagnostic}
                     multiline
                     sx={{ width: { sm: "100%", xs: "100%" } }}
                     name="diagnostic"

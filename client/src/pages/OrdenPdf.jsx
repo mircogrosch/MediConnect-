@@ -2,7 +2,7 @@ import React from "react";
 import { Document, Image, Page, Text, View } from "@react-pdf/renderer";
 import logo from "../img/mediconnect-logo.png";
 
-const OrdenPdf = ({ info, orden, date }) => {
+const OrdenPdf = ({ info, orden, date, firma }) => {
   return (
     <Document>
       <Page size="A5" style={{ display: "flex" }}>
@@ -33,8 +33,31 @@ const OrdenPdf = ({ info, orden, date }) => {
           >
             Diagnostico: {orden ? `${orden.diagnostic}` : null}
           </Text>
+          <View
+            style={{
+              display: "flex",
+              marginLeft: "20px",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Image
+              src={firma}
+              alt="firma del doctor"
+              style={{ width: "80px", marginTop: "150px" }}
+            />
+            <Text
+              style={{ display: "flex", fontSize: "15px", marginTop: "-5px" }}
+            >
+              ------------------
+            </Text>
+            <Text
+              style={{ display: "flex", fontSize: "15px", marginTop: "10px" }}
+            >
+              Firma Doctor
+            </Text>
+          </View>
           <Text
-            style={{ display: "flex", fontSize: "15px", marginTop: "280px" }}
+            style={{ display: "flex", fontSize: "15px", marginTop: "10px" }}
           >
             Fecha:{" "}
             {`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}

@@ -47,7 +47,7 @@ const RecetaPdf = ({ info, receta, date, firma }) => {
           >
             <Image
               src={firma}
-              alt="MEDICONNECT+"
+              alt="firma del doctor"
               style={{ width: "80px", marginTop: "150px" }}
             />
             <Text
