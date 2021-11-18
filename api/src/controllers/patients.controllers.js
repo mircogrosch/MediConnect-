@@ -11,6 +11,7 @@ const {
   Prescription_drug,
   Work_day,
   Prescription,
+  Medical_order,
 } = require("../db");
 const { Op, literal } = require("sequelize");
 const bcryptjs = require("bcryptjs");
@@ -383,8 +384,46 @@ const getPrescription = async (req, res) => {
   } else {
     res.json({
       data: null,
-      message:
-        "Se necesita que se envien los id de Doctor y Paciente, como tambien los atributos de Receta",
+      message: "Se necesita que se envie el id del Paciente",
+    });
+  }
+};
+
+const getMedicalOrder = async (req, res) => {
+  const { patientId } = req.query;
+  if (patientId) {
+    const medicalOrders = await Medical_order.findAll({
+      where: {
+        patientId: patientId,
+      },
+      include: [
+        {
+          model: Patient,
+          include: [
+            {
+              model: Person,
+            },
+            {
+              model: HealthInsurance,
+            },
+          ],
+        },
+        {
+          model: Doctor,
+          include: {
+            model: Person,
+          },
+        },
+      ],
+    });
+    res.json({
+      data: medicalOrders,
+      message: "Todas las Ordenes Medicas del Paciente",
+    });
+  } else {
+    res.json({
+      data: null,
+      message: "Se necesita que se envie el id Paciente",
     });
   }
 };
@@ -817,6 +856,7 @@ module.exports = {
   deleteDoctor,
   getAppointment,
   getPrescription,
+  getMedicalOrder,
   getAllergies,
   createAllergie,
   createDisease,

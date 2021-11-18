@@ -13,6 +13,7 @@ const {
   createWorkDay,
   getWorkDays,
   createPrescription,
+  createMedicalOrder,
 } = require("../controllers/doctor.controllers");
 
 router.route("/").get(getDoctors);
@@ -82,6 +83,13 @@ router.route("/appointment/:id").delete(deleteAppointment);
   ej: (method POST) localhost:3001/doctor/prescription?patientId=patient_id&doctorId=doctor_id
 */
 router.route("/prescription").post(createPrescription);
+
+/*
+  Crear una ORDEN MEDICA
+  Se envian el id del Doctor y Paciente por query
+  ej: (method POST) localhost:3001/doctor/medicalorder?patientId=patient_id&doctorId=doctor_id
+*/
+router.route("/medicalorder").post(createMedicalOrder);
 
 /*
   Crea una Jornada laboral semanal para un Doctor
