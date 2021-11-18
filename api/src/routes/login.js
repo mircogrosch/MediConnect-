@@ -3,6 +3,9 @@ const router = Router();
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
+
+router.get("/",isAuthenticated)
+
 router.get("/fail", (req, res) => {
   res.send({
     user: null,
@@ -12,6 +15,7 @@ router.get("/fail", (req, res) => {
 
 router.get("/logout", (req, res) => {
   req.logout();
+  res.redirect("/login")
 });
 
 router.post(
