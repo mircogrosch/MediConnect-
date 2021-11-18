@@ -57,41 +57,35 @@ function HomePageDoctor() {
     dispatch(getMyPatients(user.rol.id));
   }, [dispatch, user.rol.id]);
 
+  console.log(user);
+
   return (
-    <Box className={classes.root} sx={{ background: teal[100] }}>
-      <PrimarySearchAppBar bgColor={teal[500]} color={teal[50]} />
+    <Box className={classes.root} sx={{ background: teal[50] }}>
+      <PrimarySearchAppBar bgColor={teal[900]} color={teal[50]} />
       <Box className={classes.container}>
-        <Grid
-          item
-          display="flex"
-          md={12}
-          columnSpacing={4}
-          justifyContent="center"
-        >
-          <Grid item lg={3} md={4} xs={10}>
+        <Grid container spacing={2} sx={{ height: "90%" }}>
+          <Grid item xl={4} md={4} xs={12}>
             <Perfil
-              bgColor={teal[500]}
-              bgDarkColor={teal[800]}
-              color={teal[50]}
               name={user.user.name}
               lastname={user.user.lastname}
               dni={user.user.dni}
               address={user.user.address}
               imagePerfil={user.user.imageProfile}
+              location={user.rol.location}
+              email={user.user.email}
+              enrollment={user.rol.enrollment}
             />
           </Grid>
-          <Grid item md={8} xs={11} display="flex" flexDirection="column">
-            {/* <ShifsNotificator
-              bgColor={teal[500]}
-              bgDarkColor={teal[800]}
-              color={teal[50]}
-            /> */}
+          <Grid
+            item
+            xl={8}
+            md={8}
+            xs={12}
+            display="flex"
+            flexDirection="column"
+          >
             <Carousel rol={{ rol: user.user.rol }} />
-            <ContainerCards
-              cardInfo={cardInfo}
-              bgColor={teal[500]}
-              infoColor={teal[50]}
-            />
+            <ContainerCards cardInfo={cardInfo} />
           </Grid>
         </Grid>
       </Box>
