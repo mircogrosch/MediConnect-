@@ -38,7 +38,7 @@ module.exports = (sequelize) => {
       },
       rol: {
         type: DataTypes.ENUM,
-        values: ["Doctor", "Patient"],
+        values: ["Doctor", "Patient", "Admin", "Disable"],
       },
     },
     {

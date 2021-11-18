@@ -18,6 +18,7 @@ const flash = require("connect-flash");
 const notification = require("./routes/notifications");
 const chatMessage = require("./routes/chatMessage");
 const payments = require("./routes/mercadopago");
+const adminRouter = require("./routes/admin");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
@@ -223,6 +224,7 @@ server.use("/prescription", prescriptionRouter);
 server.use("/chat", chatMessage);
 server.use("/email-send", sendEmail);
 server.use("/checkout", payments);
+server.use("/admin", adminRouter);
 // Error catching endware.
 server.use((err, req, res, next) => {
   // eslint-disable-line no-unused-vars
