@@ -18,7 +18,7 @@ function MyPatientsHistory(props) {
 
   return (
     <Box>
-      <AppBar bgColor={teal[500]} />
+      <AppBar bgColor={teal[900]} />
       <Box
         sx={{
           height: "93vh",
