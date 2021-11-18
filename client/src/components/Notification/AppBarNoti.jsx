@@ -14,18 +14,18 @@ import {
   NotificationsOutlined,
   MoreVert,
   MailOutline,
-  Logout
+  Logout,
 } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import logo from "../../img/mediconnect-logo.png";
 import { socket } from "../Controlers/notifications";
 import MenuPrueba from "./MenuPrueba";
-import { getNotifications, getNotificationsMessage} from "../../actions";
-import {logout} from '../Controlers/sessions'
+import { getNotifications, getNotificationsMessage } from "../../actions";
+import { logout } from "../Controlers/sessions";
 import jwt from "jsonwebtoken";
 import { Link } from "react-router-dom";
 import { socketChat } from "../Controlers/chatMessage";
-import {useHistory} from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 export default function PrimarySearchAppBar(props) {
   const history = useHistory();
   //state global
@@ -157,7 +157,12 @@ export default function PrimarySearchAppBar(props) {
                 overlap="circular"
               >
                 <IconButton>
-                  <MailOutline sx={{ fontSize: "1em", color: teal[900] }} />
+                  <MailOutline
+                    sx={{
+                      fontSize: "1em",
+                      color: props.color || teal[900],
+                    }}
+                  />
                 </IconButton>
               </Badge>
             </Link>
@@ -171,8 +176,10 @@ export default function PrimarySearchAppBar(props) {
               <MenuPrueba />
             </Badge>
             {/* </IconButton> */}
-            <IconButton onClick={()=>logout(history)}> 
-              <Logout sx={{ fontSize: "1em", color: teal[900] }}/>
+            <IconButton onClick={() => logout(history)}>
+              <Logout
+                sx={{ fontSize: "1em", color: props.color || teal[900] }}
+              />
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

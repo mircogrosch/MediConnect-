@@ -24,6 +24,7 @@ const SchedulePatient = () => {
           payment_status: e.payment_status,
         };
       });
+      console.log("refactor", refactor);
       setData(refactor);
     };
     getAppointments();
@@ -48,6 +49,35 @@ const SchedulePatient = () => {
       .catch((error) => console.log("No se elimino el turno", error));
   };
 
+  const handlePayment = (id_appointment, fullname) => {
+    // let obj = {
+    //   idPayment: id_appointment,
+    //   title: fullname,
+    //   price: 1500,
+    // };
+    // swal(
+    //   `${fullname} vas a enviar $1500 por el pago de tu consulta, ¿estás de acuerdo? `,
+    //   {
+    //     dangerMode: false,
+    //     buttons: { cancel: true, confirm: "Continuar" },
+    //   }
+    // )
+    //   .then((success) => success && axios.post(`${URL}/checkout`, obj))
+    //   .then(
+    //     (success) =>
+    //       success &&
+    //       setData(
+    //         data.forEach((e) =>
+    //           e.id_appointment === id_appointment
+    //             ? (e.payment_status = "Abonado")
+    //             : false
+    //         )
+    //       )
+    //   )
+    //   .catch((error) => console.log("Hubo un error en el pago", error));
+    console.log(id_appointment, fullname);
+  };
+
   const columnas = [
     { name: "Fecha", selector: (row) => row["date"] },
     { name: "Hora", selector: (row) => row["hour_long"], sortable: true },
@@ -60,6 +90,31 @@ const SchedulePatient = () => {
       name: "Estado de pago",
       selector: (row) => row["payment_status"],
       sortable: true,
+    },
+    {
+      name: "",
+      cell: (row) =>
+        row.payment_status === "Pendiente" ? (
+          <Button
+            onClick={() => handlePayment(row.id_appointment, row.fullname)}
+            variant="contained"
+            sx={{
+              margin: "0.5em",
+              lineHeight: "1.2em",
+              fontSize: "10px",
+              width: "100%",
+              height: "30px",
+              background: teal[800],
+            }}
+          >
+            Pagar consulta
+          </Button>
+        ) : (
+          false
+        ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
     },
     {
       name: "",
