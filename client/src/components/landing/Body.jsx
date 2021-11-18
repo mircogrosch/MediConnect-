@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
   image: {
     width: "100%",
-    height: "50vh",
+    height: "55vh",
     borderRadius: "40%",
   },
   textContainer: {
@@ -38,7 +38,7 @@ function Body() {
     <div className={classes.root}>
       <Box className={classes.textContainer}>
         <h2 className={classes.subtitle} style={{ lineHeight: "1.2em" }}>
-          ¡Descubre al profesional mas cercano!
+          ¡Descubre al profesional más cercano!
         </h2>
         <p className={classes.paragraph} style={{ lineHeight: "1.2em" }}>
           Descubre al médico mas cercano y con la cita libre mas próxima de

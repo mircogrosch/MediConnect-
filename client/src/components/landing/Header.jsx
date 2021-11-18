@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
   image: {
     width: "100%",
-    height: "50vh",
+    height: "75vh",
     borderRadius: "40%",
   },
   textContainer: {
