@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
-import image from "../../img/Ellipse 15.png";
+import image from "../../img/Ellipse16.png";
 
 const useStyles = makeStyles({
   root: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
   image: {
     width: "100%",
-    height: "50vh",
+    height: "80vh",
     borderRadius: "40%",
   },
   textContainer: {

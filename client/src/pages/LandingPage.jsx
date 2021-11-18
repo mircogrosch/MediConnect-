@@ -8,7 +8,7 @@ import Footer from "../components/landing/Footer";
 
 const useStyles = makeStyles({
   root: {
-    background: "linear-gradient(to bottom, #e0f2f1, #4db6ac)",
+    background: "#E0F2F1",
   },
 });
 

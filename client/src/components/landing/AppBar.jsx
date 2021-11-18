@@ -20,7 +20,7 @@ function Appbar() {
   return (
     <AppBar
       className={classes.appbar}
-      style={{ background: "transparent" }}
+      style={{ background: "#E0F2F1" }}
       elevation={0}
     >
       <Toolbar>
