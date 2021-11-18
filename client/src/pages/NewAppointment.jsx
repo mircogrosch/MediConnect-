@@ -46,8 +46,6 @@ const NewAppointment = () => {
     }
   };
 
-  console.log(dateSelected);
-
   const nextStep = () => setActiveStep(activeStep + 1);
 
   const previousStep = () => setActiveStep(activeStep - 1);
@@ -55,31 +53,34 @@ const NewAppointment = () => {
   return (
     <Box>
       <PrimarySearchAppBar />
-      <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => (
-          <Step key={index}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
       <Box
         sx={{
           height: "90vh",
+          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           display: "flex",
         }}
       >
-        <Box
-          bgcolor={teal[100]}
-          sx={{
-            width: "80vw",
-            height: "80vh",
-            padding: "0.5em",
-            borderRadius: "10px",
-          }}
-        >
-          {getStepContent(activeStep)}
+        <Stepper activeStep={activeStep} sx={{ marginY: "1em", width: "80vw" }}>
+          {steps.map((label, index) => (
+            <Step key={index}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        <Box>
+          <Box
+            bgcolor={teal[100]}
+            sx={{
+              width: "80vw",
+              height: "80vh",
+              padding: "0.5em",
+              borderRadius: "10px",
+            }}
+          >
+            {getStepContent(activeStep)}
+          </Box>
         </Box>
       </Box>
     </Box>
