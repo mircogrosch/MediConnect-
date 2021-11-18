@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
@@ -28,34 +28,45 @@ const MisOrdenes = () => {
   let infoPerson;
   let infoOrden;
   let date;
+  let firma;
   return (
     <Grid>
       <PrimarySearchAppBar />
-      <Grid>
-        {orders.map((e) => {
-          infoPerson = {
-            name: e.patient.person.name,
-            lastname: e.patient.person.lastname,
-            dni: e.patient.personDni,
-            healthInsurance: {
-              name: e.patient.healthInsurance.name,
-            },
-          };
-          infoOrden = {
-            medical_studies: e.medical_studies,
-            diagnostic: e.diagnostic,
-          };
-          date = new Date(e.date);
-          return (
-            <PDFViewer
-              key={e.id}
-              style={{ width: "400px", height: "650px", margin: "20px" }}
-            >
-              <OrdenPdf info={infoPerson} orden={infoOrden} date={date} />
-            </PDFViewer>
-          );
-        })}
-      </Grid>
+      {orders.length === 0 ? (
+        <Typography variant="h3">No hay recetas</Typography>
+      ) : (
+        <Grid>
+          {orders.map((e) => {
+            infoPerson = {
+              name: e.patient.person.name,
+              lastname: e.patient.person.lastname,
+              dni: e.patient.personDni,
+              healthInsurance: {
+                name: e.patient.healthInsurance.name,
+              },
+            };
+            infoOrden = {
+              medical_studies: e.medical_studies,
+              diagnostic: e.diagnostic,
+            };
+            date = new Date(e.date);
+            firma = e.doctor.signature;
+            return (
+              <PDFViewer
+                key={e.id}
+                style={{ width: "400px", height: "650px", margin: "20px" }}
+              >
+                <OrdenPdf
+                  info={infoPerson}
+                  orden={infoOrden}
+                  date={date}
+                  firma={firma}
+                />
+              </PDFViewer>
+            );
+          })}
+        </Grid>
+      )}
     </Grid>
   );
 };
