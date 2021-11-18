@@ -1,6 +1,6 @@
 import { Box, IconButton, Icon, Typography, Grid } from "@material-ui/core";
 import React from "react";
-import { AccountCircle, ControlPoint } from "@mui/icons-material";
+import { PersonAddAlt1Outlined, ControlPoint } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import { socket } from "../Controlers/notifications";
 import swal from "sweetalert";
@@ -66,7 +66,7 @@ const CardAdd = ({
             <Icon
               style={{ width: "100%", height: "100%", textAlign: "center" }}
             >
-              <AccountCircle style={{ fontSize: "80px", color: "#676767" }} />
+              <PersonAddAlt1Outlined style={{ fontSize: "80px", color: "#676767" }} />
             </Icon>
           </Grid>
         )}
@@ -106,7 +106,7 @@ const CardAdd = ({
           }}
         >
           <IconButton onClick={() => handleClick()}>
-            <ControlPoint style={{ fontSize: "60px", color: teal[50] }} />
+            <PersonAddAlt1Outlined style={{ fontSize: "50px", color: teal[50] }} />
           </IconButton>
         </Grid>
       </Grid>
