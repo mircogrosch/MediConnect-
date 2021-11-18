@@ -3,7 +3,7 @@ import { Grid, Typography, Button } from "@mui/material";
 import { teal } from "@mui/material/colors";
 import circleUser from "../../../img/user.png";
 
-function DoctorCard({ name, lastname, imageProfile, specialities, goBack }) {
+function DoctorCard({ name, lastname, imageProfile, specialities, previousStep }) {
   const doctorName = `Dr. ${name} ${lastname}`;
 
   return (
@@ -33,7 +33,7 @@ function DoctorCard({ name, lastname, imageProfile, specialities, goBack }) {
       <Grid item md={2}>
         <Button
           variant="contained"
-          onClick={() => goBack()}
+          onClick={() => previousStep()}
           sx={{ width: "100%", height: "50px", bgcolor: teal[900] }}
         >
           Cambiar
