@@ -10,7 +10,6 @@ import {
 } from "@mui/icons-material";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti.jsx";
 import Perfil from "../components/Home/Perfil";
-import ShifsNotificator from "../components/Home/ShifsNotificator.jsx";
 import ContainerCards from "../components/Home/ContainerCards.jsx";
 import { useStyles } from "../styles/home";
 import { socket_Connect, socket } from "../components/Controlers/notifications";
@@ -21,6 +20,7 @@ import {
 import jwt from "jsonwebtoken";
 import { useDispatch } from "react-redux";
 import { getMyPatients } from "../actions/index.js";
+import Carousel from "../components/Home/Carousel";
 
 const cardInfo = [
   {
@@ -81,11 +81,12 @@ function HomePageDoctor() {
             />
           </Grid>
           <Grid item md={8} xs={11} display="flex" flexDirection="column">
-            <ShifsNotificator
+            {/* <ShifsNotificator
               bgColor={teal[500]}
               bgDarkColor={teal[800]}
               color={teal[50]}
-            />
+            /> */}
+            <Carousel rol={{ rol: user.user.rol }} />
             <ContainerCards
               cardInfo={cardInfo}
               bgColor={teal[500]}

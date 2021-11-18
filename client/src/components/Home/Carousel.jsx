@@ -2,42 +2,52 @@ import * as React from "react";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MobileStepper from "@mui/material/MobileStepper";
-import Paper from "@mui/material/Paper";
 import { Typography, Button, Grid } from "@mui/material/";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
+import { teal } from "@mui/material/colors";
+import {
+  AccountBoxOutlined,
+  EventAvailableOutlined,
+} from "@mui/icons-material";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const images = [
+const infoPatient = [
   {
-    label: "San Francisco – Oakland Bay Bridge, United States",
-    imgPath:
-      "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
+    title: "Agrega profesionales a tu agenda para chatear y solicitar turnos",
+    body: "Antes de solicitar un turno con un profesional específico, asegurate de haberlo agregado a tu lista de profesionales asociados. Esto se hace desde la sección MIS PROFESIONALES, Agregar nuevo profesional.",
+    icon: <AccountBoxOutlined sx={{ fontSize: "6em" }} />,
   },
   {
-    label: "Bird",
-    imgPath:
-      "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
-  },
-  {
-    label: "Bali, Indonesia",
-    imgPath:
-      "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80",
-  },
-  {
-    label: "Goč, Serbia",
-    imgPath:
-      "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60",
+    title: "Agenda un turno con tu médico el día y a la hora que prefieras",
+    body: "En la sección de MIS TURNOS podés filtrar por especialidad médica y elegir día y horario para agendar tu próximo turno con algún profesional de los que tengas asociados a vos.",
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em" }} />,
   },
 ];
 
-function Carousel() {
+const infoDoctor = [
+  {
+    title:
+      "Configurá días y horarios en los que vas a estar disponible para trabajar",
+    body: "Para que un paciente pueda agendar un turno con vos, lo primero que debes hacer es configurar tu agenda. Esto se hace ingresando a la sección de MI AGENDA, configuración de agenda.",
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em" }} />,
+  },
+  {
+    title: "Agenda un turno con tu médico el día y a la hora que prefieras",
+    body: "En la sección de MIS TURNOS podés filtrar por especialidad médica y elegir día y horario para agendar tu próximo turno con algún profesional de los que tengas asociados a vos.",
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em" }} />,
+  },
+];
+
+function Carousel({ rol }) {
+  console.log("carousel ", rol);
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = images.length;
+  const maxSteps =
+    rol.rol === "Doctor" ? infoDoctor.length : infoPatient.length;
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -53,64 +63,126 @@ function Carousel() {
 
   return (
     <Box sx={{ maxWidth: 855, flexGrow: 1 }}>
-      {/* <Paper
-        square
-        elevation={0}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          height: 50,
-          pl: 2,
-          bgcolor: "background.default",
-        }}
-      >
-        <Typography>{images[activeStep].label}</Typography>
-      </Paper> */}
+      <Grid item xs={12}>
+        <Box
+          sx={{
+            width: "100%",
+            height: "35px",
+            background: rol.rol === "Patient" ? teal[200] : teal[900],
+            borderRadius: "8px",
+            color: rol.rol === "Patient" ? teal[900] : teal[50],
+          }}
+        >
+          <Typography align="center" variant="h6">
+            Consejos de uso
+          </Typography>
+        </Box>
+      </Grid>
       <AutoPlaySwipeableViews
         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
         index={activeStep}
         onChangeIndex={handleStepChange}
         enableMouseEvents
+        interval={9000}
+        style={{ borderRadius: "5px" }}
       >
-        {images.map((step, index) => (
-          <div key={step.label}>
-            {Math.abs(activeStep - index) <= 2 ? (
-              <>
-                <Grid container width="100%">
-                  <Grid item xs={6}>
-                    <Box
-                      component="img"
+        {rol.rol === "Doctor"
+          ? infoDoctor.map((step, index) => (
+              <div key={step.title}>
+                {Math.abs(activeStep - index) <= 2 ? (
+                  <>
+                    <Grid
+                      container
+                      width="100%"
                       sx={{
-                        height: 200,
-                        display: "block",
-                        maxWidth: 400,
-                        overflow: "hidden",
-                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
                       }}
-                      src={step.imgPath}
-                      alt={step.label}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="h6">
-                      Flexibilizan medidas para controlar el avance del COVID19
-                      en el país.
-                    </Typography>
-                    <Typography variant="body2">
-                      La ministra de Salud de la Nación, Carla Vizzotti, mantuvo
-                      hoy una reunión con autoridades del Banco Mundial con el
-                      objetivo de definir líneas estratégicas futuras del
-                      programa Sumar, una política pública que promueve un
-                      acceso equitativo y de calidad a los servicios de salud
-                      para toda la población que no posee cobertura formal en
-                      salud.
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </>
-            ) : null}
-          </div>
-        ))}
+                    >
+                      <Typography
+                        lineHeight="1em"
+                        variant="h6"
+                        sx={{ padding: "10px", color: "#676767" }}
+                      >
+                        {infoDoctor[activeStep].title}
+                      </Typography>
+                      <Grid
+                        item
+                        xs={6}
+                        sx={{
+                          padding: "5px",
+                          marginLeft: "50px",
+                          color: "#9B9B9B",
+                          textAlign: "justify",
+                        }}
+                      >
+                        <Typography variant="body1">
+                          {infoDoctor[activeStep].body}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={3}
+                        sx={{
+                          textAlign: "center",
+                          color: teal[50],
+                        }}
+                      >
+                        {infoDoctor[activeStep].icon}
+                      </Grid>
+                    </Grid>
+                  </>
+                ) : null}
+              </div>
+            ))
+          : infoPatient.map((step, index) => (
+              <div key={step.title}>
+                {Math.abs(activeStep - index) <= 2 ? (
+                  <>
+                    <Grid
+                      container
+                      width="100%"
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Typography
+                        lineHeight="1em"
+                        variant="h6"
+                        sx={{ padding: "10px", color: "#676767" }}
+                      >
+                        {infoPatient[activeStep].title}
+                      </Typography>
+                      <Grid
+                        item
+                        xs={6}
+                        sx={{
+                          padding: "5px",
+                          marginLeft: "50px",
+                          color: "#9B9B9B",
+                          textAlign: "justify",
+                        }}
+                      >
+                        <Typography variant="body1">
+                          {infoPatient[activeStep].body}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={3}
+                        sx={{
+                          textAlign: "center",
+                          color: teal[400],
+                        }}
+                      >
+                        {infoPatient[activeStep].icon}
+                      </Grid>
+                    </Grid>
+                  </>
+                ) : null}
+              </div>
+            ))}
       </AutoPlaySwipeableViews>
       <MobileStepper
         steps={maxSteps}
@@ -122,7 +194,7 @@ function Carousel() {
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
           >
-            Next
+            Siguiente
             {theme.direction === "rtl" ? (
               <KeyboardArrowLeft />
             ) : (
@@ -137,7 +209,7 @@ function Carousel() {
             ) : (
               <KeyboardArrowLeft />
             )}
-            Back
+            Atrás
           </Button>
         }
       />

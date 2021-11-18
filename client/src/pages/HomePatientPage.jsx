@@ -57,7 +57,7 @@ function HomePatientPage() {
     // Dispara la accion para traer todos los doctores asociados al paciente
     dispatch(getMyDoctors(user.rol.id));
   }, [dispatch, user.rol.id]);
-
+  console.log(user.user.rol);
   return (
     <Box className={classes.root} sx={{ background: teal[50] }}>
       <PrimarySearchAppBar />
@@ -73,8 +73,7 @@ function HomePatientPage() {
             />
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">
-            {/* <ShifsNotificatorPatient id={user.rol.id} /> */}
-            <Carousel />
+            <Carousel rol={{ rol: user.user.rol }} />
             <ContainerCards cardInfo={cardInfo} />
           </Grid>
         </Grid>
