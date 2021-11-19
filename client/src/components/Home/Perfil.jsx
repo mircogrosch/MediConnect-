@@ -17,10 +17,12 @@ function Perfil({
   location,
   email,
   enrollment,
-  user
+  user,
+  healthInsurance,
 }) {
   const classes = useStyles();
-  const locationFinish = user.rol==="Patient"? `${address}`:`${location}, ${address}`
+  const locationFinish =
+    user.rol === "Patient" ? `${address}` : `${location}, ${address}`;
   return (
     <Grid
       container
@@ -45,6 +47,7 @@ function Perfil({
           color={color}
           bgColor={bgDarkColor || teal[900]}
           user={user}
+          healthInsurance={healthInsurance}
         />
       </Box>
     </Grid>

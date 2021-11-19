@@ -1,7 +1,7 @@
-import React, { useEffect} from "react";
+import React, { useEffect } from "react";
 import { useStyles } from "../styles/home";
 import { Box, Grid } from "@mui/material";
-import { teal,grey } from "@mui/material/colors";
+import { teal, grey } from "@mui/material/colors";
 import {
   EventAvailableOutlined,
   EventNoteOutlined,
@@ -47,7 +47,6 @@ function HomePatientPage() {
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
   );
-
   useEffect(() => {
     socket_Connect(user.user, socket);
     initiateSocketChat(user.user.email, socketChat);
@@ -57,7 +56,7 @@ function HomePatientPage() {
     // Dispara la accion para traer todos los doctores asociados al paciente
     dispatch(getMyDoctors(user.rol.id));
   }, [dispatch, user.rol.id]);
-  console.log(user)
+  console.log(user);
   return (
     <Box className={classes.root} sx={{ background: teal[50] }}>
       <PrimarySearchAppBar />
@@ -74,6 +73,7 @@ function HomePatientPage() {
               bgDarkColor={teal[200]}
               color={grey[700]}
               user={user.user}
+              healthInsurance={user.rol.healthInsurance.name}
             />
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">

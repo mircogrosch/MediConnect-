@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 import { teal, grey } from "@mui/material/colors";
 import {
   LocationOnOutlined,
@@ -47,9 +48,11 @@ function BodyData(props) {
               />
             </Grid>
             <Grid item xs={10} marginY={1} textAlign="left">
-              <Typography variant="p" color={props.color || grey[50]}>
-                OSDE
-              </Typography>
+              <Tooltip title={`${props.healthInsurance}`} arrow>
+                <Typography variant="p" color={props.color || grey[50]}>
+                  OBRA SOCIAL
+                </Typography>
+              </Tooltip>
             </Grid>
           </>
         ) : (
