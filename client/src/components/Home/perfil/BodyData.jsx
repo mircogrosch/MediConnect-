@@ -38,16 +38,33 @@ function BodyData(props) {
             {props.dni}
           </Typography>
         </Grid>
-        <Grid item xs={2} marginY={1}>
-          <ArrowDropDownCircleOutlined
-            sx={{ color: props.color || teal[50] }}
-          />
-        </Grid>
-        <Grid item xs={10} marginY={1} textAlign="left">
-          <Typography variant="p" color={props.color || grey[50]}>
-            OSDE
-          </Typography>
-        </Grid>
+
+        {props.user.rol === "Patient" ? (
+          <>
+            <Grid item xs={2} marginY={1}>
+              <ArrowDropDownCircleOutlined
+                sx={{ color: props.color || teal[50] }}
+              />
+            </Grid>
+            <Grid item xs={10} marginY={1} textAlign="left">
+              <Typography variant="p" color={props.color || grey[50]}>
+                OSDE
+              </Typography>
+            </Grid>
+          </>
+        ) : (
+          <>
+            <Grid item xs={2} marginY={1}>
+              <LocalHospitalOutlined sx={{ color: props.color || teal[50] }} />
+            </Grid>
+            <Grid item xs={10} marginY={1} textAlign="left">
+              <Typography variant="p" color={props.color || grey[50]}>
+                {props.enrollment}
+              </Typography>
+            </Grid>
+          </>
+        )}
+
         <Grid item xs={2} marginY={1}>
           <EmailOutlined sx={{ color: props.color || teal[50] }} />
         </Grid>
@@ -56,14 +73,7 @@ function BodyData(props) {
             {props.email}
           </Typography>
         </Grid>
-        <Grid item xs={2} marginY={1}>
-          <LocalHospitalOutlined sx={{ color: props.color || teal[50] }} />
-        </Grid>
-        <Grid item xs={10} marginY={1} textAlign="left">
-          <Typography variant="p" color={props.color || grey[50]}>
-            {props.enrollment}
-          </Typography>
-        </Grid>
+
         <Grid item xs={2} marginY={1}>
           <LocationOnOutlined sx={{ color: props.color || teal[50] }} />
         </Grid>

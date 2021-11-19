@@ -19,12 +19,12 @@ const infoPatient = [
   {
     title: "Agrega profesionales a tu agenda para chatear y solicitar turnos",
     body: "Antes de solicitar un turno con un profesional específico, asegurate de haberlo agregado a tu lista de profesionales asociados. Esto se hace desde la sección MIS PROFESIONALES, Agregar nuevo profesional.",
-    icon: <AccountBoxOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
+    icon: <AccountBoxOutlined sx={{ fontSize: "6em", color: teal[500] }} />,
   },
   {
     title: "Agenda un turno con tu médico el día y a la hora que prefieras",
     body: "En la sección de MIS TURNOS podés filtrar por especialidad médica y elegir día y horario para agendar tu próximo turno con algún profesional de los que tengas asociados a vos.",
-    icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[500] }} />,
   },
 ];
 

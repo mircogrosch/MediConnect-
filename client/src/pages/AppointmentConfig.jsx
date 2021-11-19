@@ -188,7 +188,7 @@ const AppointmentConfig = () => {
   return (
     <>
       <Box sx={{ background: grey[50] }}>
-        <PrimarySearchAppBar />
+        <PrimarySearchAppBar bgColor={teal[900]} color={teal[50]}/>
 
         <Box
           sx={{
