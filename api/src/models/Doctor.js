@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       cbu: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
       },
       location: {
         type: DataTypes.STRING,
