@@ -239,8 +239,10 @@ const getDoctor = async (req, res) => {
           data: json,
           message: `Datos de Dr ${doctor.name} ${doctor.lastname}`,
         });
+      }else{ 
+        res.json({ data: null, message: `No se encontro Doctor con id ${id}` });
       }
-      res.json({ data: null, message: `No se encontro Doctor con id ${id}` });
+      
     } catch (error) {
       console.log(error);
       res.status(500).json({
