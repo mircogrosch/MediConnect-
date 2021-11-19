@@ -156,7 +156,7 @@ const AdminDoctors = () => {
   return (
     <>
       <Box sx={{ background: grey[50] }}>
-        <PrimarySearchAppBar bgColor={teal[900]} color={teal[900]} />
+        {/* <PrimarySearchAppBar bgColor={teal[900]} color={teal[900]} /> */}
         <Box
           sx={{
             height: "100vh",
@@ -198,7 +198,7 @@ const AdminDoctors = () => {
                   data={data}
                   title={""}
                   fixedHeader
-                  fixedHeaderScrollHeight="400px"
+                  fixedHeaderScrollHeight="300px"
                 />
               </Grid>
             ) : (

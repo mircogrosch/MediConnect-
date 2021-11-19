@@ -171,7 +171,6 @@ const SchedulePatient = () => {
                   background: grey[100],
                   border: "solid 0.0005px ",
                   borderColor: teal[100],
-                  fontFamily: "Roboto",
                 }}
               >
                 <DataTable

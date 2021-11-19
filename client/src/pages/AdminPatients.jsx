@@ -102,6 +102,7 @@ const AdminPatients = () => {
 
   const getPatients = async () => {
     const response = await axios.get(`${URL}/admin/patients`);
+    console.log("response.data.data", response.data.data);
     let refactor = response.data.data.map((e) => {
       return {
         address: e.address,
@@ -122,7 +123,7 @@ const AdminPatients = () => {
   return (
     <>
       <Box sx={{ background: grey[50] }}>
-        <PrimarySearchAppBar bgColor={teal[900]} color={teal[900]} />
+        {/* <PrimarySearchAppBar bgColor={teal[900]} color={teal[900]} /> */}
         <Box
           sx={{
             height: "100vh",
