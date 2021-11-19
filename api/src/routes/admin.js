@@ -7,9 +7,11 @@ const {
     getAppointment,
   } = require("../controllers/doctor.controllers"),
   { getPatients, getPatient } = require("../controllers/patients.controllers"),
-  { createAdmin, disablePerson } = require("../controllers/admin.controllers");
+  { createAdmin, disablePerson, enablePerson } = require("../controllers/admin.controllers");
 
 router.route("/").post(createAdmin);
+
+router.route("/person").post(enablePerson);
 
 router.route("/person").delete(disablePerson);
 

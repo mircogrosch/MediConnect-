@@ -1,4 +1,4 @@
-const { Person } = require("../db");
+const { Person, Patient} = require("../db");
 
 const createAdmin = async (req, res) => {
   let result;
@@ -69,6 +69,7 @@ const disablePerson = async (req, res) => {
         dni: personDni,
       },
     });
+    
     await Person.update(
       {
         rol: "Disable",
@@ -92,7 +93,44 @@ const disablePerson = async (req, res) => {
   }
 };
 
+const enablePerson = async (req, res) => {
+  const { personDni } = req.query;
+  try {
+    const person = await Person.findOne({
+      where: {
+        dni: personDni,
+      },
+    });
+    const patient = await Patient.findOne({
+      where: {
+        personDni: personDni,
+      },
+    });
+    await Person.update(
+      {
+        rol: patient ? "Patient" : "Doctor",
+      },
+      {
+        where: {
+          dni: personDni,
+        },
+      }
+    );
+    res.json({
+      data: person,
+      message: "Persona activada",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      data: error,
+      message: "something goes wrong",
+    });
+  }
+};
+
 module.exports = {
   createAdmin,
   disablePerson,
+  enablePerson,
 };
