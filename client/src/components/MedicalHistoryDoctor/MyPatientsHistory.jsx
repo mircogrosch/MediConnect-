@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyPatients, filterMyPatientsByName } from "../../actions";
-import { Box, Grid } from "@mui/material";
-import { teal } from "@mui/material/colors";
+import { Box, Grid, Typography } from "@mui/material";
+import { teal, grey } from "@mui/material/colors";
 import AppBar from "../Notification/AppBarNoti";
 import SearchBar from "../SearchBar/SearchBar";
 import PatientCard from "../MyPatients/PatientCard";
@@ -18,7 +18,7 @@ function MyPatientsHistory(props) {
 
   return (
     <Box>
-      <AppBar bgColor={teal[900]} color={teal[50]}/>
+      <AppBar bgColor={teal[900]} color={teal[50]} />
       <Box
         sx={{
           height: "93vh",
@@ -43,7 +43,7 @@ function MyPatientsHistory(props) {
               bgColor={teal[800]}
             />
           </Grid>
-          {myPatients.names && (
+          {myPatients.length ? (
             <Grid
               container
               rowSpacing={1}
@@ -75,6 +75,31 @@ function MyPatientsHistory(props) {
                   );
                 })}
             </Grid>
+          ) : (
+            // <Box>
+            <Grid
+              container
+              height="70%"
+              alignItems="center"
+              justifyContent="center"
+              flexDirection="column"
+            >
+              <Typography
+                variant="h4"
+                color={grey[900]}
+                textAlign="center"
+                marginBottom="1em"
+              >
+                No tiene ningún paciente en su lista
+              </Typography>
+              <Typography variant="h5" color={grey[900]} textAlign="center">
+                Espere a que un paciente lo agrege
+              </Typography>
+              {/* <Typography variant="h4">
+                Espera a que un paciente lo agregue */}
+              {/* </Typography> */}
+            </Grid>
+            // {/* </Box> */}
           )}
         </Box>
       </Box>
