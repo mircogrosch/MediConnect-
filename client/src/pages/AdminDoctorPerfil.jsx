@@ -56,7 +56,7 @@ function AdminDoctorPerfil() {
   };
     getDoctor();
     getAppointments();
-  }, []);
+  }, [id]);
 
   return (
     <Box>
