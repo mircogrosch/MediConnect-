@@ -1,6 +1,6 @@
 import { Box, IconButton, Icon, Typography, Grid } from "@material-ui/core";
 import React from "react";
-import { PersonAddAlt1Outlined, ControlPoint } from "@mui/icons-material";
+import { PersonAddAlt1Outlined} from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 import { socket } from "../Controlers/notifications";
 import swal from "sweetalert";

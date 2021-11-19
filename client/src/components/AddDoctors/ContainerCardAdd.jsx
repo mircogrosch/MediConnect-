@@ -26,7 +26,7 @@ function ContainerCardAdd() {
   useEffect(() => {
     dispatch(getDoctors(id));
     socket_Connect(userLog.user, socket);
-  }, [dispatch, id]);
+  }, [dispatch, id,userLog.user]);
 
   return (
     <Grid

@@ -14,27 +14,7 @@ function AdminDoctorPerfil() {
   const [data, setData] = useState([]);
   const [dataDoctor, setDataDoctor] = useState();
 
-  //FUNCTIONS
-  const getDoctor = async () => {
-    const { data } = await axios.get(
-      `/admin/doctor/${id}`
-    );
-    setDataDoctor(data.data);
-    console.log(dataDoctor);
-  };
-  const getAppointments = async () => {
-    const response = await axios.get(`/doctor/appointment/${id}`);
-    let refactor = response.data.data.map((e) => {
-      return {
-        name: e.patient.person.name,
-        lastname: e.patient.person.lastname,
-        date: e.date,
-        hour_long: e.hour_long,
-        payment_status: e.payment_status,
-      };
-    });
-    setData(refactor);
-  };
+ 
 
   //HANDLES TABLA
   const columnas = [
@@ -54,6 +34,26 @@ function AdminDoctorPerfil() {
   ];
 
   useEffect(() => {
+     //FUNCTIONS
+  const getDoctor = async () => {
+    const { data } = await axios.get(
+      `/admin/doctor/${id}`
+    );
+    setDataDoctor(data.data);
+  };
+  const getAppointments = async () => {
+    const response = await axios.get(`/doctor/appointment/${id}`);
+    let refactor = response.data.data.map((e) => {
+      return {
+        name: e.patient.person.name,
+        lastname: e.patient.person.lastname,
+        date: e.date,
+        hour_long: e.hour_long,
+        payment_status: e.payment_status,
+      };
+    });
+    setData(refactor);
+  };
     getDoctor();
     getAppointments();
   }, []);
