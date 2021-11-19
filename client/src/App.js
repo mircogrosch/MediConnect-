@@ -25,6 +25,8 @@ import MisRecetas from "./pages/MisRecetas";
 import MisOrdenes from "./pages/MisOrdenes";
 import AdminPatients from "./pages/AdminPatients";
 import AdminDoctors from "./pages/AdminDoctors";
+import AdminHome from "./pages/AdminHome";
+
 function App() {
   return (
     <div>
@@ -80,6 +82,7 @@ function App() {
       <PrivateRoute path="/doctor/orders" Component={CrearOrden} />
       <PrivateRoute path="/patient/recipes" Component={MisRecetas} />
       <PrivateRoute path="/patient/orders" Component={MisOrdenes} />
+      <Route path="/account/admin" component={AdminHome}/>
     </div>
   );
 }
