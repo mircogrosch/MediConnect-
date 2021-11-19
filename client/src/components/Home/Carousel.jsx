@@ -26,6 +26,16 @@ const infoPatient = [
     body: "En la sección de MIS TURNOS podés filtrar por especialidad médica y elegir día y horario para agendar tu próximo turno con algún profesional de los que tengas asociados a vos.",
     icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
   },
+  {
+    title: "Visualizar y descargar tus recetas medicas",
+    body: "Desde la sección MIS RECETAS puede observar las recetas médicas que te fueron asignadas por los medicos, ademas de poder descargarlo en formato PDF.",
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
+  },
+  {
+    title: "Visualizar y descargar tus órdenes medicas",
+    body: "Desde la sección MIS ÓRDENES puede observar las órdenes médicas que te fueron asignadas por los medicos, las cuales debes realizarte para poder continuar con el tratamineto y diagnóstico, ademas de poder descargarlo en formato PDF.",
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
+  },
 ];
 
 const infoDoctor = [
@@ -38,6 +48,16 @@ const infoDoctor = [
   {
     title: "Agenda un turno con tu médico el día y a la hora que prefieras",
     body: "En la sección de MIS TURNOS podés filtrar por especialidad médica y elegir día y horario para agendar tu próximo turno con algún profesional de los que tengas asociados a vos.",
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
+  },
+  {
+    title: "Emitir receta a un paciente",
+    body: "En la sección de MIS RECETAS podrá emitir una receta con todas sus especificaciones a un paciente, allí puede seleccionar a que paciente se le asignará la orden además se puede ver el el formato PDF que visualizará y podrá descargar el paciente.",
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
+  },
+  {
+    title: "Emitir orden médica a un paciente",
+    body: "En la sección de MIS ÓRDENES puede notificar al paciente que estudios se debe realizar para poder otorgar un diagnóstico, allí puede seleccionar a que paciente se le asignará la orden además se puede ver el el formato PDF que visualizará y podrá descargar el paciente.",
     icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
   },
 ];
@@ -88,7 +108,7 @@ function Carousel({ rol }) {
         {rol.rol === "Doctor"
           ? infoDoctor.map((step, index) => (
               <div key={step.title}>
-                {Math.abs(activeStep - index) <= 2 ? (
+                {Math.abs(activeStep - index) <= 3 ? (
                   <Grid
                     container
                     justifyContent="space-around"
@@ -129,7 +149,7 @@ function Carousel({ rol }) {
             ))
           : infoPatient.map((step, index) => (
               <div key={step.title}>
-                {Math.abs(activeStep - index) <= 2 ? (
+                {Math.abs(activeStep - index) <= 3 ? (
                   <Grid
                     container
                     justifyContent="space-around"

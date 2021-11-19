@@ -24,6 +24,7 @@ import { validateUser } from "../Controlers/Controlers";
 import SimpleAppBar from "../AppBar/SimpleAppBar";
 
 const Login = () => {
+  const ENTER = 13;
   //Local states
   const [input, setInput] = useState({ email: "", password: "" });
   const [handlePassword, setPassword] = useState({ showPassword: false });
@@ -39,6 +40,11 @@ const Login = () => {
     validateUser(token, history);
   }, [token, history]);
 
+  const handleInput = (e) => {
+    if (e.keyCode === ENTER) {
+      dispatch(getUser(input));
+    }
+  };
   return (
     <div className={classes.root}>
       <SimpleAppBar />
@@ -59,6 +65,7 @@ const Login = () => {
               id="input-with-xl"
               type="email"
               placeholder="Email:"
+              onKeyDown={(e) => handleInput(e)}
               variant="standard"
               sx={{ width: 350 }}
               InputProps={{
@@ -78,6 +85,7 @@ const Login = () => {
               value={input.password}
               sx={{ width: 350 }}
               placeholder="Contraseña:"
+              onKeyDown={(e) => handleInput(e)}
               variant="standard"
               InputProps={{
                 startAdornment: (
@@ -102,15 +110,6 @@ const Login = () => {
               onChange={handleChange("password", input, setInput)}
             />
           </Box>
-          {/* <Box sx={{display:"flex", justifyContent:"space-between",alignItems:"center"}}> 
-          <FormControlLabel  control={<Checkbox defaultChecked />} label={
-          <Typography variant="p" color={theme.palette.primary.dark}> 
-              Recordame
-          </Typography>}/>
-          <Typography variant="p" color={theme.palette.primary.dark}>
-              Olvide mi contraseña
-          </Typography>
-          </Box> */}
           <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
             <Button
               variant="contained"

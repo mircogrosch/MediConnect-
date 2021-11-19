@@ -6,26 +6,21 @@ import ContactList from "../components/ContactList/ContactList";
 import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
 
 const Mensajes = () => {
-    let myList = useSelector((state) => state.myDoctors);
-    console.log(myList)
-    return(
-        <Grid>
-            <PrimarySearchAppBar/>
-            <Grid
-            container>
-                <Grid
-                item
-                md={5}>
-                    <ContactList user={myList.names}/>
-                </Grid>
-                <Grid
-                item
-                md={7}>
-                    <Chat user={myList}/>
-                </Grid>
-            </Grid>
-        </Grid>
-    )
-}
+  let myList = useSelector((state) => state.myDoctors);
 
-export default Mensajes
+  return (
+    <Grid>
+      <PrimarySearchAppBar />
+      <Grid container>
+        <Grid item md={5}>
+          <ContactList user={myList.names} />
+        </Grid>
+        <Grid item md={7}>
+          <Chat user={myList} />
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};
+
+export default Mensajes;

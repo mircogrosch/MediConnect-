@@ -16,9 +16,6 @@ function ConfirmAppointment({ dateSelected, doctorData, previousStep }) {
   const time = `${dateSelected.getHours()}:${dateSelected.getMinutes()}`;
 
   const saveShift = async (date) => {
-    console.log(date);
-    console.log(doctorData.idDoctor);
-
     try {
       const response = await axios.post(
         `http://localhost:3001/doctor/appointment/${doctorData.idDoctor}?patient=${id}`,

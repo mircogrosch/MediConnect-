@@ -147,7 +147,6 @@ const getPatient = async (req, res) => {
       });
 
       let json = {};
-      console.log(patient.dataValues.patients);
       concat_json(patient.dataValues, json);
       concat_json(patient.dataValues.patients[0].dataValues, json);
       res.json({ data: json, message: "Paciente de la BD" });

@@ -57,8 +57,6 @@ function HomePageDoctor() {
     dispatch(getMyPatients(user.rol.id));
   }, [dispatch, user.rol.id]);
 
-  console.log(user);
-
   return (
     <Box className={classes.root} sx={{ background: teal[50] }}>
       <PrimarySearchAppBar bgColor={teal[900]} color={teal[50]} />
@@ -77,9 +75,7 @@ function HomePageDoctor() {
               user={user.user}
             />
           </Grid>
-          <Grid
-           container item md={8} xs={11} flexDirection="column"
-          >
+          <Grid container item md={8} xs={11} flexDirection="column">
             <Carousel rol={{ rol: user.user.rol }} />
             <ContainerCards cardInfo={cardInfo} />
           </Grid>

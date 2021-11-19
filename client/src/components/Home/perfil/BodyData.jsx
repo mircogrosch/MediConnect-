@@ -50,7 +50,7 @@ function BodyData(props) {
             <Grid item xs={10} marginY={1} textAlign="left">
               <Tooltip title={`${props.healthInsurance}`} arrow>
                 <Typography variant="p" color={props.color || grey[50]}>
-                  OBRA SOCIAL
+                  Ver Obra Social
                 </Typography>
               </Tooltip>
             </Grid>

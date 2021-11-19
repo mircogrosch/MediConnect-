@@ -43,7 +43,7 @@ function MyPatientsHistory(props) {
               bgColor={teal[800]}
             />
           </Grid>
-          {myPatients.length ? (
+          {myPatients.names.length ? (
             <Grid
               container
               rowSpacing={1}

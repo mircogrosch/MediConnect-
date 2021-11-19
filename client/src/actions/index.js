@@ -154,7 +154,7 @@ export const filterMyPatientsByName = (patientName, id_doctor) => {
       const response = await axios.get(
         `${URL}/doctor/patients/${id_doctor}?patient=${patientName}`
       );
-      // console.log("action filterMyPatient", response);
+      
       if (response.data.data.length) {
         return dispatch({
           type: types.FILTER_MY_PATIENTS_BY_NAME,

@@ -6,7 +6,7 @@ export const socketChat= io(URL,{ path: '/message'});
  * @param {*} room identificador de una room (id/email de cada usuario)
  */
  export const initiateSocketChat = (room,socket) => {
-   console.log(`Connecting socket...`);
+   
    if (socket && room) socket.emit("join", room);
  };
 
@@ -18,7 +18,7 @@ export const socketChat= io(URL,{ path: '/message'});
  * @param {*} message mensaje a enviar
  */
 export const sendMessage = (userSender, userReciver, message,socket) => {
-  console.log('userSender:', userSender, 'userReciver:',userReciver)
+  
   if (socket) socket.emit("chat", {
     sender: userSender.user.email,
     reciver: userReciver.email,

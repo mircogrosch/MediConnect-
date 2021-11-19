@@ -82,7 +82,6 @@ const createDoctor = async (req, res) => {
     specialities, // tiene que ser un arreglo de id de specialties o un arreglo vacio
     signature,
   } = req.body;
-  console.log(cbu)
   const rol = "Doctor";
   if (
     dni &&

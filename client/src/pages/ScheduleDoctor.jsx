@@ -31,6 +31,7 @@ const ScheduleDoctor = (props) => {
       const URL = "http://localhost:3001";
       const response = await axios.get(`${URL}/doctor/appointment/${id}`);
       let refactor = response.data.data.map((e) => {
+        console.log("SCHEDULE DOCTOR response.data.data", response.data.data);
         return {
           name: e.patient.person.name,
           lastname: e.patient.person.lastname,
@@ -82,7 +83,7 @@ const ScheduleDoctor = (props) => {
                   background: grey[100],
                   border: "solid 0.0005px ",
                   borderColor: teal[100],
-                  fontFamily: "Roboto",
+                  // fontFamily: "Roboto",
                 }}
               >
                 <DataTable
@@ -95,7 +96,6 @@ const ScheduleDoctor = (props) => {
               </Grid>
             ) : (
               <Grid
-                // backgroundColor="red"
                 height="30vh"
                 style={{
                   display: "flex",

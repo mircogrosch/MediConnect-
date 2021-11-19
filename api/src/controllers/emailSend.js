@@ -23,7 +23,6 @@ const emailSend = (req, res) => {
         if(error) {
             res.status(500).send(error.message);
         } else {
-            console.log("Email enviado");
             res.status(200).json(req.body)
         }
     })

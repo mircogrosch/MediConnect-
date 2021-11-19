@@ -68,10 +68,10 @@ const SOCKET_NOTIFICATION = (io) => {
   io.on("connection", (socket) => {
     //CONEXION NOTIFICACIONES Y CHAT
     socket.on("joinNotifications", (sender) => {
-      console.log(sender);
+      
       socket.join(sender);
       var listRooms= io.sockets.adapter.rooms;
-      console.log("Estas del JOIN",listRooms)
+      
     });
    
     socket.on("sendNotifications", (request) => {
