@@ -1,9 +1,10 @@
 const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
-const { HealthInsurance, Speciality } = conn.models;
+const { HealthInsurance, Speciality, Person } = conn.models;
 const xlxs = require("xlsx");
 const http = require("http");
 const socketIO = require("socket.io");
+const bcryptjs = require("bcryptjs");
 
 const excel_to_json = (dir) => {
   const excel = xlxs.readFile(dir);
@@ -36,6 +37,24 @@ async function addSpeciality(datos) {
 const no_existen_Especialidades = async () => {
   const especialidades = await Speciality.findAll();
   return especialidades.length === 0 ? true : false;
+};
+
+function encryptPassword(password) {
+  return bcryptjs.hashSync(password, 10);
+}
+
+const createAdmin = async () => {
+  const pass = "admin";
+  await Person.create({
+    dni: 99999999,
+    name: "admin",
+    lastname: "admin",
+    address: "admin",
+    imageProfile: null,
+    email: "admin@mediconnect.com",
+    password: encryptPassword(pass),
+    rol: "Admin",
+  });
 };
 
 //socket.io
@@ -71,6 +90,7 @@ conn.sync({ force: false }).then(async () => {
     );
     addHealthInsurance(obras_sociales);
     addSpeciality(especialidades);
+    createAdmin();
   }
   //start server
   const port = 3001;
