@@ -28,8 +28,8 @@ const ScheduleDoctor = (props) => {
 
   useEffect(() => {
     const getAppointments = async () => {
-      const URL = "http://localhost:3001";
-      const response = await axios.get(`${URL}/doctor/appointment/${id}`);
+
+      const response = await axios.get(`/doctor/appointment/${id}`);
       let refactor = response.data.data.map((e) => {
         console.log("SCHEDULE DOCTOR response.data.data", response.data.data);
         return {

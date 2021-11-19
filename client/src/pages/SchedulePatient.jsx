@@ -11,11 +11,10 @@ import { IntializeMP } from "../components/Controlers/mercadopago";
 const SchedulePatient = () => {
   const [data, setData] = useState([]);
   const { id } = useParams();
-  const URL = "http://localhost:3001";
 
   useEffect(() => {
     const getAppointments = async () => {
-      const response = await axios.get(`${URL}/patient/appointment/${id}`);
+      const response = await axios.get(`/patient/appointment/${id}`);
       let refactor = response.data.data.map((e) => {
         return {
           fullname: e.doctor.person.name + " " + e.doctor.person.lastname,
@@ -39,7 +38,7 @@ const SchedulePatient = () => {
     })
       .then(
         (success) =>
-          success && axios.delete(`${URL}/doctor/appointment/${id_appointment}`)
+          success && axios.delete(`/doctor/appointment/${id_appointment}`)
       )
       .then(
         (success) =>
@@ -64,7 +63,7 @@ const SchedulePatient = () => {
       .then(
         (success) =>
           success &&
-          axios.post(`${URL}/checkout`, obj, {
+          axios.post(`/checkout`, obj, {
             withCredentials: true,
           })
       )

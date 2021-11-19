@@ -63,9 +63,9 @@ const AppointmentConfig = () => {
     return [parseInt(arr[0]), parseInt(arr[1])];
   };
   const postConfig = async (week) => {
-    const URL = "http://localhost:3001";
 
-    await axios.post(`${URL}/doctor/workday/${id}`, week);
+
+    await axios.post(`/doctor/workday/${id}`, week);
   };
   const handleSubmit = () => {
     let week = []; // Se estructura el objeto a enviar

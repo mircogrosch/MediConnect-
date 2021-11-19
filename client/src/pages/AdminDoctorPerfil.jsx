@@ -17,14 +17,13 @@ function AdminDoctorPerfil() {
   //FUNCTIONS
   const getDoctor = async () => {
     const { data } = await axios.get(
-      `http://localhost:3001/admin/doctor/${id}`
+      `/admin/doctor/${id}`
     );
     setDataDoctor(data.data);
     console.log(dataDoctor);
   };
   const getAppointments = async () => {
-    const URL = "http://localhost:3001";
-    const response = await axios.get(`${URL}/doctor/appointment/${id}`);
+    const response = await axios.get(`/doctor/appointment/${id}`);
     let refactor = response.data.data.map((e) => {
       return {
         name: e.patient.person.name,

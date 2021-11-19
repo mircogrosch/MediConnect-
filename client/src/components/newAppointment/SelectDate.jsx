@@ -55,7 +55,7 @@ function NewAppointmentStep2({
 
     try {
       const response = await axios.get(
-        `http://localhost:3001/doctor/appointmentByDay/${idDoctor}?day=${day}&month=${month}&year=${year}`
+        `/doctor/appointmentByDay/${idDoctor}?day=${day}&month=${month}&year=${year}`
       );
       setShiftsHours(response.data.data);
     } catch (error) {

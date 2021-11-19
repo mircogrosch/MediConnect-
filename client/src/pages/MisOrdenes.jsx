@@ -17,7 +17,7 @@ const MisOrdenes = () => {
 
   const getOrders = async (user) => {
     const response = await axios.get(
-      `http://localhost:3001/patient/medicalorder?patientId=${user.rol.id}`
+      `/patient/medicalorder?patientId=${user.rol.id}`
     );
     setOrders(response.data.data);
   };

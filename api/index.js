@@ -62,14 +62,14 @@ const server_pp = http.createServer(server);
 const ioNotification = socketIO(server_pp, {
   path: "/notification",
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://medi-connect.vercel.app",
     methods: ["GET", "POST", "PUT"],
   },
 });
 const ioChat = socketIO(server_pp, {
   path: "/message",
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://medi-connect.vercel.app",
     methods: ["GET", "POST", "PUT"],
   },
 });
@@ -93,8 +93,7 @@ conn.sync({ force: true }).then(async () => {
     createAdmin();
   }
   //start server
-  const port = 3001;
-  server_pp.listen(port, () => {
-    console.log(`Server is executed on port ${port}`); // view on console
+  server_pp.listen(process.env.PORT, () => {
+    console.log(`Server is executed on port ${process.env.PORT}`); // view on console
   });
 });

@@ -15,7 +15,7 @@ const doPayment = (req, res)=> {
           },       
         ],
          back_urls: {
-           success: `http://localhost:3001/checkout/payment?idAppointment=${idPayment}&idPatient=${idPatient}`,
+           success: `http://mediconnect.herokuapp.com/checkout/payment?idAppointment=${idPayment}&idPatient=${idPatient}`,
        },
       };
       
@@ -55,7 +55,7 @@ const paymentFinish= async (req,res)=>{
        }
      })
 
-     res.redirect(`http://localhost:3000/account/patient/schedule/${idPatient}`)
+     res.redirect(`https://medi-connect.vercel.app/account/patient/schedule/${idPatient}`)
      
  }catch{
    res.status(400)

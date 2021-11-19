@@ -1,5 +1,5 @@
 import {io} from 'socket.io-client'; 
-const URL = "http://localhost:3001"
+const URL = process.env.REACT_APP_API || "http://localhost:3001"
 export const socketChat= io(URL,{ path: '/message'});
 /**
  * CONEXION SOCKET PARA UNA ROOM EN PARTICULAR

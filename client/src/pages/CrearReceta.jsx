@@ -43,7 +43,7 @@ const CrearReceta = () => {
     setPatient(e.target.value);
     const getInfoPatient = async (e) => {
       const response = await axios.get(
-        `http://localhost:3001/patient/${e.target.value}`
+        `/patient/${e.target.value}`
       );
       setInfoPatient(response.data.data);
     };

@@ -17,7 +17,7 @@ const MisRecetas = () => {
 
   const getRecipies = async (user) => {
     const response = await axios.get(
-      `http://localhost:3001/patient/prescription?patientId=${user.rol.id}`
+      `/patient/prescription?patientId=${user.rol.id}`
     );
     setRecipes(response.data.data);
   };

@@ -8,7 +8,7 @@ import SimpleAppBar from "../components/AppBar/SimpleAppBar";
 
 const AdminPatients = () => {
   const [data, setData] = useState([]);
-  const URL = "http://localhost:3001";
+ 
 
   const handleToDisable = (dni) => {
     swal("Vas a deshabilitar a este usuario", {
@@ -18,7 +18,7 @@ const AdminPatients = () => {
       .then(
         (success) =>
           success &&
-          axios.delete(`http://localhost:3001/admin/person?personDni=${dni}`)
+          axios.delete(`/admin/person?personDni=${dni}`)
       )
       .then((res) => res && getPatients())
       .catch((error) => console.log("Error al deshabilitar el usuario", error));
@@ -32,7 +32,7 @@ const AdminPatients = () => {
       .then(
         (success) =>
           success &&
-          axios.post(`http://localhost:3001/admin/person?personDni=${dni}`)
+          axios.post(`/admin/person?personDni=${dni}`)
       )
       .then((res) => res && getPatients())
       .catch((error) => console.log("Error al habilitar el usuario", error));

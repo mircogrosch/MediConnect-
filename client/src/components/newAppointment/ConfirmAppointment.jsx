@@ -18,7 +18,7 @@ function ConfirmAppointment({ dateSelected, doctorData, previousStep }) {
   const saveShift = async (date) => {
     try {
       const response = await axios.post(
-        `http://localhost:3001/doctor/appointment/${doctorData.idDoctor}?patient=${id}`,
+        `/doctor/appointment/${doctorData.idDoctor}?patient=${id}`,
         { date }
       );
 
