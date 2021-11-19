@@ -79,6 +79,8 @@ export const validateUser = (token, history) => {
         return history.push("/account/patient");
       } else if (decoded.user.rol === "Doctor") {
         return history.push("/account/profesional");
+      }else if(decoded.user.rol==="Admin"){ 
+        return history.push("/account/admin");
       }
     } else if (token.message) {
       swal({
