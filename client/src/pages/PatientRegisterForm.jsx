@@ -129,13 +129,8 @@ const PatientRegisterForm = () => {
         }}
       >
        
-        <Box sx={{ width: { lg: "60vw", md: "70vw", xs: "90vw" } }}>
+        <Box sx={{ width: { lg: "60vw", md: "60vw", xs: "90vw" },marginTop:4}}>
           <Grid container rowSpacing={1}>
-            <Grid item xs={12} textAlign="center">
-              <Typography variant="h3" className={classes.title}>
-                Ingrese tus datos
-              </Typography>
-            </Grid>
             <Grid item sm={6} xs={12}>
               <InputLabel>Nombre</InputLabel>
               <TextField
@@ -305,7 +300,7 @@ const PatientRegisterForm = () => {
               </Select>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} marginTop={1}>
               <Button
                 variant="contained"
                 component="label"

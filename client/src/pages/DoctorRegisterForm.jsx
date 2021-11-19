@@ -119,14 +119,9 @@ function DoctorRegisterForm() {
         sx={{
           marginTop: { sm: "0", xs: "2em" },
         }}
-      >
-        <Box sx={{ width: { lg: "60vw", md: "70vw", xs: "90vw" } }}>
+      >   
+        <Box sx={{ width: { lg: "60vw", md: "70vw", xs: "90vw" }, marginTop:10}}> 
           <Grid container rowSpacing={1}>
-            <Grid item xs={12} textAlign="center">
-              <Typography variant="h3" className={classes.title}>
-                Ingrese sus datos
-              </Typography>
-            </Grid>
             <Grid item sm={6} xs={12}>
               <InputLabel>Nombre</InputLabel>
               <TextField
@@ -328,6 +323,7 @@ function DoctorRegisterForm() {
                   marginTop: "1em",
                   fontSize: "16px",
                   background: teal[900],
+                  marginBottom:10
                 }}
                 disabled={disabledButton}
               >
