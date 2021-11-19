@@ -133,7 +133,7 @@ const AdminDoctors = () => {
   ];
 
   const getDoctors = async () => {
-    const response = await axios.get(`${URL}/admin/doctors`);
+    const response = await axios.get(`/admin/doctors`);
     console.log("response.data.data", response.data.data);
     let refactor = response.data.data.map((e) => {
       return {

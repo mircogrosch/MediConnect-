@@ -101,7 +101,7 @@ const AdminPatients = () => {
   ];
 
   const getPatients = async () => {
-    const response = await axios.get(`${URL}/admin/patients`);
+    const response = await axios.get(`/admin/patients`);
     console.log("response.data.data", response.data.data);
     let refactor = response.data.data.map((e) => {
       return {
