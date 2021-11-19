@@ -19,12 +19,12 @@ const infoPatient = [
   {
     title: "Agrega profesionales a tu agenda para chatear y solicitar turnos",
     body: "Antes de solicitar un turno con un profesional específico, asegurate de haberlo agregado a tu lista de profesionales asociados. Esto se hace desde la sección MIS PROFESIONALES, Agregar nuevo profesional.",
-    icon: <AccountBoxOutlined sx={{ fontSize: "6em", color: teal[500] }} />,
+    icon: <AccountBoxOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
   },
   {
     title: "Agenda un turno con tu médico el día y a la hora que prefieras",
     body: "En la sección de MIS TURNOS podés filtrar por especialidad médica y elegir día y horario para agendar tu próximo turno con algún profesional de los que tengas asociados a vos.",
-    icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[500] }} />,
+    icon: <EventAvailableOutlined sx={{ fontSize: "6em", color: teal[900] }} />,
   },
 ];
 
@@ -112,7 +112,6 @@ function Carousel({ rol }) {
                       >
                         {infoDoctor[activeStep].body}
                       </Typography>
-                      {/* </Grid> */}
                     </Grid>
                     <Grid
                       item
@@ -133,30 +132,25 @@ function Carousel({ rol }) {
                 {Math.abs(activeStep - index) <= 2 ? (
                   <Grid
                     container
-                    width="100%"
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
+                    justifyContent="space-around"
+                    alignItems="center"
+                    paddingY="1em"
                   >
-                    <Typography
-                      lineHeight="1em"
-                      variant="h6"
-                      sx={{ padding: "10px", color: "#676767" }}
-                    >
-                      {infoPatient[activeStep].title}
-                    </Typography>
-                    <Grid
-                      item
-                      xs={6}
-                      sx={{
-                        padding: "5px",
-                        marginLeft: "50px",
-                        color: "#9B9B9B",
-                        textAlign: "justify",
-                      }}
-                    >
-                      <Typography variant="body1">
+                    <Grid item xs={6}>
+                      <Typography
+                        variant="h6"
+                        lineHeight="1.2em"
+                        marginBottom="1em"
+                        color={grey[800]}
+                      >
+                        {infoPatient[activeStep].title}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        textAlign="justify"
+                        lineHeight="1.3em"
+                        color={grey[600]}
+                      >
                         {infoPatient[activeStep].body}
                       </Typography>
                     </Grid>
@@ -165,7 +159,7 @@ function Carousel({ rol }) {
                       xs={3}
                       sx={{
                         textAlign: "center",
-                        color: teal[400],
+                        color: teal[50],
                       }}
                     >
                       {infoPatient[activeStep].icon}

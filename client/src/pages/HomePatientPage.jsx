@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useStyles } from "../styles/home";
 import { Box, Grid } from "@mui/material";
-import { teal, grey } from "@mui/material/colors";
+import { teal } from "@mui/material/colors";
 import {
   EventAvailableOutlined,
   EventNoteOutlined,
@@ -71,7 +71,7 @@ function HomePatientPage() {
               address={user.user.address}
               imagePerfil={user.user.imageProfile}
               bgDarkColor={teal[200]}
-              color={grey[700]}
+              color={teal[900]}
               user={user.user}
               healthInsurance={user.rol.healthInsurance.name}
             />

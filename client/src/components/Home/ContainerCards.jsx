@@ -32,7 +32,11 @@ function ContainerCards({ cardInfo }) {
               to={`/account/patient/schedule/${user.rol.id}`}
               style={{ textDecoration: "none" }}
             >
-              <Card title="Mis Turnos" icon={cardInfo[0].icon} />
+              <Card
+                title="Mis Turnos"
+                icon={cardInfo[0].icon}
+                color={teal[900]}
+              />
             </Link>
           )}
         </Grid>
@@ -54,7 +58,7 @@ function ContainerCards({ cardInfo }) {
               to={`/account/patient/medical-history/${user.rol.id}`}
               style={{ textDecoration: "none" }}
             >
-              <Card title="Historial Medico" icon={cardInfo[0].icon} />
+              <Card title="Historial Medico" icon={cardInfo[0].icon} color={teal[900]} />
             </Link>
           )}
         </Grid>
@@ -76,7 +80,7 @@ function ContainerCards({ cardInfo }) {
               to={`/account/profesionales/${user.rol.id}`}
               style={{ textDecoration: "none" }}
             >
-              <Card title="Mis Profesionales" icon={cardInfo[2].icon} />
+              <Card title="Mis Profesionales" icon={cardInfo[2].icon} color={teal[900]}/>
             </Link>
           )}
         </Grid>
@@ -92,7 +96,7 @@ function ContainerCards({ cardInfo }) {
             </Link>
           ) : (
             <Link to={`/patient/recipes`} style={{ textDecoration: "none" }}>
-              <Card title="Mis Recetas" icon={cardInfo[3].icon} />
+              <Card title="Mis Recetas" icon={cardInfo[3].icon} color={teal[900]} />
             </Link>
           )}
         </Grid>
@@ -108,7 +112,7 @@ function ContainerCards({ cardInfo }) {
             </Link>
           ) : (
             <Link to={`/patient/orders`} style={{ textDecoration: "none" }}>
-              <Card title="Mis Ordenes" icon={cardInfo[3].icon} />
+              <Card title="Mis Ordenes" icon={cardInfo[3].icon}  color={teal[900]}/>
             </Link>
           )}
         </Grid>
