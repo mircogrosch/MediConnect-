@@ -17,14 +17,12 @@ import {
   Button,
   Grid,
   IconButton,
-  LinearProgress
+  LinearProgress,
 } from "@mui/material";
 import axios from "axios";
 import SimpleAppBar from "../components/AppBar/SimpleAppBar";
 import CheckIcon from "@mui/icons-material/Check";
 const PatientRegisterForm = () => {
-  
-
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -40,7 +38,7 @@ const PatientRegisterForm = () => {
     password: false,
     idemPassword: false,
   });
-  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const [disabledButton, setDisabledButton] = useState(false);
 
   const healthInsurances = useSelector((state) => state.healthInsurances);
@@ -65,9 +63,9 @@ const PatientRegisterForm = () => {
     setImgPerfil(file);
     setCheckUpLoad(true);
   };
-  const handleLoadingProgress = (percent)=>{ 
+  const handleLoadingProgress = (percent) => {
     setLoadingProgress(percent);
-  }
+  };
 
   const onSubmit = (data) => {
     setEqual(true);
@@ -82,8 +80,6 @@ const PatientRegisterForm = () => {
 
     data.address = `${town}, ${province}`;
 
-    console.log(data);
-
     const user = new FormData();
     user.append("name", data.name);
     user.append("lastname", data.lastname);
@@ -95,8 +91,8 @@ const PatientRegisterForm = () => {
     user.append("healthInsuranceId", data.healthInsuranceId);
     user.append("address", data.address);
     user.append("location", data.location);
-    setDisabledButton(true)
-    dispatch(postPatient(user, history,handleLoadingProgress));
+    setDisabledButton(true);
+    dispatch(postPatient(user, history, handleLoadingProgress));
   };
 
   const getProvinces = async () => {
@@ -117,8 +113,7 @@ const PatientRegisterForm = () => {
     );
     setTowns(response.data.municipios);
   };
- 
-  console.log("ESTE ES EL PROGRESS", loadingProgress)
+
   return (
     <Box>
       <SimpleAppBar background={teal[900]} />
@@ -128,8 +123,9 @@ const PatientRegisterForm = () => {
           marginTop: { sm: "0", xs: "2em" },
         }}
       >
-       
-        <Box sx={{ width: { lg: "60vw", md: "60vw", xs: "90vw" },marginTop:4}}>
+        <Box
+          sx={{ width: { lg: "60vw", md: "60vw", xs: "90vw" }, marginTop: 4 }}
+        >
           <Grid container rowSpacing={1}>
             <Grid item sm={6} xs={12}>
               <InputLabel>Nombre</InputLabel>
@@ -333,12 +329,12 @@ const PatientRegisterForm = () => {
               >
                 REGISTRAR
               </Button>
-              {
-              disabledButton ? <LinearProgress variant="determinate" value={loadingProgress}/> : false
-              }
+              {disabledButton ? (
+                <LinearProgress variant="determinate" value={loadingProgress} />
+              ) : (
+                false
+              )}
             </Grid>
-            
-            
           </Grid>
         </Box>
       </Box>

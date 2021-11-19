@@ -48,7 +48,6 @@ const deleteNotificationChat = async (req, res) => {
         type: type,
       },
     });
-    console.log("NOTI REMOVE", notificationToRemove);
     await notificationToRemove.destroy();
     res.status(200);
   } catch {
@@ -138,9 +137,9 @@ const getMessage = async (req, res) => {
         id: idConversationMatch,
       },
     });
-    console.log("ESTA ES LA CONVERSACION", conversationMatch);
+  
     const messages = await conversationMatch.getMessages();
-    console.log("ESTOS SON LOS MENSAJES", messages);
+    
     res.json({
       data: messages,
       status: 200,

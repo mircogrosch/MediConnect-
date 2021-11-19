@@ -8,7 +8,13 @@ const patientRouter = require("./routes/patients");
 const doctorRouter = require("./routes/doctor");
 const sendEmail = require("./routes/sendEmail");
 const prescriptionRouter = require("./routes/prescription");
-const { Person, Patient, Doctor, Speciality, HealthInsurance } = require("./db");
+const {
+  Person,
+  Patient,
+  Doctor,
+  Speciality,
+  HealthInsurance,
+} = require("./db");
 const passport = require("passport");
 const Strategy = require("passport-local").Strategy;
 const bcryptjs = require("bcryptjs");
@@ -76,8 +82,8 @@ passport.use(
                     personDni: user.dni,
                   },
                   include: {
-                    model: HealthInsurance
-                  }
+                    model: HealthInsurance,
+                  },
                 });
                 user = { ...user, patient };
                 user = {
@@ -202,9 +208,6 @@ server.use(passport.session());
 
 // Middleware para mostrar la sesión actual en cada request
 server.use((req, res, next) => {
-  console.log(req.cookies);
-  console.log(req.session);
-  console.log(req.user);
   next();
 });
 

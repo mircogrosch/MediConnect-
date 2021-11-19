@@ -25,6 +25,7 @@ const SchedulePatient = () => {
           payment_status: e.payment_status,
         };
       });
+
       setData(refactor);
     };
     getAppointments();
