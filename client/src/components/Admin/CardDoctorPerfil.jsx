@@ -1,11 +1,12 @@
 import React from 'react'
-import { Box, Typography, Grid } from "@material-ui/core";
+import { Box, Typography, Grid,Button } from "@material-ui/core";
 import { AccountCircle } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
+import {Link} from 'react-router-dom'
 function CardDoctorPerfil({image,docName,cbu}) {
     return (
     <Box
-      bgcolor={teal[200]}
+      bgcolor={teal[800]}
       width="60vw"
       height="75px"
       borderRadius="7px"
@@ -14,7 +15,7 @@ function CardDoctorPerfil({image,docName,cbu}) {
       <Grid
         container
         alignItems="center"
-        justifyContent="center"
+        justifyContent="space-between"
         display="flex"
         sx={{ width: "70vw", padding: "0.5em 1em", borderRadius: "5px" }}
       >
@@ -24,14 +25,26 @@ function CardDoctorPerfil({image,docName,cbu}) {
             alt="circle user"
             style={{ width: "60px", height: "60px", borderRadius: "50%" }}
           />
+         
         </Grid>
         <Grid item md={3}>
-          <Typography variant="body1">{docName}</Typography>
+        <Typography variant="body1" style={{color:teal[50]}}>{`Dr: ${docName}`}</Typography>
         </Grid>
         <Grid item md={3}>
-          <Typography variant="body1">
-            {cbu}
+          <Typography variant="body1" style={{color:teal[50]}}>
+            {`CBU: ${cbu}`}
           </Typography>
+        </Grid>
+        <Grid item md={3}>
+        <Link to={{ pathname: "https://mercadopago.com.ar" }} target="_blank" style={{textDecoration:"none"}}>
+          <Button variant="contained" size="small" style={{bgColor:teal[50]}}> 
+         <Typography variant="a" style={{color:teal[800]}}>
+            Realizar Transferencia
+          </Typography> 
+        </Button> 
+        </Link>
+        
+        
         </Grid>
       </Grid>
     </Box>
