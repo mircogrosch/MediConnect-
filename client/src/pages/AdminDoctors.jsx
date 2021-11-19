@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import PrimarySearchAppBar from "../components/Notification/AppBarNoti";
 import { Typography, Button, Grid, Box } from "@mui/material";
 import { teal, grey } from "@mui/material/colors";
 import axios from "axios";
 import swal from "sweetalert";
 import DataTable from "react-data-table-component";
 import { useHistory } from "react-router-dom";
+import SimpleAppBar from "../components/AppBar/SimpleAppBar";
 
 const AdminDoctors = () => {
   const history = useHistory();
@@ -156,7 +156,7 @@ const AdminDoctors = () => {
   return (
     <>
       <Box sx={{ background: grey[50] }}>
-        {/* <PrimarySearchAppBar bgColor={teal[900]} color={teal[900]} /> */}
+        <SimpleAppBar background={teal[900]} marginBottom={10} />
         <Box
           sx={{
             height: "100vh",

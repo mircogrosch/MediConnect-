@@ -24,7 +24,7 @@ const MisRecetas = () => {
 
   useEffect(() => {
     getRecipies(user);
-  }, []);
+  }, [user]);
 
   let infoPerson;
   let infoReceta;

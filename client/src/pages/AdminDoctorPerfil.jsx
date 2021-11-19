@@ -1,73 +1,79 @@
-import React,{useEffect,useState} from 'react';
-import {useParams,Link} from 'react-router-dom';
-import axios from 'axios';
-import { Box, Typography, Grid,Button } from "@material-ui/core";
-import CardDoctorPerfil from '../components/Admin/CardDoctorPerfil.jsx';
-import PrimarySearchBar from '../components/Notification/AppBarNoti.jsx'
-import { teal,grey } from "@mui/material/colors";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { Box, Typography, Grid } from "@material-ui/core";
+import CardDoctorPerfil from "../components/Admin/CardDoctorPerfil.jsx";
+import { teal, grey } from "@mui/material/colors";
 import DataTable from "react-data-table-component";
+import SimpleAppBar from "../components/AppBar/SimpleAppBar.jsx";
 function AdminDoctorPerfil() {
+  //HOOKS
+  const { id } = useParams();
 
-    //HOOKS
-    const {id} = useParams()
+  //Local States
+  const [data, setData] = useState([]);
+  const [dataDoctor, setDataDoctor] = useState();
 
-    //Local States
-    const [data, setData] = useState([]);
-    const [dataDoctor, setDataDoctor] = useState()
-
-    //FUNCTIONS
-    const getDoctor=async()=> {
-        const {data}= await axios.get(`http://localhost:3001/admin/doctor/${id}`); 
-          setDataDoctor(data.data)
-          console.log(dataDoctor)
-      }
-      const getAppointments = async () => {
-        const URL = "http://localhost:3001";
-        const response = await axios.get(`${URL}/doctor/appointment/${id}`);
-        let refactor = response.data.data.map((e) => {
-          return {
-            name: e.patient.person.name,
-            lastname: e.patient.person.lastname,
-            date: e.date,
-            hour_long: e.hour_long,
-            payment_status: e.payment_status,
-          };
-        });
-        setData(refactor);
+  //FUNCTIONS
+  const getDoctor = async () => {
+    const { data } = await axios.get(
+      `http://localhost:3001/admin/doctor/${id}`
+    );
+    setDataDoctor(data.data);
+    console.log(dataDoctor);
+  };
+  const getAppointments = async () => {
+    const URL = "http://localhost:3001";
+    const response = await axios.get(`${URL}/doctor/appointment/${id}`);
+    let refactor = response.data.data.map((e) => {
+      return {
+        name: e.patient.person.name,
+        lastname: e.patient.person.lastname,
+        date: e.date,
+        hour_long: e.hour_long,
+        payment_status: e.payment_status,
       };
+    });
+    setData(refactor);
+  };
 
-    //HANDLES TABLA
-    const columnas = [
-        { name: "Fecha", selector: (row) => row["date"] },
-        { name: "Hora", selector: (row) => row["hour_long"], sortable: true },
-        {
-          name: "Nombre",
-          selector: (row) => row["name"],
-          sortable: true,
-        },
-        { name: "Apellido", selector: (row) => row["lastname"], sortable: true },
-        {
-          name: "Estado de pago",
-          selector: (row) => row["payment_status"],
-          sortable: true,
-        }
-      ];
+  //HANDLES TABLA
+  const columnas = [
+    { name: "Fecha", selector: (row) => row["date"] },
+    { name: "Hora", selector: (row) => row["hour_long"], sortable: true },
+    {
+      name: "Nombre",
+      selector: (row) => row["name"],
+      sortable: true,
+    },
+    { name: "Apellido", selector: (row) => row["lastname"], sortable: true },
+    {
+      name: "Estado de pago",
+      selector: (row) => row["payment_status"],
+      sortable: true,
+    },
+  ];
 
-    useEffect(()=>{
-        getDoctor()
-        getAppointments();
-    },[])
+  useEffect(() => {
+    getDoctor();
+    getAppointments();
+  }, []);
 
-    return (
-        <Box >  
-           <PrimarySearchBar bgColor={teal[900]} color={teal[900]} />  
-           <Grid container justifyContent="center" style={{marginTop:10}}> 
-                <Grid item >
-                    {dataDoctor && <CardDoctorPerfil image={dataDoctor.imageProfile} docName={`${dataDoctor.name} ${dataDoctor.lastname}`} cbu={dataDoctor.cbu} /> }
-                </Grid> 
-
-
-            </Grid>
+  return (
+    <Box>
+      {/* <PrimarySearchBar bgColor={teal[900]} color={teal[900]} />   */}
+      <SimpleAppBar background={teal[900]} marginBottom={10} />
+      <Grid container justifyContent="center" style={{ marginTop: 90 }}>
+        <Grid item>
+          {dataDoctor && (
+            <CardDoctorPerfil
+              image={dataDoctor.imageProfile}
+              docName={`${dataDoctor.name} ${dataDoctor.lastname}`}
+              cbu={dataDoctor.cbu}
+            />
+          )}
+        </Grid>
+      </Grid>
 
       <Box sx={{ background: grey[50] }}>
         <Box
@@ -128,17 +134,15 @@ function AdminDoctorPerfil() {
                   variant="h6"
                   style={{ color: grey[700] }}
                 >
-                 {`NO HAY TURNOS REGISTRADO`}
+                  {`NO HAY TURNOS REGISTRADO`}
                 </Typography>
               </Grid>
             )}
           </Grid>
         </Box>
       </Box>
-
     </Box>
-    
-    )
+  );
 }
 
-export default AdminDoctorPerfil
+export default AdminDoctorPerfil;
