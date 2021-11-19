@@ -93,6 +93,10 @@ passport.use(
               } catch (e) {
                 console.log("Error al traer al paciente: ", e);
               }
+            } else if (user.rol === "Admin") {
+              user = {
+                user: user.dataValues,
+              };
             }
             return done(
               null,
@@ -124,6 +128,7 @@ passport.use(
 
 //Serializar
 passport.serializeUser(function (user, done) {
+  console.log(user);
   return done(null, user.user.dni);
 });
 //Deserializar
