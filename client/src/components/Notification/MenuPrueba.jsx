@@ -4,7 +4,6 @@ import { IconButton, Typography } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { NotificationsOutlined } from "@mui/icons-material";
-import { teal } from "@mui/material/colors";
 import CardNotification from "./CardNotification";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/system";

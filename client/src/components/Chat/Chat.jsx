@@ -143,8 +143,6 @@ function Chat({ user }) {
           <Box
             sx={{
               width: "100%",
-              // height: 500,
-              // maxHeight: 500,
               overflowY: "scroll",
               margin: 0,
               padding: 0,

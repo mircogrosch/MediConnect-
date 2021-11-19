@@ -24,7 +24,7 @@ const MisOrdenes = () => {
 
   useEffect(() => {
     getOrders(user);
-  }, []);
+  }, [user]);
 
   let infoPerson;
   let infoOrden;

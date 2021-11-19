@@ -7,7 +7,10 @@ function SimpleAppBar(props) {
     <>
       <AppBar
         elevation={0}
-        style={{ background: props.background || "transparent" }}
+        style={{
+          background: props.background || "transparent",
+          marginBottom: props.marginBottom || false,
+        }}
       >
         <Toolbar>
           <Box style={{ flexGrow: "1" }}>
