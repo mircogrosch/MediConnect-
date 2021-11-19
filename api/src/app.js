@@ -8,7 +8,7 @@ const patientRouter = require("./routes/patients");
 const doctorRouter = require("./routes/doctor");
 const sendEmail = require("./routes/sendEmail");
 const prescriptionRouter = require("./routes/prescription");
-const { Person, Patient, Doctor } = require("./db");
+const { Person, Patient, Doctor, Speciality, HealthInsurance } = require("./db");
 const passport = require("passport");
 const Strategy = require("passport-local").Strategy;
 const bcryptjs = require("bcryptjs");
@@ -56,6 +56,9 @@ passport.use(
                   where: {
                     personDni: user.dni,
                   },
+                  include: {
+                    model: Speciality,
+                  },
                 });
                 user = { ...user, doctor };
                 user = {
@@ -72,6 +75,9 @@ passport.use(
                   where: {
                     personDni: user.dni,
                   },
+                  include: {
+                    model: HealthInsurance
+                  }
                 });
                 user = { ...user, patient };
                 user = {
