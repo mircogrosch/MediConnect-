@@ -49,6 +49,7 @@ const MyIcon = styled(AccountCircle)({
 });
 
 function Chat({ user }) {
+  const ENTER = 13;
   const userSender = jwt.verify(
     JSON.parse(sessionStorage.getItem("user"))?.token,
     "secret"
@@ -82,6 +83,11 @@ function Chat({ user }) {
   };
   const handleShowJitsi = () => {
     setShowJitsi(!showJitsi);
+  };
+  const handleInput = (e) => {
+    if (e.keyCode === ENTER) {
+      handleSubmit();
+    }
   };
   return (
     <MyGrid id="chat-message">
@@ -308,6 +314,7 @@ function Chat({ user }) {
             <MyTextInput
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => handleInput(e)}
               placeholder="Escriba su mensaje..."
               endAdornment={
                 <IconButton
