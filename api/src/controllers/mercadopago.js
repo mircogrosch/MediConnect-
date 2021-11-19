@@ -22,7 +22,6 @@ const doPayment = (req, res)=> {
       mercadopago.preferences.create(preference)
       .then(function(response){
 
-        console.log(response.body)
         res.send(response.body.id);
 
       }).catch(function(error){

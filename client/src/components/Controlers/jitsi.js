@@ -22,7 +22,6 @@ export function startConference(roomId,user,closeJitsi) {
 
       const api = new window.JitsiMeetExternalAPI(domain, options);
       api.addEventListener("videoConferenceJoined", () => {
-        console.log("Local User Joined");
         api.executeCommand("displayName", `${user.name} ${user.lastname}`);
       });
       api.addEventListener("readyToClose", () => {

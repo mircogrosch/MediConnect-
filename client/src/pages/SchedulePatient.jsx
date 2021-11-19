@@ -6,7 +6,7 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import swal from "sweetalert";
-import {IntializeMP} from '../components/Controlers/mercadopago'
+import { IntializeMP } from "../components/Controlers/mercadopago";
 
 const SchedulePatient = () => {
   const [data, setData] = useState([]);
@@ -25,7 +25,7 @@ const SchedulePatient = () => {
           payment_status: e.payment_status,
         };
       });
-      console.log("refactor", refactor);
+
       setData(refactor);
     };
     getAppointments();
@@ -51,25 +51,25 @@ const SchedulePatient = () => {
   };
 
   const handlePayment = (id_appointment, fullname) => {
-     let obj = {
-       idPayment: id_appointment,
-       title: fullname,
-       price: 1500,
-       idPatient:id
-     };
-     swal(
-       `Vas a realizar un pago por $1500 a ${fullname}, ¿Estas de acuerdo?`,
-       {
-         dangerMode: false,
-         buttons: { cancel: true, confirm: "Continuar" },
-       }
-     )
-       .then((success) => success && axios.post(`${URL}/checkout`, obj,{
-         withCredentials:true
-       }))
-        .then( (res) => IntializeMP(res.data) )
-       .catch((error) => console.log("Hubo un error en el pago", error));
-       
+    let obj = {
+      idPayment: id_appointment,
+      title: fullname,
+      price: 1500,
+      idPatient: id,
+    };
+    swal(`Vas a realizar un pago por $1500 a ${fullname}, ¿Estas de acuerdo?`, {
+      dangerMode: false,
+      buttons: { cancel: true, confirm: "Continuar" },
+    })
+      .then(
+        (success) =>
+          success &&
+          axios.post(`${URL}/checkout`, obj, {
+            withCredentials: true,
+          })
+      )
+      .then((res) => IntializeMP(res.data))
+      .catch((error) => console.log("Hubo un error en el pago", error));
   };
 
   const columnas = [

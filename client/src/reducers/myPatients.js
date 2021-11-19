@@ -13,7 +13,6 @@ export const myPatients = (state = initialState, action) => {
         copyNames: action.payload.data,
       };
     case types.FILTER_MY_PATIENTS_BY_NAME:
-      console.log("reducer", action.payload.data);
       return {
         ...state,
         names: action.payload.data,

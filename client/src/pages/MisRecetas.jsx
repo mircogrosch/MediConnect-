@@ -26,8 +26,6 @@ const MisRecetas = () => {
     getRecipies(user);
   }, []);
 
-  console.log(recipes);
-
   let infoPerson;
   let infoReceta;
   let date;

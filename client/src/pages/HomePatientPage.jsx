@@ -56,7 +56,7 @@ function HomePatientPage() {
     // Dispara la accion para traer todos los doctores asociados al paciente
     dispatch(getMyDoctors(user.rol.id));
   }, [dispatch, user.rol.id]);
-  console.log(user);
+
   return (
     <Box className={classes.root} sx={{ background: teal[50] }}>
       <PrimarySearchAppBar />

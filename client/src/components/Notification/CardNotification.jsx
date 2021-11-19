@@ -24,7 +24,6 @@ const MyIcon = styled(AccountCircle)({
 function CardNotification({ msg, idDoctor, idPatient, id }) {
   const dispatch = useDispatch();
   const handleAcept = (idPatient, idDoctor, e) => {
-    console.log(idPatient);
     dispatch(postMyDoctor(idPatient, idDoctor));
     dispatch(deleteNotifications(id));
   };

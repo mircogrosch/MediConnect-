@@ -66,7 +66,6 @@ const AppointmentConfig = () => {
     const URL = "http://localhost:3001";
 
     const response = await axios.post(`${URL}/doctor/workday/${id}`, week);
-    console.log("postConfig ", response);
   };
   const handleSubmit = () => {
     let week = []; // Se estructura el objeto a enviar
@@ -188,7 +187,7 @@ const AppointmentConfig = () => {
   return (
     <>
       <Box sx={{ background: grey[50] }}>
-        <PrimarySearchAppBar bgColor={teal[900]} color={teal[50]}/>
+        <PrimarySearchAppBar bgColor={teal[900]} color={teal[50]} />
 
         <Box
           sx={{

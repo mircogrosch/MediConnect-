@@ -74,7 +74,6 @@ export const validateUser = (token, history) => {
     const userLog = JSON.parse(sessionStorage.getItem("user"))?.token;
     if (userLog) {
       const decoded = jwt.verify(userLog, "secret");
-      console.log(decoded);
       if (decoded.user.rol === "Patient") {
         return history.push("/account/patient");
       } else if (decoded.user.rol === "Doctor") {

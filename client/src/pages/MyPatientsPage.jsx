@@ -12,14 +12,14 @@ function MyPatientsPage(props) {
   const dispatch = useDispatch();
   const { id } = useParams();
   const myPatients = useSelector((state) => state.myPatients);
-  console.log("page myPatients", myPatients);
+
   useEffect(() => {
     dispatch(getMyPatients(id));
   }, [dispatch, id]);
 
   return (
     <Box>
-      <AppBar bgColor={teal[900]} color={teal[50]}/>
+      <AppBar bgColor={teal[900]} color={teal[50]} />
       <Box
         sx={{
           height: "93vh",

@@ -22,7 +22,7 @@ const PruebaChat = () => {
     setChat([...chat,message])
 }) 
 
-      console.log(chat) 
+      
   return(
     <div>      
     <h1>Room: {room}</h1>

@@ -21,7 +21,6 @@ async function pool() {
   }
 }
 pool();
-sequelize.authenticate().then(() => console.log("succes"));
 const basename = path.basename(__filename);
 
 const modelDefiners = [];
