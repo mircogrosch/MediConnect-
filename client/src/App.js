@@ -23,9 +23,13 @@ import NewAppointment from "./pages/NewAppointment";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute.jsx";
 import MisRecetas from "./pages/MisRecetas";
 import MisOrdenes from "./pages/MisOrdenes";
+import AdminPatients from "./pages/AdminPatients";
+import AdminDoctors from "./pages/AdminDoctors";
 function App() {
   return (
     <div>
+      <Route exact path="/admin/doctors" component={AdminDoctors} />
+      <Route exact path="/admin/patients" component={AdminPatients} />
       <Route exact path="/" component={LandingPage} />
       <Route path="/register/doctor" component={DoctorRegisterForm} />
       <Route path="/register/patient" component={PatientRegisterForm} />
