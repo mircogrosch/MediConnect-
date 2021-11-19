@@ -19,7 +19,7 @@ function MyPatientsPage(props) {
 
   return (
     <Box>
-      <AppBar bgColor={teal[900]} />
+      <AppBar bgColor={teal[900]} color={teal[50]}/>
       <Box
         sx={{
           height: "93vh",

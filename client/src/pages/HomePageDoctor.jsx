@@ -63,8 +63,8 @@ function HomePageDoctor() {
     <Box className={classes.root} sx={{ background: teal[50] }}>
       <PrimarySearchAppBar bgColor={teal[900]} color={teal[50]} />
       <Box className={classes.container}>
-        <Grid container spacing={2} sx={{ height: "90%" }}>
-          <Grid item xl={4} md={4} xs={12}>
+        <Grid container columnSpacing={4} justifyContent="center">
+          <Grid item lg={3} md={4} xs={10}>
             <Perfil
               name={user.user.name}
               lastname={user.user.lastname}
@@ -74,15 +74,11 @@ function HomePageDoctor() {
               location={user.rol.location}
               email={user.user.email}
               enrollment={user.rol.enrollment}
+              user={user.user}
             />
           </Grid>
           <Grid
-            item
-            xl={8}
-            md={8}
-            xs={12}
-            display="flex"
-            flexDirection="column"
+           container item md={8} xs={11} flexDirection="column"
           >
             <Carousel rol={{ rol: user.user.rol }} />
             <ContainerCards cardInfo={cardInfo} />

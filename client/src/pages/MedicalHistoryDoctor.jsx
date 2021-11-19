@@ -43,7 +43,7 @@ function MedicalHistoryDoctor(props) {
 
   return (
     <Box>
-      <AppBar bgColor={teal[900]} />
+      <AppBar bgColor={teal[900]} color={teal[50]} />
       <Box sx={{ height: "90vh" }}>
         <PatientData data={patientData} />
         <Grid container columnSpacing={1} rowSpacing={2} padding="1em">

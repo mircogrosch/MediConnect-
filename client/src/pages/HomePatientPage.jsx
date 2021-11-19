@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import { useStyles } from "../styles/home";
 import { Box, Grid } from "@mui/material";
-import { teal } from "@mui/material/colors";
+import { teal,grey } from "@mui/material/colors";
 import {
   EventAvailableOutlined,
   EventNoteOutlined,
@@ -57,7 +57,7 @@ function HomePatientPage() {
     // Dispara la accion para traer todos los doctores asociados al paciente
     dispatch(getMyDoctors(user.rol.id));
   }, [dispatch, user.rol.id]);
-  console.log(user.user.rol);
+  console.log(user)
   return (
     <Box className={classes.root} sx={{ background: teal[50] }}>
       <PrimarySearchAppBar />
@@ -66,10 +66,14 @@ function HomePatientPage() {
           <Grid item lg={3} md={4} xs={10}>
             <Perfil
               name={user.user.name}
+              email={user.user.email}
               lastname={user.user.lastname}
               dni={user.user.dni}
               address={user.user.address}
               imagePerfil={user.user.imageProfile}
+              bgDarkColor={teal[200]}
+              color={grey[700]}
+              user={user.user}
             />
           </Grid>
           <Grid container item md={8} xs={11} flexDirection="column">
