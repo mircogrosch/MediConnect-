@@ -67,7 +67,7 @@ function CardDoctor({ name, lastname, email, rol, img, dni, id }) {
           <CircleIcon
             style={{
               width: "20px",
-              marginLeft: "190px",
+              marginLeft: "120px",
               marginTop: "-10px",
               color: grey[700],
             }}
