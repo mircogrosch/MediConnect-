@@ -77,6 +77,7 @@ function DoctorRegisterForm() {
     if (data.password !== data.confirmPass) return setEqual(false);
 
     const user = new FormData();
+    user.append("cbu", data.cbu);
     user.append("name", data.name);
     user.append("lastname", data.lastname);
     user.append("image", imgPerfil);
@@ -119,8 +120,10 @@ function DoctorRegisterForm() {
         sx={{
           marginTop: { sm: "0", xs: "2em" },
         }}
-      >   
-        <Box sx={{ width: { lg: "60vw", md: "70vw", xs: "90vw" }, marginTop:10}}> 
+      >
+        <Box
+          sx={{ width: { lg: "60vw", md: "70vw", xs: "90vw" }, marginTop: 10 }}
+        >
           <Grid container rowSpacing={1}>
             <Grid item sm={6} xs={12}>
               <InputLabel>Nombre</InputLabel>
@@ -288,13 +291,20 @@ function DoctorRegisterForm() {
               </Select>
             </Grid>
             <Grid item xs={12}>
+              <InputLabel>CBU</InputLabel>
+              <TextField
+                variant="standard"
+                sx={{ width: "100%" }}
+                {...register("cbu", { required: true })}
+              />
+            </Grid>
+            <Grid item xs={12}>
               <Signature
-                imgURL={imgURL}    
+                imgURL={imgURL}
                 setImgURL={setImgURL}
                 bgColor={teal[900]}
               />
             </Grid>
-
             <Grid item xs={12}>
               <Button
                 variant="contained"
@@ -323,7 +333,7 @@ function DoctorRegisterForm() {
                   marginTop: "1em",
                   fontSize: "16px",
                   background: teal[900],
-                  marginBottom:10
+                  marginBottom: 10,
                 }}
                 disabled={disabledButton}
               >

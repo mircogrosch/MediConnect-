@@ -70,6 +70,7 @@ const createDoctor = async (req, res) => {
     console.log("Error con cloudinary:", error);
   }
   const {
+    cbu,
     dni,
     name,
     lastname,
@@ -81,6 +82,7 @@ const createDoctor = async (req, res) => {
     specialities, // tiene que ser un arreglo de id de specialties o un arreglo vacio
     signature,
   } = req.body;
+  console.log(cbu)
   const rol = "Doctor";
   if (
     dni &&
@@ -127,12 +129,13 @@ const createDoctor = async (req, res) => {
       }
       let newDoctor = await Doctor.create(
         {
+          cbu,
           enrollment,
           location,
           signature,
         },
         {
-          fields: ["enrollment", "location", "signature"],
+          fields: ["cbu", "enrollment", "location", "signature"],
         }
       );
       await newDoctor.setPerson(dni);
